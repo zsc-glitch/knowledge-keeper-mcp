@@ -6,6 +6,12 @@
 import * as fs from "fs/promises";
 import * as path from "path";
 import * as os from "os";
+import {
+  addToVectorIndex,
+  removeFromVectorIndex,
+  semanticSearch as vectorSemanticSearch,
+  getVectorIndexStats,
+} from "./embedding.js";
 
 // 知识类型
 export type KnowledgeType = "concept" | "decision" | "todo" | "note" | "project";
@@ -294,6 +300,13 @@ export async function saveKnowledge(params: {
   await fs.writeFile(filepath, formatMarkdown(kp), "utf-8");
   await updateIndex(vaultDir, kp, "add");
 
+  // 添加到向量索引（异步，不阻塞）
+  addToVectorIndex({
+    id: kp.id,
+    title: kp.title,
+    content: kp.content,
+  }).catch(() => {});
+
   return kp;
 }
 
@@ -424,6 +437,9 @@ export async function deleteKnowledge(id: string): Promise<boolean> {
   await fs.unlink(filepath);
   await updateIndex(vaultDir, kp, "remove");
 
+  // 从向量索引删除（异步，不阻塞）
+  removeFromVectorIndex(id).catch(() => {});
+
   return true;
 }
 
@@ -493,4 +509,62 @@ export async function reviewKnowledge(params: {
   for (const kp of results) stats[kp.type]++;
 
   return { stats, recent: results.slice(0, 10) };
+}
+
+// 语义搜索
+export async function semanticSearch(params: {
+  query: string;
+  topK?: number;
+  threshold?: number;
+}): Promise<
+  Array<{
+    id: string;
+    title: string;
+    content: string;
+    type: KnowledgeType;
+    tags: string[];
+    similarity: number;
+  }>
+> {
+  // 使用向量搜索
+  const vectorResults = await vectorSemanticSearch({
+    query: params.query,
+    topK: params.topK,
+    threshold: params.threshold,
+  });
+
+  // 获取完整的知识点内容
+  const results: Array<{
+    id: string;
+    title: string;
+    content: string;
+    type: KnowledgeType;
+    tags: string[];
+    similarity: number;
+  }> = [];
+
+  for (const vr of vectorResults) {
+    const kp = await getKnowledge(vr.id);
+    if (kp) {
+      results.push({
+        id: kp.id,
+        title: kp.title,
+        content: kp.content,
+        type: kp.type,
+        tags: kp.tags,
+        similarity: vr.similarity,
+      });
+    }
+  }
+
+  return results;
+}
+
+// 获取向量索引统计
+export async function getSemanticStats(): Promise<{
+  count: number;
+  model: string;
+  dimension: number;
+}> {
+  return getVectorIndexStats();
 }

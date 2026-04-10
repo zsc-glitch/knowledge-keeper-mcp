@@ -5,6 +5,7 @@
 import * as fs from "fs/promises";
 import * as path from "path";
 import * as os from "os";
+import { addToVectorIndex, removeFromVectorIndex, semanticSearch as vectorSemanticSearch, getVectorIndexStats, } from "./embedding.js";
 // 错误类型
 export class KnowledgeError extends Error {
     code;
@@ -249,6 +250,12 @@ export async function saveKnowledge(params) {
     const filepath = path.join(targetDir, `${kp.id}.md`);
     await fs.writeFile(filepath, formatMarkdown(kp), "utf-8");
     await updateIndex(vaultDir, kp, "add");
+    // 添加到向量索引（异步，不阻塞）
+    addToVectorIndex({
+        id: kp.id,
+        title: kp.title,
+        content: kp.content,
+    }).catch(() => { });
     return kp;
 }
 // 搜索知识点
@@ -357,6 +364,8 @@ export async function deleteKnowledge(id) {
         return false;
     await fs.unlink(filepath);
     await updateIndex(vaultDir, kp, "remove");
+    // 从向量索引删除（异步，不阻塞）
+    removeFromVectorIndex(id).catch(() => { });
     return true;
 }
 // 列出所有标签
@@ -414,5 +423,34 @@ export async function reviewKnowledge(params) {
     for (const kp of results)
         stats[kp.type]++;
     return { stats, recent: results.slice(0, 10) };
+}
+// 语义搜索
+export async function semanticSearch(params) {
+    // 使用向量搜索
+    const vectorResults = await vectorSemanticSearch({
+        query: params.query,
+        topK: params.topK,
+        threshold: params.threshold,
+    });
+    // 获取完整的知识点内容
+    const results = [];
+    for (const vr of vectorResults) {
+        const kp = await getKnowledge(vr.id);
+        if (kp) {
+            results.push({
+                id: kp.id,
+                title: kp.title,
+                content: kp.content,
+                type: kp.type,
+                tags: kp.tags,
+                similarity: vr.similarity,
+            });
+        }
+    }
+    return results;
+}
+// 获取向量索引统计
+export async function getSemanticStats() {
+    return getVectorIndexStats();
 }
 //# sourceMappingURL=core.js.map

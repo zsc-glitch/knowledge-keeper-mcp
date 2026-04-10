@@ -1,7 +1,7 @@
 {
   "name": "@zsc-glitch/knowledge-keeper-mcp",
-  "version": "0.1.0-alpha.1",
-  "description": "MCP Server for Knowledge Keeper - 智能知识管理的 Model Context Protocol 实现",
+  "version": "0.2.0-alpha.1",
+  "description": "MCP Server for Knowledge Keeper - 智能知识管理的 Model Context Protocol 实现，支持语义搜索",
   "type": "module",
   "main": "dist/index.js",
   "bin": {

@@ -50,3 +50,20 @@ export declare function reviewKnowledge(params: {
     stats: Record<KnowledgeType, number>;
     recent: KnowledgePoint[];
 }>;
+export declare function semanticSearch(params: {
+    query: string;
+    topK?: number;
+    threshold?: number;
+}): Promise<Array<{
+    id: string;
+    title: string;
+    content: string;
+    type: KnowledgeType;
+    tags: string[];
+    similarity: number;
+}>>;
+export declare function getSemanticStats(): Promise<{
+    count: number;
+    model: string;
+    dimension: number;
+}>;
