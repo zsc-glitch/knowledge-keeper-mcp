@@ -1,0 +1,43 @@
+{
+  "name": "@zsc-glitch/knowledge-keeper-mcp",
+  "version": "0.1.0-alpha.1",
+  "description": "MCP Server for Knowledge Keeper - 智能知识管理的 Model Context Protocol 实现",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "knowledge-keeper-mcp": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc && sed -i '1i#!/usr/bin/env node' dist/index.js",
+    "dev": "tsc --watch",
+    "start": "node dist/index.js",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "memory",
+    "knowledge",
+    "ai",
+    "claude-code",
+    "openclaw"
+  ],
+  "author": "小影 <zsc-glitch>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zsc-glitch/knowledge-keeper-mcp"
+  },
+  "dependencies": {
+    "@cfworker/json-schema": "^4.1.1",
+    "@modelcontextprotocol/server": "2.0.0-alpha.2",
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.19.17",
+    "typescript": "^5.8.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

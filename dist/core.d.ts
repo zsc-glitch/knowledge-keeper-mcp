@@ -1,0 +1,52 @@
+/**
+ * Knowledge Keeper Core
+ * 核心逻辑，不依赖 OpenClaw SDK，可被 MCP Server 复用
+ */
+export type KnowledgeType = "concept" | "decision" | "todo" | "note" | "project";
+export interface KnowledgePoint {
+    id: string;
+    type: KnowledgeType;
+    title: string;
+    content: string;
+    tags: string[];
+    links: string[];
+    created: string;
+    updated: string;
+    source: "conversation" | "manual" | "mcp";
+}
+export declare class KnowledgeError extends Error {
+    code: string;
+    details?: Record<string, unknown> | undefined;
+    constructor(message: string, code: string, details?: Record<string, unknown> | undefined);
+}
+export declare function getVaultDir(): string;
+export declare function generateId(type: KnowledgeType): string;
+export declare function saveKnowledge(params: {
+    type: KnowledgeType;
+    title: string;
+    content: string;
+    tags?: string[];
+    links?: string[];
+}): Promise<KnowledgePoint>;
+export declare function searchKnowledge(params: {
+    query: string;
+    type?: KnowledgeType;
+    tags?: string[];
+    limit?: number;
+}): Promise<KnowledgePoint[]>;
+export declare function getKnowledge(id: string): Promise<KnowledgePoint | null>;
+export declare function updateKnowledge(id: string, params: {
+    title?: string;
+    content?: string;
+    tags?: string[];
+    appendTags?: string[];
+}): Promise<KnowledgePoint | null>;
+export declare function deleteKnowledge(id: string): Promise<boolean>;
+export declare function listTags(): Promise<Record<string, number>>;
+export declare function reviewKnowledge(params: {
+    period?: "today" | "week" | "month" | "all";
+    type?: KnowledgeType;
+}): Promise<{
+    stats: Record<KnowledgeType, number>;
+    recent: KnowledgePoint[];
+}>;
