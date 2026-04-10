@@ -6,6 +6,7 @@ import type { McpServer } from "@modelcontextprotocol/server";
 import { registerSaveTool } from "./save.js";
 import { registerSearchTool } from "./search.js";
 import { registerSemanticSearchTool } from "./semantic-search.js";
+import { registerBM25SearchTool } from "./bm25-search.js";
 import { registerGetTool } from "./get.js";
 import { registerUpdateTool } from "./update.js";
 import { registerDeleteTool } from "./delete.js";
@@ -16,6 +17,7 @@ export function registerTools(server: McpServer): void {
   registerSaveTool(server);
   registerSearchTool(server);
   registerSemanticSearchTool(server);
+  registerBM25SearchTool(server);
   registerGetTool(server);
   registerUpdateTool(server);
   registerDeleteTool(server);

@@ -80,3 +80,20 @@ export declare function getSemanticStats(): Promise<{
     model: string;
     dimension: number;
 }>;
+export declare function bm25Search(params: {
+    query: string;
+    topK?: number;
+}): Promise<Array<{
+    id: string;
+    title: string;
+    content: string;
+    type: KnowledgeType;
+    tags: string[];
+    score: number;
+}>>;
+export declare function getBM25IndexStats(): Promise<{
+    docCount: number;
+    avgDocLength: number;
+    termCount: number;
+    lastUpdate: number;
+}>;

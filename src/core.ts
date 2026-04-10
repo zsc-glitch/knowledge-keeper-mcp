@@ -14,6 +14,12 @@ import {
   semanticSearch as vectorSemanticSearch,
   getVectorIndexStats,
 } from "./embedding.js";
+import {
+  addToBM25Index,
+  removeFromBM25Index,
+  bm25Search as bm25KeywordSearch,
+  getBM25Stats,
+} from "./bm25.js";
 
 // 知识类型
 export type KnowledgeType = "concept" | "decision" | "todo" | "note" | "project";
@@ -342,6 +348,9 @@ export async function saveKnowledge(params: {
     content: kp.content,
   }).catch(() => {});
 
+  // 添加到 BM25 索引（异步，不阻塞）
+  addToBM25Index(kp.id, kp.title + " " + kp.content).catch(() => {});
+
   return kp;
 }
 
@@ -475,6 +484,9 @@ export async function deleteKnowledge(id: string): Promise<boolean> {
   // 从向量索引删除（异步，不阻塞）
   removeFromVectorIndex(id).catch(() => {});
 
+  // 从 BM25 索引删除（异步，不阻塞）
+  removeFromBM25Index(id).catch(() => {});
+
   return true;
 }
 
@@ -602,4 +614,58 @@ export async function getSemanticStats(): Promise<{
   dimension: number;
 }> {
   return getVectorIndexStats();
+}
+
+// BM25 关键词搜索
+export async function bm25Search(params: {
+  query: string;
+  topK?: number;
+}): Promise<
+  Array<{
+    id: string;
+    title: string;
+    content: string;
+    type: KnowledgeType;
+    tags: string[];
+    score: number;
+  }>
+> {
+  // 使用 BM25 搜索
+  const bm25Results = await bm25KeywordSearch(params.query, params.topK || 10);
+
+  // 获取完整的知识点内容
+  const results: Array<{
+    id: string;
+    title: string;
+    content: string;
+    type: KnowledgeType;
+    tags: string[];
+    score: number;
+  }> = [];
+
+  for (const br of bm25Results) {
+    const kp = await getKnowledge(br.id);
+    if (kp) {
+      results.push({
+        id: kp.id,
+        title: kp.title,
+        content: kp.content,
+        type: kp.type,
+        tags: kp.tags,
+        score: br.score,
+      });
+    }
+  }
+
+  return results;
+}
+
+// 获取 BM25 索引统计
+export async function getBM25IndexStats(): Promise<{
+  docCount: number;
+  avgDocLength: number;
+  termCount: number;
+  lastUpdate: number;
+}> {
+  return getBM25Stats();
 }
