@@ -1,8 +1,21 @@
 /**
  * Knowledge Keeper Core
  * 核心逻辑，不依赖 OpenClaw SDK，可被 MCP Server 复用
+ *
+ * v0.5.0 新增：Obsidian vault 兼容
  */
 export type KnowledgeType = "concept" | "decision" | "todo" | "note" | "project";
+export interface KnowledgePoint {
+    id: string;
+    type: KnowledgeType;
+    title: string;
+    content: string;
+    tags: string[];
+    links: string[];
+    created: string;
+    updated: string;
+    source: "conversation" | "manual" | "mcp";
+}
 export interface KnowledgePoint {
     id: string;
     type: KnowledgeType;

@@ -1,6 +1,8 @@
 /**
  * Knowledge Keeper Core
  * 核心逻辑，不依赖 OpenClaw SDK，可被 MCP Server 复用
+ * 
+ * v0.5.0 新增：Obsidian vault 兼容
  */
 
 import * as fs from "fs/promises";
@@ -15,6 +17,19 @@ import {
 
 // 知识类型
 export type KnowledgeType = "concept" | "decision" | "todo" | "note" | "project";
+
+// 知识点结构
+export interface KnowledgePoint {
+  id: string;
+  type: KnowledgeType;
+  title: string;
+  content: string;
+  tags: string[];
+  links: string[];  // backlinks for Obsidian
+  created: string;
+  updated: string;
+  source: "conversation" | "manual" | "mcp";
+}
 
 // 知识点结构
 export interface KnowledgePoint {
@@ -104,26 +119,34 @@ function parseTypeFromId(id: string): KnowledgeType | null {
   return map[prefix] || null;
 }
 
-// 格式化知识点为 Markdown
+// 格式化知识点为 Markdown（Obsidian 兼容）
 function formatMarkdown(kp: KnowledgePoint): string {
+  // Obsidian backlinks 格式
+  const backlinks = (kp.links || [])
+    .map(id => `[[${id}]]`)
+    .join(" ");
+
   return `---
 id: ${kp.id}
 type: ${kp.type}
 title: ${kp.title.replace(/\n/g, " ")}
 tags: [${kp.tags.join(", ")}]
-links: [${(kp.links || []).join(", ")}]
 created: ${kp.created}
 updated: ${kp.updated}
 source: ${kp.source}
+aliases: [${kp.title}]
 ---
 
 # ${kp.title}
 
 ${kp.content}
+
+## Related
+${backlinks || "No related notes"}
 `;
 }
 
-// 解析 Markdown 为知识点
+// 解析 Markdown 为知识点（Obsidian 兼容）
 function parseMarkdown(content: string, filepath?: string): KnowledgePoint | null {
   try {
     const frontmatterMatch = content.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
@@ -144,13 +167,25 @@ function parseMarkdown(content: string, filepath?: string): KnowledgePoint | nul
 
     const titleMatch = body.match(/^#\s+(.+)$/m);
     const title = titleMatch ? titleMatch[1].trim() : "Untitled";
-    const contentWithoutTitle = body.replace(/^#\s+.+\n/, "").trim();
+    
+    // 移除标题和 Related 部分
+    let contentWithoutTitle = body.replace(/^#\s+.+\n/, "").trim();
+    contentWithoutTitle = contentWithoutTitle.replace(/## Related\n.*$/m, "").trim();
 
     const tagsMatch = meta.tags?.match(/\[([^\]]*)\]/);
     const tags = tagsMatch ? tagsMatch[1].split(",").map((t) => t.trim()).filter(Boolean) : [];
 
+    // 从 Obsidian [[backlinks]] 格式提取
+    const backlinksMatch = body.match(/## Related\n([\s\S]*?)$/m);
+    const backlinksText = backlinksMatch ? backlinksMatch[1] : "";
+    const backlinks = backlinksText.match(/\[\[([^\]]+)\]\]/g)?.map(m => m.slice(2, -2)) || [];
+    
+    // 同时兼容旧的 links 格式
     const linksMatch = meta.links?.match(/\[([^\]]*)\]/);
-    const links = linksMatch ? linksMatch[1].split(",").map((l) => l.trim()).filter(Boolean) : [];
+    const metaLinks = linksMatch ? linksMatch[1].split(",").map((l) => l.trim()).filter(Boolean) : [];
+    
+    // 合并 backlinks
+    const links = [...new Set([...backlinks, ...metaLinks])];
 
     return {
       id: meta.id || generateId((meta.type as KnowledgeType) || "note"),
