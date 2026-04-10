@@ -41,17 +41,18 @@ claude mcp add knowledge-keeper -- npx @zsc-glitch/knowledge-keeper-mcp
 }
 ```
 
-## MCP Tools
+## MCP Tools (8个)
 
 | Tool | 功能 |
 |------|------|
 | `knowledge_save` | 保存知识点 |
 | `knowledge_search` | 关键词搜索 |
-| `knowledge_semantic_search` | 🆕 语义搜索 |
+| `knowledge_semantic_search` | 语义搜索 |
 | `knowledge_get` | 获取单个知识点 |
 | `knowledge_update` | 更新知识点 |
 | `knowledge_delete` | 删除知识点 |
 | `knowledge_tags` | 列出标签 |
+| `knowledge_versions` | 🆕 版本历史 |
 
 ## MCP Resources
 

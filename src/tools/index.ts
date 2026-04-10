@@ -10,6 +10,7 @@ import { registerGetTool } from "./get.js";
 import { registerUpdateTool } from "./update.js";
 import { registerDeleteTool } from "./delete.js";
 import { registerTagsTool } from "./tags.js";
+import { registerVersionsTool } from "./versions.js";
 
 export function registerTools(server: McpServer): void {
   registerSaveTool(server);
@@ -19,4 +20,5 @@ export function registerTools(server: McpServer): void {
   registerUpdateTool(server);
   registerDeleteTool(server);
   registerTagsTool(server);
+  registerVersionsTool(server);
 }
