@@ -3,9 +3,11 @@
  * 语义搜索模块 - 使用向量嵌入实现真正的语义搜索
  *
  * 技术方案：
- * - 嵌入模型: Xenova/all-MiniLM-L6-v2 (通过 @xenova/transformers)
- * - 向量存储: 本地 JSON 文件
- * - 相似度: 余弦相似度
+ * - 默认: TF-IDF 嵌入（轻量，无依赖）
+ * - 可选: @xenova/transformers 模型（需要安装额外依赖）
+ *
+ * 配置:
+ * - EMBEDDING_MODEL=tfidf (默认) 或 transformers
  */
 type Vector = number[];
 /**

@@ -53,6 +53,18 @@ claude mcp add knowledge-keeper -- npx @zsc-glitch/knowledge-keeper-mcp
 | `knowledge_delete` | 删除知识点 |
 | `knowledge_tags` | 列出标签 |
 
+## MCP Resources
+
+| Resource | URI | 说明 |
+|----------|-----|------|
+| 知识库概览 | `knowledge:///list` | 列出所有资源 |
+| 标签索引 | `knowledge:///tags` | 所有标签及计数 |
+| 概念类知识 | `knowledge:///type/concept` | 概念类知识点列表 |
+| 决策类知识 | `knowledge:///type/decision` | 决策类知识点列表 |
+| 待办事项 | `knowledge:///type/todo` | 待办类知识点列表 |
+| 笔记 | `knowledge:///type/note` | 笔记类知识点列表 |
+| 项目记录 | `knowledge:///type/project` | 项目类知识点列表 |
+
 ## 数据存储
 
 - 默认位置：`~/.knowledge-vault/`
