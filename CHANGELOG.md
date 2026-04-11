@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.6.0-alpha.1] - 2026-04-11
+
+### Added
+- `knowledge_bm25_search` tool for BM25 keyword search
+- `knowledge_bm25_stats` tool for BM25 index statistics
+- Independent BM25 index file (`bm25-index.json`)
+- Chinese and English tokenization support
+- Now 10 MCP Tools total
+
+### Technical
+- BM25 algorithm implementation with IDF + TF scoring
+- Token-level relevance ranking
+- Configurable top-k results
+
+## [0.5.0-alpha.1] - 2026-04-11
+
+### Added
+- **Obsidian vault compatibility** - Open vault directly in Obsidian
+- Backlinks format (`[[link]]`) for bidirectional linking
+- `aliases` metadata field for Obsidian search optimization
+- `related` section in knowledge files for explicit connections
+- Frontmatter compatible with Obsidian properties
+
+### Changed
+- Knowledge files now fully Obsidian-readable
+- Improved metadata structure for better tool integration
+
 ## [0.4.0-alpha.1] - 2026-04-10
 
 ### Added
