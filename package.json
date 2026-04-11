@@ -1,7 +1,7 @@
 {
   "name": "@zsc-glitch/knowledge-keeper-mcp",
-  "version": "0.6.0-alpha.1",
-  "description": "MCP Server for Knowledge Keeper - Obsidian vault compatible, BM25 search, semantic search, version history",
+  "version": "0.7.0-alpha.1",
+  "description": "MCP Server for Knowledge Keeper - Obsidian vault compatible, BM25 search, semantic search, version history, knowledge review",
   "type": "module",
   "main": "dist/index.js",
   "bin": {

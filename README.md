@@ -57,20 +57,21 @@ claude mcp add knowledge-keeper -- npx @zsc-glitch/knowledge-keeper-mcp
 }
 ```
 
-## MCP Tools (10个)
+## MCP Tools (11个)
 
 | Tool | 功能 |
 |------|------|
 | `knowledge_save` | 保存知识点 |
 | `knowledge_search` | 关键词搜索 |
 | `knowledge_semantic_search` | 语义搜索（TF-IDF） |
-| `knowledge_bm25_search` | 🆕 BM25 检索（对标 lancedb-pro） |
+| `knowledge_bm25_search` | BM25 检索（对标 lancedb-pro） |
 | `knowledge_get` | 获取单个知识点 |
 | `knowledge_update` | 更新知识点 |
 | `knowledge_delete` | 删除知识点 |
 | `knowledge_tags` | 列出标签 |
 | `knowledge_versions` | 版本历史 |
-| `knowledge_bm25_stats` | 🆕 BM25 统计 |
+| `knowledge_bm25_stats` | BM25 统计 |
+| `knowledge_review` | 🆕 知识回顾（今天/本周/本月统计） |
 
 ## MCP Resources (7个)
 

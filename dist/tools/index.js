@@ -10,6 +10,7 @@ import { registerUpdateTool } from "./update.js";
 import { registerDeleteTool } from "./delete.js";
 import { registerTagsTool } from "./tags.js";
 import { registerVersionsTool } from "./versions.js";
+import { registerReviewTool } from "./review.js";
 export function registerTools(server) {
     registerSaveTool(server);
     registerSearchTool(server);
@@ -20,5 +21,6 @@ export function registerTools(server) {
     registerDeleteTool(server);
     registerTagsTool(server);
     registerVersionsTool(server);
+    registerReviewTool(server);
 }
 //# sourceMappingURL=index.js.map

@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.7.0-alpha.1] - 2026-04-12
+
+### Added
+- `knowledge_review` tool for knowledge statistics and review
+- Support period filter: today/week/month/all
+- Support type filter for specific knowledge types
+- Now 11 MCP Tools total
+
 ## [0.6.0-alpha.1] - 2026-04-11
 
 ### Added
