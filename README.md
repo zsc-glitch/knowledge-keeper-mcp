@@ -8,7 +8,7 @@
 
 ## 特性
 
-- ✅ **10 个 MCP Tools** - 完整的知识管理
+- ✅ **11 个 MCP Tools** - 完整的知识管理（含知识回顾）
 - ✅ **BM25 关键词检索** - 对标 memory-lancedb-pro
 - ✅ **语义搜索** - TF-IDF 向量嵌入，无外部依赖
 - ✅ **Obsidian vault 兼容** - 可用 Obsidian 打开 vault
