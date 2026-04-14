@@ -10,7 +10,7 @@ import { registerResources } from "./resources/index.js";
 // MCP Server 配置
 const server = new McpServer({
   name: "knowledge-keeper",
-  version: "0.7.0-alpha.1",
+  version: "0.8.0-alpha.1",
 });
 
 // 注册 Tools

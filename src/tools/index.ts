@@ -7,6 +7,7 @@ import { registerSaveTool } from "./save.js";
 import { registerSearchTool } from "./search.js";
 import { registerSemanticSearchTool } from "./semantic-search.js";
 import { registerBM25SearchTool } from "./bm25-search.js";
+import { registerBM25StatsTool } from "./bm25-stats.js";
 import { registerGetTool } from "./get.js";
 import { registerUpdateTool } from "./update.js";
 import { registerDeleteTool } from "./delete.js";
@@ -19,6 +20,7 @@ export function registerTools(server: McpServer): void {
   registerSearchTool(server);
   registerSemanticSearchTool(server);
   registerBM25SearchTool(server);
+  registerBM25StatsTool(server);
   registerGetTool(server);
   registerUpdateTool(server);
   registerDeleteTool(server);
