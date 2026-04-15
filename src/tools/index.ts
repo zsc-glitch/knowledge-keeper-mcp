@@ -20,6 +20,7 @@ import { registerGetLinkedTool } from "./get-linked.js";
 import { registerGraphTool } from "./graph.js";
 import { registerExportTool } from "./export.js";
 import { registerImportTool } from "./import.js";
+import { registerBatchTool } from "./batch.js";
 
 export function registerTools(server: McpServer): void {
   registerSaveTool(server);
@@ -39,4 +40,5 @@ export function registerTools(server: McpServer): void {
   registerGraphTool(server);
   registerExportTool(server);
   registerImportTool(server);
+  registerBatchTool(server);
 }
