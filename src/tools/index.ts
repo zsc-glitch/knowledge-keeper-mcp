@@ -17,6 +17,8 @@ import { registerReviewTool } from "./review.js";
 import { registerLinkTool } from "./link.js";
 import { registerUnlinkTool } from "./unlink.js";
 import { registerGetLinkedTool } from "./get-linked.js";
+import { registerGraphTool } from "./graph.js";
+import { registerExportTool } from "./export.js";
 
 export function registerTools(server: McpServer): void {
   registerSaveTool(server);
@@ -33,4 +35,6 @@ export function registerTools(server: McpServer): void {
   registerLinkTool(server);
   registerUnlinkTool(server);
   registerGetLinkedTool(server);
+  registerGraphTool(server);
+  registerExportTool(server);
 }

@@ -15,6 +15,8 @@ import { registerReviewTool } from "./review.js";
 import { registerLinkTool } from "./link.js";
 import { registerUnlinkTool } from "./unlink.js";
 import { registerGetLinkedTool } from "./get-linked.js";
+import { registerGraphTool } from "./graph.js";
+import { registerExportTool } from "./export.js";
 export function registerTools(server) {
     registerSaveTool(server);
     registerSearchTool(server);
@@ -30,5 +32,7 @@ export function registerTools(server) {
     registerLinkTool(server);
     registerUnlinkTool(server);
     registerGetLinkedTool(server);
+    registerGraphTool(server);
+    registerExportTool(server);
 }
 //# sourceMappingURL=index.js.map
