@@ -19,6 +19,7 @@ import { registerGraphTool } from "./graph.js";
 import { registerExportTool } from "./export.js";
 import { registerImportTool } from "./import.js";
 import { registerBatchTool } from "./batch.js";
+import { registerSyncTool } from "./sync.js";
 export function registerTools(server) {
     registerSaveTool(server);
     registerSearchTool(server);
@@ -38,5 +39,6 @@ export function registerTools(server) {
     registerExportTool(server);
     registerImportTool(server);
     registerBatchTool(server);
+    registerSyncTool(server);
 }
 //# sourceMappingURL=index.js.map

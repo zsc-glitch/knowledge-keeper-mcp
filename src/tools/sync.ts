@@ -38,7 +38,7 @@ export function registerSyncTool(server: McpServer): void {
             if (!source) {
               return {
                 content: [{
-                  type: "text",
+                  type: "text" as const,
                   text: `❌ 请提供 source 参数（Obsidian vault路径）`,
                 }],
               };
@@ -49,7 +49,7 @@ export function registerSyncTool(server: McpServer): void {
             if (!source) {
               return {
                 content: [{
-                  type: "text",
+                  type: "text" as const,
                   text: `❌ 请提供 source 参数`,
                 }],
               };
@@ -60,7 +60,7 @@ export function registerSyncTool(server: McpServer): void {
             if (!source) {
               return {
                 content: [{
-                  type: "text",
+                  type: "text" as const,
                   text: `❌ 请提供 source 参数`,
                 }],
               };
@@ -70,7 +70,7 @@ export function registerSyncTool(server: McpServer): void {
           default:
             return {
               content: [{
-                type: "text",
+                type: "text" as const,
                 text: `❌ 未知操作: ${action}`,
               }],
             };
@@ -78,7 +78,7 @@ export function registerSyncTool(server: McpServer): void {
       } catch (error) {
         return {
           content: [{
-            type: "text",
+            type: "text" as const,
             text: `❌ 同步失败: ${error instanceof Error ? error.message : String(error)}`,
           }],
         };
@@ -110,7 +110,7 @@ async function getSyncStatus() {
 
   return {
     content: [{
-      type: "text",
+      type: "text" as const,
       text: output,
     }],
   };
@@ -173,7 +173,7 @@ async function pullFromSource(sourcePath: string) {
 
   return {
     content: [{
-      type: "text",
+      type: "text" as const,
       text: output,
     }],
   };
@@ -223,7 +223,7 @@ async function pushToSource(sourcePath: string) {
 
   return {
     content: [{
-      type: "text",
+      type: "text" as const,
       text: output,
     }],
   };
@@ -268,7 +268,7 @@ async function compareDiff(sourcePath: string) {
 
   return {
     content: [{
-      type: "text",
+      type: "text" as const,
       text: output,
     }],
   };
