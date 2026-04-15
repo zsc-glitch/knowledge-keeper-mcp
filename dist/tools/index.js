@@ -18,6 +18,7 @@ import { registerGetLinkedTool } from "./get-linked.js";
 import { registerGraphTool } from "./graph.js";
 import { registerExportTool } from "./export.js";
 import { registerImportTool } from "./import.js";
+import { registerBatchTool } from "./batch.js";
 export function registerTools(server) {
     registerSaveTool(server);
     registerSearchTool(server);
@@ -36,5 +37,6 @@ export function registerTools(server) {
     registerGraphTool(server);
     registerExportTool(server);
     registerImportTool(server);
+    registerBatchTool(server);
 }
 //# sourceMappingURL=index.js.map
