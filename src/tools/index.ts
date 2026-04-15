@@ -14,6 +14,9 @@ import { registerDeleteTool } from "./delete.js";
 import { registerTagsTool } from "./tags.js";
 import { registerVersionsTool } from "./versions.js";
 import { registerReviewTool } from "./review.js";
+import { registerLinkTool } from "./link.js";
+import { registerUnlinkTool } from "./unlink.js";
+import { registerGetLinkedTool } from "./get-linked.js";
 
 export function registerTools(server: McpServer): void {
   registerSaveTool(server);
@@ -27,4 +30,7 @@ export function registerTools(server: McpServer): void {
   registerTagsTool(server);
   registerVersionsTool(server);
   registerReviewTool(server);
+  registerLinkTool(server);
+  registerUnlinkTool(server);
+  registerGetLinkedTool(server);
 }

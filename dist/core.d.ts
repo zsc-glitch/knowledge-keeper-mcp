@@ -97,3 +97,17 @@ export declare function getBM25IndexStats(): Promise<{
     termCount: number;
     lastUpdate: number;
 }>;
+export interface KnowledgeLink {
+    from: string;
+    to: string;
+    relation: string;
+    created: string;
+}
+export declare function addLink(from: string, to: string, relation: string, bidirectional?: boolean): Promise<void>;
+export declare function getLinks(id: string, relation?: string, direction?: "outgoing" | "incoming" | "both"): Promise<Array<{
+    id: string;
+    title: string;
+    relation: string;
+    direction: string;
+}>>;
+export declare function removeLink(from: string, to?: string, relation?: string): Promise<number>;

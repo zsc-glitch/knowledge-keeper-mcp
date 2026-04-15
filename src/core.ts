@@ -669,3 +669,154 @@ export async function getBM25IndexStats(): Promise<{
 }> {
   return getBM25Stats();
 }
+
+// ==================== 知识链接 ====================
+
+// 链接结构
+export interface KnowledgeLink {
+  from: string;
+  to: string;
+  relation: string;
+  created: string;
+}
+
+// 链接索引
+interface LinksIndex {
+  links: KnowledgeLink[];
+}
+
+// 加载链接索引
+async function loadLinksIndex(vaultDir: string): Promise<LinksIndex> {
+  const linksPath = path.join(vaultDir, "links.json");
+  try {
+    const content = await fs.readFile(linksPath, "utf-8");
+    return JSON.parse(content);
+  } catch {
+    return { links: [] };
+  }
+}
+
+// 保存链接索引
+async function saveLinksIndex(vaultDir: string, index: LinksIndex): Promise<void> {
+  const linksPath = path.join(vaultDir, "links.json");
+  const tmpPath = path.join(vaultDir, "links.json.tmp");
+  await fs.writeFile(tmpPath, JSON.stringify(index, null, 2), "utf-8");
+  await fs.rename(tmpPath, linksPath);
+}
+
+// 添加链接
+export async function addLink(
+  from: string,
+  to: string,
+  relation: string,
+  bidirectional: boolean = false
+): Promise<void> {
+  const vaultDir = getVaultDir();
+  const index = await loadLinksIndex(vaultDir);
+
+  // 检查是否已存在
+  const exists = index.links.some(
+    (l) => l.from === from && l.to === to && l.relation === relation
+  );
+
+  if (!exists) {
+    index.links.push({
+      from,
+      to,
+      relation,
+      created: new Date().toISOString(),
+    });
+    await saveLinksIndex(vaultDir, index);
+  }
+
+  // 更新知识点的 links 字段（Obsidian 格式）
+  const fromKP = await getKnowledge(from);
+  if (fromKP && !fromKP.links.includes(to)) {
+    fromKP.links.push(to);
+    await updateKnowledge(from, { content: fromKP.content });
+    // 重新写入 links 字段
+    const filepath = await findKnowledgeFile(vaultDir, from);
+    if (filepath) {
+      await fs.writeFile(filepath, formatMarkdown(fromKP), "utf-8");
+    }
+  }
+}
+
+// 获取链接
+export async function getLinks(
+  id: string,
+  relation?: string,
+  direction: "outgoing" | "incoming" | "both" = "both"
+): Promise<Array<{ id: string; title: string; relation: string; direction: string }>> {
+  const vaultDir = getVaultDir();
+  const index = await loadLinksIndex(vaultDir);
+  const results: Array<{ id: string; title: string; relation: string; direction: string }> = [];
+
+  for (const link of index.links) {
+    // 筛选关联类型
+    if (relation && link.relation !== relation) continue;
+
+    // 出向链接
+    if ((direction === "outgoing" || direction === "both") && link.from === id) {
+      const kp = await getKnowledge(link.to);
+      if (kp) {
+        results.push({
+          id: link.to,
+          title: kp.title,
+          relation: link.relation,
+          direction: "outgoing",
+        });
+      }
+    }
+
+    // 入向链接
+    if ((direction === "incoming" || direction === "both") && link.to === id) {
+      const kp = await getKnowledge(link.from);
+      if (kp) {
+        results.push({
+          id: link.from,
+          title: kp.title,
+          relation: link.relation,
+          direction: "incoming",
+        });
+      }
+    }
+  }
+
+  return results;
+}
+
+// 删除链接
+export async function removeLink(
+  from: string,
+  to?: string,
+  relation?: string
+): Promise<number> {
+  const vaultDir = getVaultDir();
+  const index = await loadLinksIndex(vaultDir);
+
+  let removed = 0;
+  index.links = index.links.filter((l) => {
+    if (l.from !== from) return true;
+    if (to && l.to !== to) return true;
+    if (relation && l.relation !== relation) return true;
+    removed++;
+    return false;
+  });
+
+  await saveLinksIndex(vaultDir, index);
+
+  // 更新知识点的 links 字段
+  if (to) {
+    const fromKP = await getKnowledge(from);
+    if (fromKP && fromKP.links.includes(to)) {
+      fromKP.links = fromKP.links.filter((l) => l !== to);
+      const filepath = await findKnowledgeFile(vaultDir, from);
+      if (filepath) {
+        await fs.writeFile(filepath, formatMarkdown(fromKP), "utf-8");
+      }
+    }
+  }
+
+  return removed;
+}
