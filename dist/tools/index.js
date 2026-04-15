@@ -20,6 +20,7 @@ import { registerExportTool } from "./export.js";
 import { registerImportTool } from "./import.js";
 import { registerBatchTool } from "./batch.js";
 import { registerSyncTool } from "./sync.js";
+import { registerMergeTool } from "./merge.js";
 export function registerTools(server) {
     registerSaveTool(server);
     registerSearchTool(server);
@@ -40,5 +41,6 @@ export function registerTools(server) {
     registerImportTool(server);
     registerBatchTool(server);
     registerSyncTool(server);
+    registerMergeTool(server);
 }
 //# sourceMappingURL=index.js.map
