@@ -3,7 +3,7 @@
 ## 安装
 
 ```bash
-npm install @zsc-glitch/knowledge-keeper-mcp
+npm install @zsc-glitch/knowledge-keeper-mcp@alpha
 ```
 
 ## 与 Claude Code 集成
@@ -145,7 +145,7 @@ EMBEDDING_MODEL=transformers npx @zsc-glitch/knowledge-keeper-mcp
 
 1. 确保使用 Node.js 18+
 2. 检查 npx 是否在 PATH 中
-3. 尝试全局安装: `npm install -g @zsc-glitch/knowledge-keeper-mcp`
+3. 尝试全局安装: `npm install -g @zsc-glitch/knowledge-keeper-mcp@alpha`
 
 ### 数据丢失
 
