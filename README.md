@@ -1,6 +1,8 @@
 # Knowledge Keeper MCP Server
 
 > 智能知识管理的 Model Context Protocol 实现，**20 MCP Tools**，对标 mempalace
+> 
+> **最新版本**: v1.0.1-alpha.1 (2026-04-16) — [npm](https://npm.im/@zsc-glitch/knowledge-keeper-mcp) | [GitHub](https://github.com/zsc-glitch/knowledge-keeper-mcp)
 
 ## 简介
 
