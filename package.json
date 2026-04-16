@@ -1,11 +1,11 @@
 {
   "name": "@zsc-glitch/knowledge-keeper-mcp",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.1-alpha.1",
   "description": "MCP Server for Knowledge Keeper - Obsidian vault compatible, BM25 search, semantic search, version history, knowledge review",
   "type": "module",
   "main": "dist/index.js",
   "bin": {
-    "knowledge-keeper-mcp": "./dist/index.js"
+    "knowledge-keeper-mcp": "dist/index.js"
   },
   "scripts": {
     "build": "tsc && sed -i '1i#!/usr/bin/env node' dist/index.js",
@@ -26,7 +26,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/zsc-glitch/knowledge-keeper-mcp"
+    "url": "git+https://github.com/zsc-glitch/knowledge-keeper-mcp.git"
   },
   "dependencies": {
     "@cfworker/json-schema": "^4.1.1",

@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.1-alpha.1] - 2026-04-16
+
+### Changed
+- npm pkg fix 修复 bin 配置
+- 重新发布 alpha 版本
+
 ## [1.0.0-alpha.1] - 2026-04-15
 
 ### Added
