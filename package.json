@@ -11,7 +11,7 @@
     "build": "tsc && sed -i '1i#!/usr/bin/env node' dist/index.js",
     "dev": "tsc --watch",
     "start": "node dist/index.js",
-    "test": "node --test src/core.test.js src/bm25.test.js src/embedding.test.js src/search.test.js src/tags.test.js src/versions.test.js src/link.test.js",
+    "test": "node --test src/core.test.js src/bm25.test.js src/embedding.test.js src/search.test.js src/tags.test.js src/versions.test.js src/link.test.js src/graph.test.js",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "prepublishOnly": "npm run build"
