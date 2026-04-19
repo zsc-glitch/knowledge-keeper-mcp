@@ -11,6 +11,9 @@
     "build": "tsc && sed -i '1i#!/usr/bin/env node' dist/index.js",
     "dev": "tsc --watch",
     "start": "node dist/index.js",
+    "test": "npm run build && node --test src/core.test.js",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
     "prepublishOnly": "npm run build"
   },
   "keywords": [
@@ -35,7 +38,8 @@
   },
   "devDependencies": {
     "@types/node": "^22.19.17",
-    "typescript": "^5.8.0"
+    "typescript": "^5.8.0",
+    "vitest": "^4.1.4"
   },
   "engines": {
     "node": ">=18.0.0"
