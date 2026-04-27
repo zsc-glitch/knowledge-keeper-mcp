@@ -5,7 +5,7 @@
 
 import type { McpServer } from "@modelcontextprotocol/server";
 import { z } from "zod";
-import { exportMermaid, getGraphStats } from "../graph.js";
+import { exportMermaid, getGraphStats, loadGraph } from "../graph.js";
 
 export function registerGraphVisualizeTool(server: McpServer): void {
   server.registerTool(
@@ -24,17 +24,33 @@ export function registerGraphVisualizeTool(server: McpServer): void {
         const { format, entityIds, maxDepth } = params;
 
         if (format === "json") {
-          // 导出 JSON
+          // Export full graph as JSON
+          const graph = await loadGraph();
           const stats = await getGraphStats();
-          // TODO: load full graph for JSON export
+
+          const exportData = {
+            entities: graph.entities.map(e => ({
+              id: e.id,
+              name: e.name,
+              type: e.type,
+              aliases: e.aliases,
+              sourceIds: e.sourceIds,
+            })),
+            relations: graph.relations.map(r => ({
+              id: r.id,
+              sourceId: r.sourceId,
+              targetId: r.targetId,
+              type: r.type,
+              weight: r.weight,
+            })),
+            stats,
+          };
 
           return {
             content: [
               {
                 type: "text",
-                text: `📊 **图谱统计**\n\n实体: ${stats.entityCount}\n关系: ${stats.relationCount}\n\n实体类型分布:\n${Object.entries(stats.entityTypeCounts)
-                  .map(([type, count]) => `- ${type}: ${count}`)
-                  .join("\n")}`,
+                text: `📊 **知识图谱 JSON**\n\n\`\`\`json\n${JSON.stringify(exportData, null, 2)}\n\`\`\``,
               },
             ],
           };

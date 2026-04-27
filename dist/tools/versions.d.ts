@@ -1,6 +1,6 @@
 /**
- * knowledge_versions MCP Tool
- * 查询知识点版本历史
+ * Knowledge Versions MCP Tool
+ * Query version history, diff versions, rollback
  */
 import type { McpServer } from "@modelcontextprotocol/server";
 export declare function registerVersionsTool(server: McpServer): void;

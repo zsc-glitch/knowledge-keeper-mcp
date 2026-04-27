@@ -7,6 +7,7 @@
 import * as fs from "fs/promises";
 import * as path from "path";
 import * as os from "os";
+import { recordVersion } from "./versions.js";
 import { addToVectorIndex, removeFromVectorIndex, semanticSearch as vectorSemanticSearch, getVectorIndexStats, } from "./embedding.js";
 import { addToBM25Index, removeFromBM25Index, bm25Search as bm25KeywordSearch, getBM25Stats, } from "./bm25.js";
 // 错误类型
@@ -347,6 +348,8 @@ export async function updateKnowledge(id, params) {
     const kp = parseMarkdown(content, filepath);
     if (!kp)
         return null;
+    // Record version before updating
+    await recordVersion(kp);
     if (params.title)
         kp.title = params.title;
     if (params.content)

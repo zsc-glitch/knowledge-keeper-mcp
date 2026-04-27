@@ -8,6 +8,7 @@
 import * as fs from "fs/promises";
 import * as path from "path";
 import * as os from "os";
+import { recordVersion } from "./versions.js";
 import {
   addToVectorIndex,
   removeFromVectorIndex,
@@ -439,6 +440,9 @@ export async function updateKnowledge(
   const content = await fs.readFile(filepath, "utf-8");
   const kp = parseMarkdown(content, filepath);
   if (!kp) return null;
+
+  // Record version before updating
+  await recordVersion(kp);
 
   if (params.title) kp.title = params.title;
   if (params.content) kp.content = params.content;
