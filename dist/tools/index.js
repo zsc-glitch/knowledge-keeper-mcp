@@ -29,6 +29,8 @@ import { registerGraphVisualizeTool } from "./graph-visualize.js";
 import { registerCloudSyncTools } from "./cloud-sync.js";
 // Knowledge Analytics
 import { registerAnalyticsTools } from "./analytics.js";
+// Hybrid Search
+import { registerHybridSearchTool } from "./hybrid-search.js";
 export function registerTools(server) {
     registerSaveTool(server);
     registerSearchTool(server);
@@ -58,5 +60,7 @@ export function registerTools(server) {
     registerCloudSyncTools(server);
     // Analytics
     registerAnalyticsTools(server);
+    // Hybrid Search
+    registerHybridSearchTool(server);
 }
 //# sourceMappingURL=index.js.map

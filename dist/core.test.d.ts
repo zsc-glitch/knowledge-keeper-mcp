@@ -1,4 +1,0 @@
-/**
- * Core Module Tests
- */
-export {};

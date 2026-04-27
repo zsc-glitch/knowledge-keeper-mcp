@@ -118,9 +118,9 @@
     <!-- Stats -->
     <section class="stats">
       <div class="stat"><div class="num">29</div><div class="label">MCP Tools</div></div>
+      <div class="stat"><div class="num">95%</div><div class="label">Recall@5 (BM25)</div></div>
       <div class="stat"><div class="num">0</div><div class="label">API Keys Needed</div></div>
-      <div class="stat"><div class="num">100%</div><div class="label">Local & Private</div></div>
-      <div class="stat"><div class="num">∞</div><div class="label">Knowledge Items</div></div>
+      <div class="stat"><div class="num">4.3ms</div><div class="label">Avg Search Time</div></div>
     </section>
 
     <!-- Why -->
@@ -194,6 +194,18 @@
         <div class="tool-item"><code>☁️ sync</code> Cloud sync (Pro)</div>
         <div class="tool-item"><code>📋 license</code> License info</div>
       </div>
+    </section>
+
+    <!-- Benchmark -->
+    <section class="why" style="padding:60px 0 40px;">
+      <h2>Benchmark Results</h2>
+      <p style="text-align:center;color:var(--text-dim);margin-bottom:30px;">20 knowledge items, 20 queries — synthetic benchmark</p>
+      <div class="stats" style="max-width:700px;margin:0 auto;">
+        <div class="stat"><div class="num" style="color:var(--green);">95%</div><div class="label">BM25 Recall@5</div></div>
+        <div class="stat"><div class="num">85%</div><div class="label">Hybrid Recall@5</div></div>
+        <div class="stat"><div class="num">4.3ms</div><div class="label">Avg Latency</div></div>
+      </div>
+      <p style="text-align:center;color:var(--text-dim);font-size:13px;margin-top:20px;">For comparison: MemPalace 96.6% (LongMemEval), ByteRover 92.8% (LongMemEval-S)</p>
     </section>
 
     <!-- Works with -->
