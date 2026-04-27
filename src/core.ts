@@ -227,16 +227,40 @@ async function findKnowledgeFile(vaultDir: string, id: string): Promise<string |
 }
 
 // 加载索引
+// Index cache for performance (avoids repeated file reads)
+const indexCache = new Map<string, { index: KnowledgeIndex; mtime: number }>();
+const INDEX_CACHE_TTL = 5000; // 5 seconds
+
 async function loadIndex(vaultDir: string): Promise<KnowledgeIndex> {
   const indexPath = path.join(vaultDir, "index.json");
+
+  // Check cache
+  try {
+    const stat = await fs.stat(indexPath);
+    const cached = indexCache.get(vaultDir);
+    if (cached && cached.mtime >= stat.mtimeMs) {
+      return cached.index;
+    }
+  } catch {
+    // File doesn't exist yet
+  }
+
   try {
     const content = await fs.readFile(indexPath, "utf-8");
     const parsed = JSON.parse(content);
-    return {
+    const index: KnowledgeIndex = {
       version: parsed.version || 1,
       entries: parsed.entries || [],
       tagsIndex: parsed.tagsIndex || {},
     };
+
+    // Update cache
+    try {
+      const stat = await fs.stat(indexPath);
+      indexCache.set(vaultDir, { index, mtime: stat.mtimeMs });
+    } catch {}
+
+    return index;
   } catch {
     return { version: 1, entries: [], tagsIndex: {} };
   }
@@ -294,6 +318,9 @@ async function updateIndex(
   const tmpPath = path.join(vaultDir, "index.json.tmp");
   await fs.writeFile(tmpPath, JSON.stringify(index, null, 2), "utf-8");
   await fs.rename(tmpPath, indexPath);
+
+  // Invalidate cache after write
+  indexCache.delete(vaultDir);
 }
 
 // ==================== 公开 API ====================
@@ -351,65 +378,38 @@ export async function searchKnowledge(params: {
   const vaultDir = getVaultDir();
   const index = await loadIndex(vaultDir);
   const limit = Math.min(params.limit || 10, 50);
-  const results: KnowledgePoint[] = [];
 
-  // 筛选候选 ID
-  let candidateIds: Set<string> | null = null;
+  // Use in-memory index instead of scanning files (performance optimization)
+  let candidates = index.entries;
+
+  // Filter by type
+  if (params.type) {
+    candidates = candidates.filter(kp => kp.type === params.type);
+  }
+
+  // Filter by tags
   if (params.tags && params.tags.length > 0) {
-    for (const tag of params.tags) {
-      const tagLower = tag.toLowerCase();
-      const matchingIds: string[] = Object.entries(index.tagsIndex)
-        .filter(([t]) => t.toLowerCase().includes(tagLower))
-        .flatMap(([, ids]) => ids);
-      const idSet = new Set<string>(matchingIds);
-      if (candidateIds === null) {
-        candidateIds = idSet;
-      } else {
-        const existingIds: string[] = [...candidateIds];
-        candidateIds = new Set<string>(existingIds.filter((id: string) => idSet.has(id)));
-      }
-    }
+    candidates = candidates.filter(kp =>
+      params.tags!.every(tag =>
+        kp.tags.some(t => t.toLowerCase().includes(tag.toLowerCase()))
+      )
+    );
   }
 
-  // 确定搜索范围
-  const types: KnowledgeType[] = params.type ? [params.type] : ["concept", "decision", "todo", "note", "project"];
-
-  for (const type of types) {
-    const typeDir = path.join(vaultDir, getTypeDir(type));
-    try {
-      const files = await fs.readdir(typeDir);
-      for (const file of files) {
-        if (!file.endsWith(".md")) continue;
-
-        const id = file.replace(/\.md$/, "");
-        if (candidateIds !== null && !candidateIds.has(id)) continue;
-
-        const filepath = path.join(typeDir, file);
-        const content = await fs.readFile(filepath, "utf-8");
-        const kp = parseMarkdown(content, filepath);
-
-        if (!kp) continue;
-
-        const queryLower = params.query.toLowerCase();
-        const matchesQuery =
-          kp.title.toLowerCase().includes(queryLower) || kp.content.toLowerCase().includes(queryLower);
-
-        const matchesTags =
-          !params.tags ||
-          params.tags.every((tag) => kp.tags.some((t) => t.toLowerCase().includes(tag.toLowerCase())));
-
-        if (matchesQuery && matchesTags) {
-          results.push(kp);
-          if (results.length >= limit) break;
-        }
-      }
-    } catch {
-      continue;
-    }
-    if (results.length >= limit) break;
+  // Filter by query (empty query = list all matching)
+  if (params.query) {
+    const queryLower = params.query.toLowerCase();
+    candidates = candidates.filter(kp =>
+      kp.title.toLowerCase().includes(queryLower) ||
+      kp.content.toLowerCase().includes(queryLower) ||
+      kp.tags.some(t => t.toLowerCase().includes(queryLower))
+    );
   }
 
-  return results;
+  // Sort by updated time (most recent first)
+  candidates.sort((a, b) => b.updated.localeCompare(a.updated));
+
+  return candidates.slice(0, limit);
 }
 
 // 获取单个知识点
