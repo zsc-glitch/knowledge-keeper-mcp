@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Knowledge Keeper MCP — Zero-API AI Memory for TypeScript Developers</title>
+  <meta name="description" content="Give your AI agent long-term memory. 26 MCP tools, zero API keys, works with Claude Code, Cursor, Gemini CLI. Obsidian compatible. Free & open source.">
+  <meta property="og:title" content="Knowledge Keeper MCP — Zero-API AI Memory for TypeScript Developers">
+  <meta property="og:description" content="26 MCP tools for AI memory. No API keys. No cloud. BM25 + semantic search, knowledge graph, Obsidian compatible. Works with Claude Code & Cursor.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://knowledge-keeper-mcp.zsc-glitch.dev">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #0a0a0f;
+      --surface: #12121a;
+      --border: #1e1e2e;
+      --text: #e4e4e7;
+      --text-dim: #71717a;
+      --accent: #8b5cf6;
+      --accent-light: #a78bfa;
+      --green: #22c55e;
+      --orange: #f97316;
+    }
+    body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; line-height: 1.6; }
+    .container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+    
+    /* Hero */
+    .hero { padding: 80px 0 60px; text-align: center; }
+    .hero-badge { display: inline-block; padding: 6px 16px; background: rgba(139,92,246,0.15); border: 1px solid rgba(139,92,246,0.3); border-radius: 20px; font-size: 13px; color: var(--accent-light); margin-bottom: 24px; }
+    .hero h1 { font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 800; line-height: 1.1; margin-bottom: 20px; background: linear-gradient(135deg, #e4e4e7 0%, #8b5cf6 50%, #22c55e 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero p { font-size: 1.2rem; color: var(--text-dim); max-width: 640px; margin: 0 auto 36px; }
+    .hero-install { display: inline-flex; align-items: center; gap: 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 24px; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 15px; margin-bottom: 16px; }
+    .hero-install .cmd { color: var(--green); }
+    .hero-install .copy-btn { background: none; border: 1px solid var(--border); color: var(--text-dim); padding: 4px 10px; border-radius: 6px; cursor: pointer; font-size: 12px; }
+    .hero-install .copy-btn:hover { border-color: var(--accent); color: var(--accent-light); }
+    .hero-links { display: flex; justify-content: center; gap: 16px; margin-top: 20px; }
+    .hero-links a { color: var(--accent-light); text-decoration: none; font-size: 14px; }
+    .hero-links a:hover { text-decoration: underline; }
+
+    /* Stats */
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; padding: 40px 0; }
+    .stat { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; text-align: center; }
+    .stat .num { font-size: 2rem; font-weight: 800; color: var(--accent-light); }
+    .stat .label { font-size: 13px; color: var(--text-dim); margin-top: 4px; }
+
+    /* Why */
+    .why { padding: 60px 0; }
+    .why h2 { font-size: 2rem; text-align: center; margin-bottom: 40px; }
+    .why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+    .why-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 28px; }
+    .why-card .icon { font-size: 2rem; margin-bottom: 12px; }
+    .why-card h3 { font-size: 1.1rem; margin-bottom: 8px; }
+    .why-card p { font-size: 14px; color: var(--text-dim); }
+
+    /* Tools */
+    .tools { padding: 60px 0; }
+    .tools h2 { font-size: 2rem; text-align: center; margin-bottom: 40px; }
+    .tools-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
+    .tool-item { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; font-size: 14px; display: flex; align-items: center; gap: 8px; }
+    .tool-item code { color: var(--green); font-family: 'SF Mono', monospace; font-size: 12px; }
+
+    /* Works with */
+    .compat { padding: 60px 0; text-align: center; }
+    .compat h2 { font-size: 2rem; margin-bottom: 40px; }
+    .compat-logos { display: flex; flex-wrap: wrap; justify-content: center; gap: 24px; }
+    .compat-item { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px 28px; font-size: 15px; font-weight: 600; }
+
+    /* CTA */
+    .cta { padding: 80px 0; text-align: center; }
+    .cta h2 { font-size: 2rem; margin-bottom: 16px; }
+    .cta p { color: var(--text-dim); margin-bottom: 32px; font-size: 1.1rem; }
+    .cta-btn { display: inline-block; padding: 16px 36px; background: var(--accent); color: #fff; border-radius: 12px; text-decoration: none; font-weight: 700; font-size: 1.1rem; transition: transform 0.15s; }
+    .cta-btn:hover { transform: translateY(-2px); }
+    .cta-sub { margin-top: 16px; font-size: 13px; color: var(--text-dim); }
+
+    /* Pricing */
+    .pricing { padding: 60px 0; }
+    .pricing h2 { font-size: 2rem; text-align: center; margin-bottom: 40px; }
+    .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+    .price-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 32px; text-align: center; }
+    .price-card.featured { border-color: var(--accent); position: relative; }
+    .price-card.featured::before { content: 'POPULAR'; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--accent); color: #fff; padding: 4px 14px; border-radius: 12px; font-size: 11px; font-weight: 700; }
+    .price-card .name { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; }
+    .price-card .price { font-size: 2.5rem; font-weight: 800; margin-bottom: 4px; }
+    .price-card .price .period { font-size: 14px; font-weight: 400; color: var(--text-dim); }
+    .price-card .desc { font-size: 13px; color: var(--text-dim); margin-bottom: 24px; }
+    .price-card ul { list-style: none; text-align: left; margin-bottom: 28px; }
+    .price-card li { padding: 6px 0; font-size: 14px; border-bottom: 1px solid var(--border); }
+    .price-card li:last-child { border: none; }
+    .price-card li .check { color: var(--green); margin-right: 8px; }
+    .price-card .btn { display: inline-block; padding: 12px 28px; border-radius: 8px; font-weight: 600; font-size: 14px; text-decoration: none; }
+    .price-card .btn-primary { background: var(--accent); color: #fff; }
+    .price-card .btn-secondary { border: 1px solid var(--border); color: var(--text); }
+
+    footer { padding: 40px 0; text-align: center; font-size: 13px; color: var(--text-dim); border-top: 1px solid var(--border); }
+    footer a { color: var(--accent-light); text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-badge">🧠 Open Source MCP Server • v1.1.0 • Zero API Keys</div>
+      <h1>AI Memory,<br>Zero Dependencies</h1>
+      <p>Knowledge Keeper MCP is a 26-tool memory server for AI coding agents. Save, search, connect, and review knowledge — all locally, no API keys, no cloud required. Native TypeScript, works with Claude Code & Cursor.</p>
+      <div class="hero-install">
+        <span class="cmd">$</span> npx @zsc-glitch/knowledge-keeper-mcp
+        <button class="copy-btn" onclick="navigator.clipboard.writeText('npx @zsc-glitch/knowledge-keeper-mcp')">Copy</button>
+      </div>
+      <div class="hero-links">
+        <a href="https://github.com/zsc-glitch/knowledge-keeper-mcp">GitHub →</a>
+        <a href="https://npm.im/@zsc-glitch/knowledge-keeper-mcp">npm →</a>
+        <a href="https://github.com/zsc-glitch/knowledge-keeper-mcp/blob/main/QUICKSTART.md">Quick Start →</a>
+      </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="stats">
+      <div class="stat"><div class="num">26</div><div class="label">MCP Tools</div></div>
+      <div class="stat"><div class="num">0</div><div class="label">API Keys Needed</div></div>
+      <div class="stat"><div class="num">100%</div><div class="label">Local & Private</div></div>
+      <div class="stat"><div class="num">∞</div><div class="label">Knowledge Items</div></div>
+    </section>
+
+    <!-- Why -->
+    <section class="why">
+      <h2>Why Knowledge Keeper?</h2>
+      <div class="why-grid">
+        <div class="why-card">
+          <div class="icon">🔍</div>
+          <h3>Hybrid Search</h3>
+          <p>BM25 keyword + TF-IDF semantic search. Find anything instantly, even with vague queries.</p>
+        </div>
+        <div class="why-card">
+          <div class="icon">🔗</div>
+          <h3>Knowledge Graph</h3>
+          <p>Auto-detect entities, build relationships, visualize with Mermaid. Your knowledge, connected.</p>
+        </div>
+        <div class="why-card">
+          <div class="icon">📝</div>
+          <h3>Obsidian Compatible</h3>
+          <p>Markdown files your Obsidian vault can read. No lock-in, no export needed.</p>
+        </div>
+        <div class="why-card">
+          <div class="icon">⏰</div>
+          <h3>Spaced Repetition</h3>
+          <p>Built-in review scheduler. Never forget what you've learned — your AI remembers too.</p>
+        </div>
+        <div class="why-card">
+          <div class="icon">🔒</div>
+          <h3>Audit Trail</h3>
+          <p>SHA256 hash chain for every change. Full integrity verification, compliance-ready.</p>
+        </div>
+        <div class="why-card">
+          <div class="icon">📦</div>
+          <h3>Zero AI Dependency</h3>
+          <p>No API keys needed. No OpenAI, no embeddings API. Everything runs locally.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tools -->
+    <section class="tools">
+      <h2>26 MCP Tools</h2>
+      <div class="tools-list">
+        <div class="tool-item"><code>save</code> Save knowledge</div>
+        <div class="tool-item"><code>get</code> Get by ID</div>
+        <div class="tool-item"><code>update</code> Update entry</div>
+        <div class="tool-item"><code>delete</code> Delete entry</div>
+        <div class="tool-item"><code>search</code> Basic search</div>
+        <div class="tool-item"><code>semantic</code> TF-IDF search</div>
+        <div class="tool-item"><code>bm25</code> Keyword search</div>
+        <div class="tool-item"><code>tags</code> Tag management</div>
+        <div class="tool-item"><code>versions</code> Version history</div>
+        <div class="tool-item"><code>review</code> Spaced repetition</div>
+        <div class="tool-item"><code>link</code> Link entries</div>
+        <div class="tool-item"><code>unlink</code> Remove link</div>
+        <div class="tool-item"><code>linked</code> Get linked</div>
+        <div class="tool-item"><code>graph</code> Build graph</div>
+        <div class="tool-item"><code>graph_q</code> Query graph</div>
+        <div class="tool-item"><code>graph_v</code> Visualize</div>
+        <div class="tool-item"><code>export</code> Export data</div>
+        <div class="tool-item"><code>import</code> Import data</div>
+        <div class="tool-item"><code>batch</code> Batch ops</div>
+        <div class="tool-item"><code>sync</code> Sync vaults</div>
+        <div class="tool-item"><code>merge</code> Merge vaults</div>
+        <div class="tool-item"><code>bm25_s</code> BM25 stats</div>
+        <div class="tool-item"><code>audit</code> Integrity check</div>
+        <div class="tool-item"><code>☁️ sync_s</code> Sync status (Pro)</div>
+        <div class="tool-item"><code>☁️ sync</code> Cloud sync (Pro)</div>
+        <div class="tool-item"><code>📋 license</code> License info</div>
+      </div>
+    </section>
+
+    <!-- Works with -->
+    <section class="compat">
+      <h2>Works With Your Stack</h2>
+      <div class="compat-logos">
+        <div class="compat-item">Claude Code</div>
+        <div class="compat-item">Cursor</div>
+        <div class="compat-item">Gemini CLI</div>
+        <div class="compat-item">Windsurf</div>
+        <div class="compat-item">hermes-agent</div>
+        <div class="compat-item">OpenClaw</div>
+      </div>
+    </section>
+
+    <!-- Pricing -->
+    <section class="pricing">
+      <h2>Simple Pricing</h2>
+      <div class="pricing-grid">
+        <div class="price-card">
+          <div class="name">Free</div>
+          <div class="price">$0<span class="period">/forever</span></div>
+          <div class="desc">Everything you need to get started</div>
+          <ul>
+            <li><span class="check">✓</span>All 23 MCP tools</li>
+            <li><span class="check">✓</span>Local storage only</li>
+            <li><span class="check">✓</span>BM25 + semantic search</li>
+            <li><span class="check">✓</span>Knowledge graph</li>
+            <li><span class="check">✓</span>Obsidian compatible</li>
+            <li><span class="check">✓</span>Community support</li>
+          </ul>
+          <a href="https://npm.im/@zsc-glitch/knowledge-keeper-mcp" class="btn btn-secondary">Get Started Free</a>
+        </div>
+        <div class="price-card featured">
+          <div class="name">Pro</div>
+          <div class="price">$9<span class="period">/month</span></div>
+          <div class="desc">For power users & professionals</div>
+          <ul>
+            <li><span class="check">✓</span>Everything in Free</li>
+            <li><span class="check">✓</span>Cloud sync (end-to-end encrypted)</li>
+            <li><span class="check">✓</span>Multi-device access</li>
+            <li><span class="check">✓</span>Unlimited vaults</li>
+            <li><span class="check">✓</span>Priority support</li>
+            <li><span class="check">✓</span>Advanced analytics</li>
+          </ul>
+          <a href="#" class="btn btn-primary">Coming Soon</a>
+        </div>
+        <div class="price-card">
+          <div class="name">Team</div>
+          <div class="price">$29<span class="period">/month</span></div>
+          <div class="desc">Shared knowledge for teams</div>
+          <ul>
+            <li><span class="check">✓</span>Everything in Pro</li>
+            <li><span class="check">✓</span>Up to 10 team members</li>
+            <li><span class="check">✓</span>Shared knowledge base</li>
+            <li><span class="check">✓</span>Role-based access</li>
+            <li><span class="check">✓</span>Admin dashboard</li>
+            <li><span class="check">✓</span>SLA guarantee</li>
+          </ul>
+          <a href="#" class="btn btn-secondary">Coming Soon</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta">
+      <h2>Start Remembering Today</h2>
+      <p>Your AI agent forgets everything between sessions. Fix that.</p>
+      <a href="https://github.com/zsc-glitch/knowledge-keeper-mcp" class="cta-btn">Get Started →</a>
+      <div class="cta-sub">Free & open source • MIT License • 30-second setup</div>
+    </section>
+
+    <footer>
+      <p>Made with 👤 by <a href="https://github.com/zsc-glitch">小影</a> • <a href="https://github.com/zsc-glitch/knowledge-keeper-mcp">GitHub</a> • <a href="https://npm.im/@zsc-glitch/knowledge-keeper-mcp">npm</a></p>
+    </footer>
+  </div>
+</body>
+</html>
