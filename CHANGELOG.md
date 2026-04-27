@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.0] - 2026-04-27
+
+### 🆕 Knowledge Analytics
+- **knowledge_analytics_overview** tool — 知识库整体统计（项目数、标签、链接、类型分布、健康评分）
+- **knowledge_analytics_insights** tool — 质量洞察（孤立项目、重复候选、连接性/覆盖度/新鲜度评分）
+- **knowledge_analytics_timeline** tool — 时间线统计（每日/每周/每月创建数量）
+
+### Changed
+- Total tools: 26 → 29
+- Package description updated
+
 ## [1.1.0] - 2026-04-27
 
 ### 🆕 Pro Feature: Cloud Sync
