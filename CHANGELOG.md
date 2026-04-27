@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.0] - 2026-04-27
+
+### 🆕 Pro Feature: Cloud Sync
+- **knowledge_sync_status** tool - 检查云同步状态
+- **knowledge_sync** tool - 执行云同步（push/pull/full），端到端加密
+- **knowledge_license** tool - 查看许可证和功能
+- 端到端加密（AES-256-GCM），服务器无法解密用户数据
+- 增量同步 + 版本追踪 + 冲突检测
+- Free/Pro/Team 三档定价
+
+### Bug Fixes
+- 修复 graph-build.ts 缺失 queryEntity/saveGraph 导入
+- 修复 tsconfig.json 排除测试文件
+
+### Changed
+- README 全面英文重写，国际化
+- npm 关键词扩展到 18 个（覆盖主要搜索场景）
+- 安装命令去掉 @alpha 标签
+
+## [1.0.0] - 2026-04-27
+
+### 🎉 First Stable Release
+- 从 alpha 升级为正式版
+- **23 MCP Tools** — 完整知识管理工具集
+- 知识图谱（Phase 1）— 实体检测 + 关系可视化
+
 ## [1.0.1-alpha.1] - 2026-04-16
 
 ### Changed
@@ -135,7 +161,8 @@ All notable changes to this project will be documented in this file.
 | 0.11.0 | 17 | 04-15 |
 | 0.12.0 | 18 | 04-15 |
 | 0.13.0 | 19 | 04-15 |
-| **1.0.0** | **20** | **04-15** |
+| **1.0.0** | **20** | **04-27** |
+| **1.1.0** | **26** | **04-27** |
 
 ---
 
