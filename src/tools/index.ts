@@ -27,6 +27,8 @@ import { registerMergeTool } from "./merge.js";
 import { registerGraphBuildTool } from "./graph-build.js";
 import { registerGraphQueryTool } from "./graph-query.js";
 import { registerGraphVisualizeTool } from "./graph-visualize.js";
+// Cloud Sync Tools (Pro)
+import { registerCloudSyncTools } from "./cloud-sync.js";
 
 export function registerTools(server: McpServer): void {
   registerSaveTool(server);
@@ -53,4 +55,6 @@ export function registerTools(server: McpServer): void {
   registerGraphBuildTool(server);
   registerGraphQueryTool(server);
   registerGraphVisualizeTool(server);
+  // Cloud Sync (Pro)
+  registerCloudSyncTools(server);
 }

@@ -1,36 +1,35 @@
-# Knowledge Keeper MCP Server
+# Knowledge Keeper MCP
 
-> 智能知识管理的 Model Context Protocol 实现，**23 MCP Tools**，对标 mempalace
+> 🧠 **Give your AI agent long-term memory** — 23 MCP tools, works with Claude Code, Cursor, Gemini CLI, Windsurf, hermes-agent
 > 
-> **最新版本**: v1.0.1-alpha.1 (2026-04-16) — [npm](https://npm.im/@zsc-glitch/knowledge-keeper-mcp) | [GitHub](https://github.com/zsc-glitch/knowledge-keeper-mcp)
-> 
-> **🆕 2026-04-23**: 新增知识图谱功能（Phase 1）— 实体检测 + 关系可视化
+> **v1.0.0** — [npm](https://npm.im/@zsc-glitch/knowledge-keeper-mcp) | [GitHub](https://github.com/zsc-glitch/knowledge-keeper-mcp) | [Quick Start](QUICKSTART.md) | [Landing Page](https://zsc-glitch.github.io/knowledge-keeper-mcp)
 
-## 简介
+**Why?** Your AI coding agent forgets everything between sessions. Knowledge Keeper gives it persistent, searchable, connected memory — all stored locally with zero cloud dependency.
 
-让 **knowledge-keeper** 可被 Claude Code、Cursor、Gemini CLI、Windsurf、hermes-agent 等工具调用。
+## ✨ Features
 
-## 特性
+## ✨ Features
 
-- ✅ **23 个 MCP Tools** - 完整的知识管理工具集
-- ✅ **知识图谱** - 实体检测、关系可视化（Mermaid导出）
-- ✅ **BM25 关键词检索** - 快速关键词匹配
-- ✅ **语义搜索** - TF-IDF 向量嵌入，无外部依赖
-- ✅ **版本历史** - 支持版本对比和回滚
-- ✅ **Obsidian vault 兼容** - 双向同步，可用 Obsidian 打开
-- ✅ **审计日志** - SHA256哈希链，合规追溯
-- ✅ **知识回顾** - Spaced repetition复习
-- ✅ **多格式导入导出** - JSON/Markdown/CSV
-- ✅ **本地优先** - 所有数据存储在本地，隐私安全
-- ✅ **独立运行** - 不依赖 OpenClaw 运行时
+- ✅ **23 MCP Tools** — Complete knowledge management toolkit
+- ✅ **Knowledge Graph** — Entity detection, relationships, Mermaid visualization
+- ✅ **BM25 Keyword Search** — Fast keyword matching
+- ✅ **Semantic Search** — TF-IDF vector embeddings, zero API dependency
+- ✅ **Version History** — Diff & rollback any change
+- ✅ **Obsidian Compatible** — Read/write with Obsidian vault
+- ✅ **Audit Trail** — SHA256 hash chain, integrity verification
+- ✅ **Spaced Repetition** — Never forget what you've learned
+- ✅ **Import/Export** — JSON, Markdown, CSV
+- ✅ **Local-First** — All data on your machine, private by default
+- ✅ **Zero AI Dependency** — No API keys needed. No OpenAI. No embeddings API.
+- ✅ **Runs Anywhere** — Claude Code, Cursor, Gemini CLI, Windsurf, hermes-agent, OpenClaw
 
-## 安装
+## Install
 
 ```bash
-npm install @zsc-glitch/knowledge-keeper-mcp@alpha
+npm install @zsc-glitch/knowledge-keeper-mcp
 ```
 
-## 使用
+## Quick Start
 
 ### Claude Code
 
