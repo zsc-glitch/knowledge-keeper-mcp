@@ -37,19 +37,6 @@ export interface KnowledgePoint {
   source: "conversation" | "manual" | "mcp";
 }
 
-// 知识点结构
-export interface KnowledgePoint {
-  id: string;
-  type: KnowledgeType;
-  title: string;
-  content: string;
-  tags: string[];
-  links: string[];
-  created: string;
-  updated: string;
-  source: "conversation" | "manual" | "mcp";
-}
-
 // 索引结构
 interface KnowledgeIndex {
   version: number;

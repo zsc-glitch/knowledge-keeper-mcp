@@ -16,17 +16,6 @@ export interface KnowledgePoint {
     updated: string;
     source: "conversation" | "manual" | "mcp";
 }
-export interface KnowledgePoint {
-    id: string;
-    type: KnowledgeType;
-    title: string;
-    content: string;
-    tags: string[];
-    links: string[];
-    created: string;
-    updated: string;
-    source: "conversation" | "manual" | "mcp";
-}
 export declare class KnowledgeError extends Error {
     code: string;
     details?: Record<string, unknown> | undefined;

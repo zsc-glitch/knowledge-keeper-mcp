@@ -21,6 +21,10 @@ import { registerImportTool } from "./import.js";
 import { registerBatchTool } from "./batch.js";
 import { registerSyncTool } from "./sync.js";
 import { registerMergeTool } from "./merge.js";
+// Knowledge Graph Tools (Phase 1)
+import { registerGraphBuildTool } from "./graph-build.js";
+import { registerGraphQueryTool } from "./graph-query.js";
+import { registerGraphVisualizeTool } from "./graph-visualize.js";
 export function registerTools(server) {
     registerSaveTool(server);
     registerSearchTool(server);
@@ -42,5 +46,9 @@ export function registerTools(server) {
     registerBatchTool(server);
     registerSyncTool(server);
     registerMergeTool(server);
+    // Knowledge Graph Tools
+    registerGraphBuildTool(server);
+    registerGraphQueryTool(server);
+    registerGraphVisualizeTool(server);
 }
 //# sourceMappingURL=index.js.map

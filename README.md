@@ -1,8 +1,10 @@
 # Knowledge Keeper MCP Server
 
-> 智能知识管理的 Model Context Protocol 实现，**20 MCP Tools**，对标 mempalace
+> 智能知识管理的 Model Context Protocol 实现，**23 MCP Tools**，对标 mempalace
 > 
 > **最新版本**: v1.0.1-alpha.1 (2026-04-16) — [npm](https://npm.im/@zsc-glitch/knowledge-keeper-mcp) | [GitHub](https://github.com/zsc-glitch/knowledge-keeper-mcp)
+> 
+> **🆕 2026-04-23**: 新增知识图谱功能（Phase 1）— 实体检测 + 关系可视化
 
 ## 简介
 
@@ -10,12 +12,14 @@
 
 ## 特性
 
-- ✅ **20 个 MCP Tools** - 完整的知识管理工具集
-- ✅ **BM25 关键词检索** - 独有功能，mempalace无此功能
+- ✅ **23 个 MCP Tools** - 完整的知识管理工具集
+- ✅ **知识图谱** - 实体检测、关系可视化（Mermaid导出）
+- ✅ **BM25 关键词检索** - 快速关键词匹配
 - ✅ **语义搜索** - TF-IDF 向量嵌入，无外部依赖
-- ✅ **知识图谱** - 可视化知识关联网络
-- ✅ **版本历史** - 独有功能，支持版本对比和回滚
+- ✅ **版本历史** - 支持版本对比和回滚
 - ✅ **Obsidian vault 兼容** - 双向同步，可用 Obsidian 打开
+- ✅ **审计日志** - SHA256哈希链，合规追溯
+- ✅ **知识回顾** - Spaced repetition复习
 - ✅ **多格式导入导出** - JSON/Markdown/CSV
 - ✅ **本地优先** - 所有数据存储在本地，隐私安全
 - ✅ **独立运行** - 不依赖 OpenClaw 运行时
@@ -62,7 +66,7 @@ claude mcp add knowledge-keeper -- npx @zsc-glitch/knowledge-keeper-mcp
 }
 ```
 
-## MCP Tools (20个)
+## MCP Tools (23个)
 
 ### 基础操作
 | Tool | 功能 |
@@ -78,6 +82,13 @@ claude mcp add knowledge-keeper -- npx @zsc-glitch/knowledge-keeper-mcp
 | `knowledge_search` | 关键词搜索 |
 | `knowledge_semantic_search` | 语义搜索（TF-IDF） |
 | `knowledge_bm25_search` | BM25关键词检索 |
+
+### 🆕 知识图谱（Phase 1）
+| Tool | 功能 |
+|------|------|
+| `knowledge_graph_build` | 构建知识图谱（实体检测） |
+| `knowledge_graph_query` | 查询实体关系 |
+| `knowledge_graph_visualize` | 导出可视化（Mermaid） |
 
 ### 统计
 | Tool | 功能 |
