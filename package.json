@@ -1,7 +1,7 @@
 {
   "name": "@zsc-glitch/knowledge-keeper-mcp",
-  "version": "1.1.0",
-  "description": "AI Memory & Knowledge Management MCP Server — 23 tools, BM25 + semantic search, knowledge graph, version history, Obsidian compatible. Works with Claude Code, Cursor, Gemini CLI, Windsurf, hermes-agent.",
+  "version": "1.1.1",
+  "description": "AI Memory & Knowledge Management MCP Server — 26 tools, BM25 + semantic search, knowledge graph, cloud sync, Obsidian compatible. Works with Claude Code, Cursor, Gemini CLI, Windsurf, hermes-agent.",
   "type": "module",
   "main": "dist/index.js",
   "bin": {
