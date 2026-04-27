@@ -1,37 +1,30 @@
-# 快速开始指南
+# Quick Start Guide
 
-## 安装
+Get Knowledge Keeper MCP running in under 60 seconds.
+
+## Install
 
 ```bash
-npm install @zsc-glitch/knowledge-keeper-mcp@alpha
+npm install @zsc-glitch/knowledge-keeper-mcp
 ```
 
-## 与 Claude Code 集成
+Or use directly with npx (no install needed):
 
-### 方法 1: 命令行添加
+```bash
+npx @zsc-glitch/knowledge-keeper-mcp
+```
+
+## Claude Code
 
 ```bash
 claude mcp add knowledge-keeper -- npx @zsc-glitch/knowledge-keeper-mcp
 ```
 
-### 方法 2: 手动配置
+That's it. Restart Claude Code and you'll have 29 new memory tools.
 
-编辑 `~/.claude/claude_desktop_config.json`:
+## Cursor
 
-```json
-{
-  "mcpServers": {
-    "knowledge-keeper": {
-      "command": "npx",
-      "args": ["@zsc-glitch/knowledge-keeper-mcp"]
-    }
-  }
-}
-```
-
-## 与 Cursor 集成
-
-编辑 `~/.cursor/mcp.json`:
+Add to your Cursor MCP settings (`.cursor/mcp.json`):
 
 ```json
 {
@@ -44,9 +37,9 @@ claude mcp add knowledge-keeper -- npx @zsc-glitch/knowledge-keeper-mcp
 }
 ```
 
-## 与 Gemini CLI 集成
+## Gemini CLI
 
-编辑 Gemini CLI 配置文件:
+Add to your Gemini MCP config:
 
 ```json
 {
@@ -59,98 +52,146 @@ claude mcp add knowledge-keeper -- npx @zsc-glitch/knowledge-keeper-mcp
 }
 ```
 
-## 可用工具
+## Windsurf
 
-### 知识管理
+Add to `.windsurf/mcp.json`:
 
-| 工具 | 功能 | 示例 |
-|------|------|------|
-| `knowledge_save` | 保存知识点 | "保存这个概念到知识库" |
-| `knowledge_search` | 关键词搜索 | "搜索关于React的知识" |
-| `knowledge_semantic_search` | 语义搜索 | "找找关于状态管理的内容" |
-| `knowledge_get` | 获取知识点 | "获取ID为kp-cp-xxx的知识" |
-| `knowledge_update` | 更新知识点 | "更新这个知识的标签" |
-| `knowledge_delete` | 删除知识点 | "删除这个知识点" |
-| `knowledge_tags` | 列出标签 | "显示所有标签" |
-| `knowledge_versions` | 版本历史 | "查看这个知识的版本历史" |
-
-## 使用示例
-
-### 保存知识
-
-```
-用户: 帮我记住：React 18 引入了并发特性，包括 useTransition 和 useDeferredValue
-Claude: [调用 knowledge_save]
-✅ 已保存知识点
-📝 React 18 并发特性
-类型: concept
-ID: kp-cp-xxx
+```json
+{
+  "mcpServers": {
+    "knowledge-keeper": {
+      "command": "npx",
+      "args": ["@zsc-glitch/knowledge-keeper-mcp"]
+    }
+  }
+}
 ```
 
-### 搜索知识
+## hermes-agent
 
-```
-用户: 我之前学过什么关于React的？
-Claude: [调用 knowledge_search]
-🔍 找到 3 条关于 React 的知识
-1. React 18 并发特性 (concept)
-2. React Hooks 最佳实践 (note)
-3. React 性能优化技巧 (project)
-```
+Add to your hermes MCP config:
 
-### 语义搜索
-
-```
-用户: 有什么能提高性能的方法？
-Claude: [调用 knowledge_semantic_search]
-🔍 语义搜索找到 2 条相关知识
-1. React 性能优化技巧 [相似度: 85%]
-2. 前端缓存策略 [相似度: 72%]
+```yaml
+mcp_servers:
+  knowledge-keeper:
+    command: npx
+    args:
+      - "@zsc-glitch/knowledge-keeper-mcp"
 ```
 
-## 数据存储
+## 30-Second Demo
 
-所有数据存储在本地：
+Once connected, try these in your AI assistant:
+
+```
+# Save something
+"Remember that we decided to use PostgreSQL for the database"
+
+# Search later  
+"What database did we decide to use?"
+
+# Build knowledge graph
+"Build a knowledge graph from all my notes"
+
+# Review what you've learned
+"Show me knowledge items that are due for review"
+```
+
+## Environment Variables
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `KK_VAULT_PATH` | `~/.knowledge-vault` | Path to store knowledge files |
+| `KK_SYNC_URL` | - | Cloud sync server URL (Pro) |
+| `KK_API_KEY` | - | API key for Pro features |
+| `KK_ENCRYPTION_KEY` | - | Encryption key for cloud sync (Pro) |
+
+## What Gets Stored
+
+All knowledge is stored as **Markdown files** in your vault directory:
 
 ```
 ~/.knowledge-vault/
-├── concepts/        # 概念类知识
-├── decisions/       # 决策记录
-├── todos/          # 待办事项
-├── notes/          # 笔记
-├── projects/       # 项目记录
-├── index.json      # 索引
-└── vectors.json    # 向量索引（语义搜索）
+├── index.json          # Search index
+├── concepts/           # Concept notes
+├── decisions/          # Decision records
+├── todos/              # Todo items
+├── notes/              # General notes
+└── projects/           # Project knowledge
 ```
 
-## 环境变量
+Each file is a standard Markdown file with YAML frontmatter — you can open the entire vault in **Obsidian** for browsing and editing.
 
-| 变量 | 默认值 | 说明 |
-|------|--------|------|
-| `KNOWLEDGE_KEEPER_DIR` | `~/.knowledge-vault` | 知识库存储路径 |
-| `EMBEDDING_MODEL` | `tfidf` | 嵌入模型（tfidf/transformers） |
+## 29 MCP Tools
 
-## 升级到 Transformer 模型
+### Core (Free)
+| Tool | What it does |
+|------|-------------|
+| `knowledge_save` | Save a knowledge item |
+| `knowledge_get` | Get item by ID |
+| `knowledge_update` | Update an item |
+| `knowledge_delete` | Delete an item |
+| `knowledge_search` | Basic text search |
+| `knowledge_semantic_search` | TF-IDF semantic search |
+| `knowledge_bm25_search` | BM25 keyword search |
+| `knowledge_bm25_stats` | BM25 index statistics |
+| `knowledge_tags` | List/manage tags |
+| `knowledge_versions` | Version history |
+| `knowledge_review` | Spaced repetition review |
+| `knowledge_link` | Link two items |
+| `knowledge_unlink` | Remove a link |
+| `knowledge_get_linked` | Get linked items |
+| `knowledge_graph` | Legacy graph tool |
+| `knowledge_graph_build` | Build knowledge graph |
+| `knowledge_graph_query` | Query the graph |
+| `knowledge_graph_visualize` | Export Mermaid diagram |
+| `knowledge_export` | Export vault data |
+| `knowledge_import` | Import data |
+| `knowledge_batch` | Batch operations |
+| `knowledge_sync` | Local vault sync |
+| `knowledge_merge` | Merge two vaults |
 
-默认使用 TF-IDF，零依赖。如需更好的语义搜索：
+### Analytics (Free)
+| Tool | What it does |
+|------|-------------|
+| `knowledge_analytics_overview` | Stats dashboard |
+| `knowledge_analytics_insights` | Quality insights |
+| `knowledge_analytics_timeline` | Time-series data |
 
+### Cloud Sync (Pro — $9/month)
+| Tool | What it does |
+|------|-------------|
+| `knowledge_sync_status` | Check sync status |
+| `knowledge_sync` | Push/pull/full sync |
+| `knowledge_license` | View license info |
+
+## Upgrade to Pro
+
+Cloud sync gives you end-to-end encrypted sync across devices. Server never sees your data.
+
+1. Subscribe at [our landing page](https://zsc-glitch.github.io/knowledge-keeper-mcp/)
+2. Set environment variables:
+   ```bash
+   export KK_SYNC_URL=https://your-sync-server.com
+   export KK_API_KEY=kk_your_api_key
+   export KK_ENCRYPTION_KEY=your-encryption-passphrase
+   ```
+3. Sync: `knowledge_sync` tool with direction "full"
+
+## Troubleshooting
+
+**"Module not found"** — Make sure you have Node.js 18+ installed:
 ```bash
-npm install @xenova/transformers
-EMBEDDING_MODEL=transformers npx @zsc-glitch/knowledge-keeper-mcp
+node --version
 ```
 
-## 故障排除
+**"Permission denied"** — Check vault directory permissions:
+```bash
+ls -la ~/.knowledge-vault/
+```
 
-### MCP 连接失败
-
-1. 确保使用 Node.js 18+
-2. 检查 npx 是否在 PATH 中
-3. 尝试全局安装: `npm install -g @zsc-glitch/knowledge-keeper-mcp@alpha`
-
-### 数据丢失
-
-数据存储在 `~/.knowledge-vault/`，检查该目录是否存在。
+**Tools not appearing** — Restart your AI tool after adding the MCP server.
 
 ---
 
-有问题？提交 Issue: https://github.com/zsc-glitch/knowledge-keeper-mcp/issues
+Made with 👤 by [小影](https://github.com/zsc-glitch) • [GitHub](https://github.com/zsc-glitch/knowledge-keeper-mcp) • [npm](https://npm.im/@zsc-glitch/knowledge-keeper-mcp)

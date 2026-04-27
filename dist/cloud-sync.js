@@ -23,7 +23,7 @@ function deriveKey(passphrase, salt) {
         .update(passphrase + salt.toString("hex"))
         .digest();
 }
-function encrypt(data, passphrase) {
+export function encrypt(data, passphrase) {
     const salt = randomBytes(16);
     const key = deriveKey(passphrase, salt);
     const iv = randomBytes(12);
@@ -38,7 +38,7 @@ function encrypt(data, passphrase) {
         version: 1,
     };
 }
-function decrypt(payload, passphrase) {
+export function decrypt(payload, passphrase) {
     const parts = payload.data.split(".");
     const salt = Buffer.from(parts[0], "base64");
     const key = deriveKey(passphrase, salt);
@@ -53,7 +53,7 @@ function decrypt(payload, passphrase) {
 // ============================================================
 // Hashing (change detection)
 // ============================================================
-function hashEntry(entry) {
+export function hashEntry(entry) {
     const content = JSON.stringify({
         title: entry.title,
         content: entry.content,

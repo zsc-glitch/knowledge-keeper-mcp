@@ -8,6 +8,7 @@
  * - Conflict resolution via vector clocks
  * - Incremental sync (only changed items)
  */
+import { type KnowledgePoint } from "./core.js";
 export interface SyncConfig {
     /** API endpoint for the sync server */
     serverUrl: string;
@@ -28,6 +29,19 @@ export interface SyncStatus {
     status: "idle" | "syncing" | "error" | "unconfigured";
     error?: string;
 }
+interface EncryptedPayload {
+    /** Encrypted data (base64) */
+    data: string;
+    /** IV (base64) */
+    iv: string;
+    /** Auth tag (base64) */
+    tag: string;
+    /** Schema version */
+    version: number;
+}
+export declare function encrypt(data: string, passphrase: string): EncryptedPayload;
+export declare function decrypt(payload: EncryptedPayload, passphrase: string): string;
+export declare function hashEntry(entry: KnowledgePoint): string;
 /**
  * Push local changes to the cloud
  */
@@ -66,3 +80,4 @@ export interface LicenseInfo {
  * Validate API key against the license server
  */
 export declare function validateLicense(apiKey: string): Promise<LicenseInfo>;
+export {};
