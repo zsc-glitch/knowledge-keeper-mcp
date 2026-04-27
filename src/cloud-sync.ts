@@ -91,7 +91,7 @@ function deriveKey(passphrase: string, salt: Buffer): Buffer {
     .digest();
 }
 
-function encrypt(data: string, passphrase: string): EncryptedPayload {
+export function encrypt(data: string, passphrase: string): EncryptedPayload {
   const salt = randomBytes(16);
   const key = deriveKey(passphrase, salt);
   const iv = randomBytes(12);
@@ -110,7 +110,7 @@ function encrypt(data: string, passphrase: string): EncryptedPayload {
   };
 }
 
-function decrypt(payload: EncryptedPayload, passphrase: string): string {
+export function decrypt(payload: EncryptedPayload, passphrase: string): string {
   const parts = payload.data.split(".");
   const salt = Buffer.from(parts[0], "base64");
   const key = deriveKey(passphrase, salt);
@@ -130,7 +130,7 @@ function decrypt(payload: EncryptedPayload, passphrase: string): string {
 // Hashing (change detection)
 // ============================================================
 
-function hashEntry(entry: KnowledgePoint): string {
+export function hashEntry(entry: KnowledgePoint): string {
   const content = JSON.stringify({
     title: entry.title,
     content: entry.content,
