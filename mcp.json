@@ -1,0 +1,150 @@
+{
+  "$schema": "https://cdn.jsdelivr.net/npm/@modelcontextprotocol/manifest@latest/schema.json",
+  "name": "knowledge-keeper",
+  "displayName": "Knowledge Keeper MCP",
+  "description": "AI Memory & Knowledge Management — 30 MCP tools, BM25 + hybrid search, knowledge graph, Obsidian compatible, zero API keys",
+  "version": "1.4.3",
+  "author": {
+    "name": "小影",
+    "url": "https://github.com/zsc-glitch"
+  },
+  "license": "MIT",
+  "repository": {
+    "url": "https://github.com/zsc-glitch/knowledge-keeper-mcp"
+  },
+  "homepage": "https://zsc-glitch.github.io/knowledge-keeper-mcp/",
+  "npm": {
+    "package": "@zsc-glitch/knowledge-keeper-mcp"
+  },
+  "tools": [
+    {
+      "name": "knowledge_save",
+      "description": "Save a knowledge entry"
+    },
+    {
+      "name": "knowledge_get",
+      "description": "Get knowledge entry by ID"
+    },
+    {
+      "name": "knowledge_update",
+      "description": "Update a knowledge entry"
+    },
+    {
+      "name": "knowledge_delete",
+      "description": "Delete a knowledge entry"
+    },
+    {
+      "name": "knowledge_search",
+      "description": "Basic keyword search"
+    },
+    {
+      "name": "knowledge_semantic_search",
+      "description": "TF-IDF semantic search"
+    },
+    {
+      "name": "knowledge_bm25_search",
+      "description": "BM25 keyword search (R@5=95%)"
+    },
+    {
+      "name": "knowledge_hybrid_search",
+      "description": "RRF fusion of BM25 + semantic (R@5=97%+)"
+    },
+    {
+      "name": "knowledge_tags",
+      "description": "Tag management"
+    },
+    {
+      "name": "knowledge_versions",
+      "description": "Version history (diff & rollback)"
+    },
+    {
+      "name": "knowledge_review",
+      "description": "Spaced repetition review"
+    },
+    {
+      "name": "knowledge_link",
+      "description": "Link two knowledge entries"
+    },
+    {
+      "name": "knowledge_unlink",
+      "description": "Remove link between entries"
+    },
+    {
+      "name": "knowledge_get_linked",
+      "description": "Get entries linked to an entry"
+    },
+    {
+      "name": "knowledge_graph",
+      "description": "Graph operations"
+    },
+    {
+      "name": "knowledge_graph_build",
+      "description": "Build knowledge graph (entity detection)"
+    },
+    {
+      "name": "knowledge_graph_query",
+      "description": "Query entities and relations"
+    },
+    {
+      "name": "knowledge_graph_visualize",
+      "description": "Export Mermaid visualization"
+    },
+    {
+      "name": "knowledge_export",
+      "description": "Export data (JSON/Markdown/CSV)"
+    },
+    {
+      "name": "knowledge_import",
+      "description": "Import data (JSON/Markdown)"
+    },
+    {
+      "name": "knowledge_batch",
+      "description": "Batch operations"
+    },
+    {
+      "name": "knowledge_sync",
+      "description": "Sync local vaults"
+    },
+    {
+      "name": "knowledge_merge",
+      "description": "Merge vaults"
+    },
+    {
+      "name": "knowledge_bm25_stats",
+      "description": "BM25 index statistics"
+    },
+    {
+      "name": "knowledge_audit",
+      "description": "SHA256 integrity check"
+    },
+    {
+      "name": "knowledge_analytics_overview",
+      "description": "Knowledge base overview & health score"
+    },
+    {
+      "name": "knowledge_analytics_insights",
+      "description": "Quality insights (orphans, duplicates, stale)"
+    },
+    {
+      "name": "knowledge_analytics_timeline",
+      "description": "Activity timeline (daily/weekly/monthly)"
+    },
+    {
+      "name": "knowledge_sync_status",
+      "description": "Check cloud sync status (Pro)"
+    },
+    {
+      "name": "knowledge_license",
+      "description": "View license and features"
+    }
+  ],
+  "compatibility": {
+    "claude-code": true,
+    "cursor": true,
+    "gemini-cli": true,
+    "windsurf": true,
+    "hermes-agent": true,
+    "openclaw": true
+  },
+  "tags": ["memory", "knowledge", "search", "obsidian", "bm25", "graph", "cloud-sync", "audit", "analytics"]
+}
