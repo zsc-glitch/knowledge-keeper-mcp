@@ -4,6 +4,8 @@
 >
 > **v1.4.3** — [npm](https://npm.im/@zsc-glitch/knowledge-keeper-mcp) | [GitHub](https://github.com/zsc-glitch/knowledge-keeper-mcp) | [Quick Start](QUICKSTART.md) | [Landing Page](https://zsc-glitch.github.io/knowledge-keeper-mcp/) | [Blog](blog/how-i-built-ai-memory-mcp.md)
 
+![Knowledge Keeper MCP](demo.svg)
+
 **Why?** Your AI coding agent forgets everything between sessions. Knowledge Keeper gives it persistent, searchable, connected memory — all stored locally with zero cloud dependency.
 
 ## ✨ Features

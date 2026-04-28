@@ -1,242 +1,140 @@
-# 使用示例
+# Knowledge Keeper MCP — Quick Examples
 
-## 基础操作
+## Save Knowledge
 
-### 保存知识点
+```
+You: Remember that we chose PostgreSQL over MongoDB for the user service because of ACID requirements.
 
-```javascript
-// Claude Code 中输入:
-使用 knowledge_save 保存一个概念知识点:
-标题: "什么是MCP"
-内容: "MCP (Model Context Protocol) 是一种让AI助手与外部工具交互的协议标准"
-标签: ["MCP", "协议", "AI工具"]
+AI: I'll save that decision for you.
+→ knowledge_save(type="decision", title="Database choice for user service", 
+    content="Chose PostgreSQL over MongoDB for the user service due to ACID transaction requirements", 
+    tags=["database", "postgresql", "architecture"])
+✅ Saved as decision_abc123
 ```
 
-### 搜索知识点
+## Search Knowledge
 
-```javascript
-// 关键词搜索
-使用 knowledge_search 搜索 "MCP"
+```
+You: Why did we choose PostgreSQL again?
 
-// 语义搜索
-使用 knowledge_semantic_search 搜索 "如何让AI与工具交互"
+AI: Let me search your knowledge base...
+→ knowledge_hybrid_search(query="PostgreSQL choice", limit=5)
 
-// BM25检索
-使用 knowledge_bm25_search 搜索 "协议"
+Found: "Database choice for user service"
+→ Based on your records, you chose PostgreSQL over MongoDB for the user service 
+  because of ACID transaction requirements.
 ```
 
-### 获取知识点
+## Build Knowledge Graph
 
-```javascript
-// 获取单个知识点
-使用 knowledge_get 获取知识点 "kp_123"
+```
+You: Build a knowledge graph from my entries.
+
+AI: I'll detect entities and build relationships...
+→ knowledge_graph_build()
+
+Detected 23 entities: PostgreSQL, MongoDB, User Service, ACID, REST API, React, TypeScript...
+Created 15 relationships: User Service → uses → PostgreSQL, User Service → requires → ACID...
 ```
 
-### 更新知识点
+## Visualize Graph
 
-```javascript
-// 更新内容
-使用 knowledge_update 更新知识点 "kp_123":
-内容: "MCP是由Anthropic提出的协议..."
-添加标签: ["Anthropic"]
+```
+You: Show me the knowledge graph.
+
+AI: Here's your knowledge graph in Mermaid format:
+→ knowledge_graph_visualize()
+
+graph TD
+    A[User Service] -->|uses| B[PostgreSQL]
+    A -->|requires| C[ACID]
+    D[API Gateway] -->|routes to| A
+    E[React Frontend] -->|calls| D
+    B -->|alternative| F[MongoDB]
 ```
 
-### 删除知识点
+## Review Old Knowledge
 
-```javascript
-// 删除知识点
-使用 knowledge_delete 删除知识点 "kp_123"
+```
+You: What should I review today?
+
+AI: Checking your spaced repetition schedule...
+→ knowledge_review()
+
+📊 Review Schedule:
+- 🔴 Overdue: "Database choice for user service" (30 days ago)
+- 🟡 Due: "API rate limiting strategy" (7 days ago)  
+- 🟢 Upcoming: "Auth flow design" (in 2 days)
 ```
 
----
+## Analytics
 
-## 知识关联
+```
+You: How's my knowledge base doing?
 
-### 创建关联
+AI: Let me pull the analytics...
+→ knowledge_analytics_overview()
 
-```javascript
-// 创建知识点之间的关联
-使用 knowledge_link 创建关联:
-源知识点: "kp_123" (什么是MCP)
-目标知识点: "kp_456" (Claude Code使用指南)
-关联类型: "references"
-双向: true
+📊 Knowledge Base Overview:
+- Total entries: 47
+- Tags: 23 unique
+- Health score: 82/100
+- Oldest: 2026-01-15
+- Newest: 2026-04-28
+
+→ knowledge_analytics_insights()
+
+🔍 Quality Insights:
+- 3 orphan items (no tags, no links)
+- 2 potential duplicates
+- 5 stale items (>30 days)
+- Connectivity: 75/100
+- Coverage: 88/100
+
+💡 Suggestions:
+- Add tags to 3 orphan items
+- Review 2 duplicate candidates
+- Update 5 stale entries
 ```
 
-### 查询关联
+## Cloud Sync (Pro)
 
-```javascript
-// 查询某知识点的所有关联
-使用 knowledge_get_linked 查询知识点 "kp_123":
-方向: both
+```
+You: Sync my knowledge to the cloud.
+
+AI: Let me check your sync status first...
+→ knowledge_sync_status()
+
+📊 Sync Status:
+- Last sync: 2 hours ago
+- Pending changes: 5
+- Synced items: 42
+
+→ knowledge_sync(direction="full")
+
+✅ Full sync complete:
+- Pushed: 5 items
+- Pulled: 2 items  
+- Conflicts: 0
 ```
 
-### 删除关联
+## Version History
 
-```javascript
-// 删除关联
-使用 knowledge_unlink 删除关联:
-源知识点: "kp_123"
-目标知识点: "kp_456"
 ```
+You: What changed in the "Database choice" entry?
 
----
+AI: Let me check the version history...
+→ knowledge_versions(id="decision_abc123")
 
-## 知识图谱
+📋 Version History:
+- v3 (2026-04-28): Added connection pool notes
+- v2 (2026-04-20): Updated with replication strategy
+- v1 (2026-04-15): Initial entry
 
-### 可视化图谱
+→ knowledge_versions(id="decision_abc123", action="diff", from=1, to=3)
 
-```javascript
-// 从某个知识点开始构建图谱
-使用 knowledge_graph 构建图谱:
-根节点: "kp_123"
-深度: 3
-
-// 获取全局图谱
-使用 knowledge_graph 获取全局图谱:
-最小关联数: 2
+📝 Changes from v1 → v3:
++ Added: "Using PgBouncer for connection pooling"
++ Added: "Streaming replication for read replicas"  
+~ Modified: Content expanded from 1 line to 3 paragraphs
 ```
-
----
-
-## 导入导出
-
-### 导出知识库
-
-```javascript
-// 导出为JSON
-使用 knowledge_export 导出知识库:
-格式: json
-数量: 100
-
-// 导出为Markdown（Obsidian格式）
-使用 knowledge_export 导出:
-格式: markdown
-
-// 导出为CSV
-使用 knowledge_export 导出:
-格式: csv
-```
-
-### 导入知识点
-
-```javascript
-// 从JSON导入
-使用 knowledge_import 导入:
-格式: json
-内容: '{"knowledge": [{"title": "...", "content": "..."}]}'
-
-// 从Markdown导入
-使用 knowledge_import 导入:
-格式: markdown
-内容: '# 知识标题\n\n知识点内容...'
-```
-
----
-
-## 批量操作
-
-### 批量删除
-
-```javascript
-// 删除特定类型的知识点
-使用 knowledge_batch 批量删除:
-搜索条件: "todo"
-数量: 50
-```
-
-### 批量添加标签
-
-```javascript
-// 为多个知识点添加标签
-使用 knowledge_batch 批量添加标签:
-知识点ID: ["kp_1", "kp_2", "kp_3"]
-标签: ["项目相关"]
-```
-
----
-
-## Obsidian同步
-
-### 同步状态
-
-```javascript
-// 查看同步状态
-使用 knowledge_sync 查看同步状态
-```
-
-### 从Obsidian拉取
-
-```javascript
-// 从Obsidian vault拉取知识点
-使用 knowledge_sync 从Obsidian拉取:
-源路径: "/path/to/obsidian/vault"
-```
-
-### 推送到Obsidian
-
-```javascript
-// 推送知识点到Obsidian vault
-使用 knowledge_sync 推送到Obsidian:
-目标路径: "/path/to/obsidian/vault"
-```
-
----
-
-## 知识合并
-
-### 合并重复知识点
-
-```javascript
-// 合并两个相似的知识点
-使用 knowledge_merge 合并知识点:
-主知识点: "kp_123"
-次要知识点: "kp_456"
-模式: "delete_secondary"  // 合并内容后删除次要知识点
-```
-
----
-
-## 统计
-
-### 查看标签
-
-```javascript
-// 列出所有标签
-使用 knowledge_tags 列出标签
-```
-
-### 知识回顾
-
-```javascript
-// 查看本周统计
-使用 knowledge_review 知识回顾:
-时间范围: week
-
-// 查看今日统计
-使用 knowledge_review:
-时间范围: today
-```
-
-### BM25统计
-
-```javascript
-// 查看BM25索引统计
-使用 knowledge_bm25_stats 查看统计
-```
-
----
-
-## 版本历史
-
-### 查看版本
-
-```javascript
-// 查看知识点的版本历史
-使用 knowledge_versions 查看版本:
-知识点ID: "kp_123"
-```
-
----
-
-Made with 🧠 by [小影](https://github.com/zsc-glitch)
