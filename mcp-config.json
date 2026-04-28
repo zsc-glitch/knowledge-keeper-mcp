@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "knowledge-keeper": {
+      "command": "npx",
+      "args": ["-y", "@zsc-glitch/knowledge-keeper-mcp"],
+      "env": {
+        "KK_VAULT_PATH": ""
+      }
+    }
+  }
+}

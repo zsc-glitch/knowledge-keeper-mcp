@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Knowledge Keeper MCP — Zero-API AI Memory for TypeScript Developers</title>
-  <meta name="description" content="Give your AI agent long-term memory. 29 MCP tools, zero API keys, works with Claude Code, Cursor, Gemini CLI. Obsidian compatible. Free & open source.">
+  <meta name="description" content="Give your AI agent long-term memory. 30 MCP tools, zero API keys, works with Claude Code, Cursor, Gemini CLI. Obsidian compatible. Free & open source.">
   <meta property="og:title" content="Knowledge Keeper MCP — Zero-API AI Memory for TypeScript Developers">
-  <meta property="og:description" content="29 MCP tools for AI memory. No API keys. No cloud. BM25 + semantic search, knowledge graph, Obsidian compatible. Works with Claude Code & Cursor.">
+  <meta property="og:description" content="30 MCP tools for AI memory. No API keys. No cloud. BM25 + semantic search, knowledge graph, Obsidian compatible. Works with Claude Code & Cursor.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://knowledge-keeper-mcp.zsc-glitch.dev">
   <style>
@@ -101,9 +101,9 @@
   <div class="container">
     <!-- Hero -->
     <section class="hero">
-      <div class="hero-badge">🧠 Open Source MCP Server • v1.2.0 • Zero API Keys</div>
+      <div class="hero-badge">🧠 MIT Licensed • v1.4.1 • Zero API Keys • Free for Commercial Use</div>
       <h1>AI Memory,<br>Zero Dependencies</h1>
-      <p>Knowledge Keeper MCP is a 29-tool memory server for AI coding agents. Save, search, connect, and review knowledge — all locally, no API keys, no cloud required. Native TypeScript, works with Claude Code & Cursor.</p>
+      <p>Knowledge Keeper MCP is a 30-tool memory server for AI coding agents. Save, search, connect, and review knowledge — all locally, no API keys, no cloud required. Native TypeScript, works with Claude Code & Cursor.</p>
       <div class="hero-install">
         <span class="cmd">$</span> npx @zsc-glitch/knowledge-keeper-mcp
         <button class="copy-btn" onclick="navigator.clipboard.writeText('npx @zsc-glitch/knowledge-keeper-mcp')">Copy</button>
@@ -117,7 +117,7 @@
 
     <!-- Stats -->
     <section class="stats">
-      <div class="stat"><div class="num">29</div><div class="label">MCP Tools</div></div>
+      <div class="stat"><div class="num">30</div><div class="label">MCP Tools</div></div>
       <div class="stat"><div class="num">95%</div><div class="label">Recall@5 (BM25)</div></div>
       <div class="stat"><div class="num">0</div><div class="label">API Keys Needed</div></div>
       <div class="stat"><div class="num">4.3ms</div><div class="label">Avg Search Time</div></div>
@@ -193,6 +193,7 @@
         <div class="tool-item"><code>☁️ sync_s</code> Sync status (Pro)</div>
         <div class="tool-item"><code>☁️ sync</code> Cloud sync (Pro)</div>
         <div class="tool-item"><code>📋 license</code> License info</div>
+        <div class="tool-item"><code>🔀 hybrid</code> RRF hybrid search</div>
       </div>
     </section>
 
@@ -210,6 +211,40 @@
 
     <!-- Works with -->
     <section class="compat">
+      <h2>Why Knowledge Keeper vs ByteRover?</h2>
+      <div class="why-grid">
+        <div class="why-card">
+          <div class="icon">⚖️</div>
+          <h3>MIT License</h3>
+          <p>Free for commercial use. ByteRover uses Elastic 2.0 — commercial use requires a paid license.</p>
+        </div>
+        <div class="why-card">
+          <div class="icon">🔑</div>
+          <h3>Zero API Keys</h3>
+          <p>No LLM dependency. ByteRover requires an LLM provider (OpenAI, Anthropic, etc.) to function.</p>
+        </div>
+        <div class="why-card">
+          <div class="icon">📝</div>
+          <h3>Obsidian Compatible</h3>
+          <p>Your data is just markdown. ByteRover uses a proprietary format — you're locked in.</p>
+        </div>
+        <div class="why-card">
+          <div class="icon">⚡</div>
+          <h3>30-Second Setup</h3>
+          <p>One command, no config. ByteRover is a full REPL with 18 LLM providers to configure.</p>
+        </div>
+        <div class="why-card">
+          <div class="icon">🔒</div>
+          <h3>Audit Trail</h3>
+          <p>SHA256 hash chain for compliance. ByteRover has no audit logging.</p>
+        </div>
+        <div class="why-card">
+          <div class="icon">🧠</div>
+          <h3>Spaced Repetition</h3>
+          <p>Built-in review scheduler so your AI never forgets. ByteRover doesn't have this.</p>
+        </div>
+      </div>
+
       <h2>Works With Your Stack</h2>
       <div class="compat-logos">
         <div class="compat-item">Claude Code</div>
@@ -230,7 +265,7 @@
           <div class="price">$0<span class="period">/forever</span></div>
           <div class="desc">Everything you need to get started</div>
           <ul>
-            <li><span class="check">✓</span>All 23 MCP tools</li>
+            <li><span class="check">✓</span>MIT License — free for commercial use</li>
             <li><span class="check">✓</span>Local storage only</li>
             <li><span class="check">✓</span>BM25 + semantic search</li>
             <li><span class="check">✓</span>Knowledge graph</li>
