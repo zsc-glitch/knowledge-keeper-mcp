@@ -20,7 +20,7 @@ npx @zsc-glitch/knowledge-keeper-mcp
 claude mcp add knowledge-keeper -- npx @zsc-glitch/knowledge-keeper-mcp
 ```
 
-That's it. Restart Claude Code and you'll have 29 new memory tools.
+That's it. Restart Claude Code and you'll have 30 memory tools.
 
 ## Cursor
 
@@ -81,7 +81,7 @@ mcp_servers:
 
 ## 30-Second Demo
 
-Once connected, try these in your AI assistant:
+Once connected, try these conversations in your AI assistant:
 
 ```
 # Save something
@@ -122,7 +122,7 @@ All knowledge is stored as **Markdown files** in your vault directory:
 
 Each file is a standard Markdown file with YAML frontmatter — you can open the entire vault in **Obsidian** for browsing and editing.
 
-## 29 MCP Tools
+## 30 MCP Tools
 
 ### Core (Free)
 | Tool | What it does |
@@ -134,6 +134,7 @@ Each file is a standard Markdown file with YAML frontmatter — you can open the
 | `knowledge_search` | Basic text search |
 | `knowledge_semantic_search` | TF-IDF semantic search |
 | `knowledge_bm25_search` | BM25 keyword search |
+| `knowledge_hybrid_search` | RRF fusion (BM25 + semantic) |
 | `knowledge_bm25_stats` | BM25 index statistics |
 | `knowledge_tags` | List/manage tags |
 | `knowledge_versions` | Version history |
