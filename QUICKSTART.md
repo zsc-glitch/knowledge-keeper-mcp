@@ -69,6 +69,8 @@ Add to `.windsurf/mcp.json`:
 
 ## hermes-agent
 
+### Option 1: MCP Config (basic)
+
 Add to your hermes MCP config:
 
 ```yaml
@@ -78,6 +80,26 @@ mcp_servers:
     args:
       - "@zsc-glitch/knowledge-keeper-mcp"
 ```
+
+### Option 2: Memory Provider Plugin (recommended)
+
+For deeper integration with auto-prefetch and memory mirroring:
+
+```bash
+# Copy plugin to hermes
+cp -r knowledge-keeper-mcp/hermes-plugin/knowledge-keeper \
+      ~/.hermes/plugins/memory/knowledge-keeper
+
+# Run setup
+hermes memory setup
+# Select "knowledge-keeper" from the list
+```
+
+The plugin gives you:
+- **Auto-prefetch** — relevant memory injected before each API call
+- **Memory mirroring** — hermes built-in writes automatically saved to vault
+- **Session tracking** — hermes session context preserved
+- **CLI commands** — `hermes knowledge-keeper status`
 
 ## 30-Second Demo
 
