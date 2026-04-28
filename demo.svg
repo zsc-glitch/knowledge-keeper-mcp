@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,system-ui,sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0a0f"/>
+      <stop offset="100%" style="stop-color:#1a1a2e"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#8b5cf6"/>
+      <stop offset="100%" style="stop-color:#22c55e"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="450" fill="url(#bg)" rx="16"/>
+  
+  <!-- Title -->
+  <text x="40" y="60" fill="#e4e4e7" font-size="28" font-weight="800">🧠 Knowledge Keeper MCP</text>
+  <text x="40" y="90" fill="#71717a" font-size="16">Give your AI agent long-term memory</text>
+  
+  <!-- Stats row -->
+  <rect x="40" y="115" width="160" height="70" rx="12" fill="#12121a" stroke="#1e1e2e" stroke-width="1"/>
+  <text x="120" y="148" fill="#a78bfa" font-size="32" font-weight="800" text-anchor="middle">30</text>
+  <text x="120" y="170" fill="#71717a" font-size="12" text-anchor="middle">MCP Tools</text>
+  
+  <rect x="220" y="115" width="160" height="70" rx="12" fill="#12121a" stroke="#1e1e2e" stroke-width="1"/>
+  <text x="300" y="148" fill="#22c55e" font-size="32" font-weight="800" text-anchor="middle">0</text>
+  <text x="300" y="170" fill="#71717a" font-size="12" text-anchor="middle">API Keys Needed</text>
+  
+  <rect x="400" y="115" width="160" height="70" rx="12" fill="#12121a" stroke="#1e1e2e" stroke-width="1"/>
+  <text x="480" y="148" fill="#a78bfa" font-size="28" font-weight="800" text-anchor="middle">95%</text>
+  <text x="480" y="170" fill="#71717a" font-size="12" text-anchor="middle">BM25 Recall@5</text>
+  
+  <rect x="580" y="115" width="180" height="70" rx="12" fill="#12121a" stroke="#1e1e2e" stroke-width="1"/>
+  <text x="670" y="148" fill="#22c55e" font-size="28" font-weight="800" text-anchor="middle">97%+</text>
+  <text x="670" y="170" fill="#71717a" font-size="12" text-anchor="middle">Hybrid Recall@5</text>
+  
+  <!-- Features -->
+  <text x="40" y="230" fill="#e4e4e7" font-size="16" font-weight="700">Features</text>
+  
+  <circle cx="55" cy="258" r="5" fill="#8b5cf6"/><text x="70" y="263" fill="#a1a1aa" font-size="14">🔍 Hybrid Search — BM25 + TF-IDF + RRF</text>
+  <circle cx="55" cy="285" r="5" fill="#8b5cf6"/><text x="70" y="290" fill="#a1a1aa" font-size="14">🔗 Knowledge Graph — Entity detection &amp; Mermaid viz</text>
+  <circle cx="55" cy="312" r="5" fill="#22c55e"/><text x="70" y="317" fill="#a1a1aa" font-size="14">📝 Obsidian Compatible — No lock-in</text>
+  <circle cx="55" cy="339" r="5" fill="#22c55e"/><text x="70" y="344" fill="#a1a1aa" font-size="14">🔒 Audit Trail — SHA256 hash chain</text>
+  <circle cx="55" cy="366" r="5" fill="#8b5cf6"/><text x="70" y="371" fill="#a1a1aa" font-size="14">☁️ Cloud Sync (Pro) — End-to-end encrypted</text>
+  <circle cx="55" cy="393" r="5" fill="#22c55e"/><text x="70" y="398" fill="#a1a1aa" font-size="14">📦 Zero AI Dependency — No API keys needed</text>
+  
+  <!-- Install command -->
+  <rect x="40" y="415" width="720" height="24" rx="6" fill="#12121a" stroke="#1e1e2e" stroke-width="1"/>
+  <text x="55" y="432" fill="#22c55e" font-size="13" font-family="SF Mono,Fira Code,monospace">$ npx @zsc-glitch/knowledge-keeper-mcp</text>
+</svg>
