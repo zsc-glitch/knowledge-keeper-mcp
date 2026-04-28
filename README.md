@@ -24,6 +24,24 @@
 - ✅ **MIT Licensed** — Free for commercial use
 - ✅ **70 Tests Passing** — Reliable and tested
 
+## Why Knowledge Keeper?
+
+| | Knowledge Keeper | mempalace | memU | GitNexus |
+|---|---|---|---|---|
+| **Zero API keys** | ✅ No cloud, no embeddings API | ❌ ChromaDB | ❌ OpenAI + LangChain | ❌ LLM for Graph RAG |
+| **MCP Protocol** | ✅ Native | ✅ | ❌ Custom | ✅ |
+| **Obsidian Compatible** | ✅ Read/write vault | ❌ | ❌ | ❌ |
+| **Audit Trail** | ✅ SHA256 hash chain | ❌ | ❌ | ❌ |
+| **Version History** | ✅ Diff & rollback | ❌ | ❌ | ❌ |
+| **Hybrid Search** | ✅ BM25 + TF-IDF + RRF | ✅ Vector only | ✅ Vector only | ✅ Graph RAG |
+| **Spaced Repetition** | ✅ | ❌ | ❌ | ❌ |
+| **Knowledge Graph** | ✅ Entity detection + Mermaid | ✅ | ❌ | ✅ (code-focused) |
+| **Local-First** | ✅ Markdown files | ✅ | ⚠️ Server needed | ✅ |
+| **License** | MIT | MIT | MIT | Custom |
+| **Best for** | General knowledge memory | Benchmark scores | 24/7 proactive agents | Code architecture |
+
+**Key insight**: Knowledge Keeper is the only option that works with zero API keys, stores everything as human-readable Markdown, and includes audit + version history — making it ideal for developers who value transparency and simplicity.
+
 ## Install
 
 ```bash
