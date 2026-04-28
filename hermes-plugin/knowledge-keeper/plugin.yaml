@@ -1,0 +1,7 @@
+name: knowledge-keeper
+version: 1.4.6
+description: "AI Memory & Knowledge Management — 30 tools, hybrid search (BM25+TF-IDF+RRF), knowledge graph, version history, audit trail, Obsidian compatible. Zero API keys required."
+hooks:
+  - on_session_end
+  - on_pre_compress
+  - on_memory_write
