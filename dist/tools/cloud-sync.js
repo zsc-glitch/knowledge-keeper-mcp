@@ -55,7 +55,7 @@ export function registerCloudSyncTools(server) {
         }
     });
     // Sync now
-    server.registerTool("knowledge_sync", {
+    server.registerTool("knowledge_cloud_sync", {
         title: "云同步",
         description: "执行完整云同步（拉取+推送），端到端加密（Pro功能）",
         inputSchema: z.object({

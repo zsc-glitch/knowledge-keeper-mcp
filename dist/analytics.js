@@ -9,63 +9,50 @@ import { listTags } from "./core.js";
 // Analytics Functions
 // ============================================================
 export async function getAnalyticsOverview(vaultPath) {
-    try {
-        const allKnowledge = await searchKnowledge({ query: "", limit: 10000 });
-        const tags = await listTags();
-        // Type breakdown
-        const typesBreakdown = {};
-        for (const item of allKnowledge) {
-            typesBreakdown[item.type] = (typesBreakdown[item.type] || 0) + 1;
-        }
-        // Top tags
-        const topTags = Object.entries(tags)
-            .sort(([, a], [, b]) => b - a)
-            .slice(0, 10)
-            .map(([tag, count]) => ({ tag, count }));
-        // Date range
-        const sorted = [...allKnowledge].sort((a, b) => a.created.localeCompare(b.created));
-        const oldestItem = sorted[0]?.created || null;
-        const newestItem = sorted[sorted.length - 1]?.created || null;
-        // Average content length
-        const totalLength = allKnowledge.reduce((sum, item) => sum + item.content.length, 0);
-        const averageContentLength = allKnowledge.length > 0 ? Math.round(totalLength / allKnowledge.length) : 0;
-        // Count links
-        let totalLinks = 0;
-        for (const item of allKnowledge) {
-            totalLinks += item.links?.length || 0;
-        }
-        // Knowledge health score
-        const taggedRatio = allKnowledge.filter(i => i.tags.length > 0).length / Math.max(allKnowledge.length, 1);
-        const linkedRatio = allKnowledge.filter(i => (i.links?.length || 0) > 0).length / Math.max(allKnowledge.length, 1);
-        const knowledgeHealth = Math.round((taggedRatio * 40 + linkedRatio * 30 + Math.min(allKnowledge.length / 50, 1) * 30));
-        return {
-            totalItems: allKnowledge.length,
-            totalTags: Object.keys(tags).length,
-            totalLinks,
-            typesBreakdown,
-            topTags,
-            recentActivity: allKnowledge.slice(0, 5).map(i => ({
-                id: i.id,
-                title: i.title,
-                action: "created",
-                date: i.created,
-            })),
-            oldestItem,
-            newestItem,
-            averageContentLength,
-            knowledgeHealth,
-        };
+    const allKnowledge = await searchKnowledge({ query: "", limit: 10000 });
+    const tags = await listTags();
+    // Type breakdown
+    const typesBreakdown = {};
+    for (const item of allKnowledge) {
+        typesBreakdown[item.type] = (typesBreakdown[item.type] || 0) + 1;
     }
-    finally {
+    // Top tags
+    const topTags = Object.entries(tags)
+        .sort(([, a], [, b]) => b - a)
+        .slice(0, 10)
+        .map(([tag, count]) => ({ tag, count }));
+    // Date range
+    const sorted = [...allKnowledge].sort((a, b) => a.created.localeCompare(b.created));
+    const oldestItem = sorted[0]?.created || null;
+    const newestItem = sorted[sorted.length - 1]?.created || null;
+    // Average content length
+    const totalLength = allKnowledge.reduce((sum, item) => sum + item.content.length, 0);
+    const averageContentLength = allKnowledge.length > 0 ? Math.round(totalLength / allKnowledge.length) : 0;
+    // Count links
+    let totalLinks = 0;
+    for (const item of allKnowledge) {
+        totalLinks += item.links?.length || 0;
     }
-}
-try { }
-catch (error) {
+    // Knowledge health score
+    const taggedRatio = allKnowledge.filter(i => i.tags.length > 0).length / Math.max(allKnowledge.length, 1);
+    const linkedRatio = allKnowledge.filter(i => (i.links?.length || 0) > 0).length / Math.max(allKnowledge.length, 1);
+    const knowledgeHealth = Math.round((taggedRatio * 40 + linkedRatio * 30 + Math.min(allKnowledge.length / 50, 1) * 30));
     return {
-        totalItems: 0, totalTags: 0, totalLinks: 0,
-        typesBreakdown: {}, topTags: [], recentActivity: [],
-        oldestItem: null, newestItem: null,
-        averageContentLength: 0, knowledgeHealth: 0,
+        totalItems: allKnowledge.length,
+        totalTags: Object.keys(tags).length,
+        totalLinks,
+        typesBreakdown,
+        topTags,
+        recentActivity: allKnowledge.slice(0, 5).map(i => ({
+            id: i.id,
+            title: i.title,
+            action: "created",
+            date: i.created,
+        })),
+        oldestItem,
+        newestItem,
+        averageContentLength,
+        knowledgeHealth,
     };
 }
 export async function getAnalyticsInsights(vaultPath) {
