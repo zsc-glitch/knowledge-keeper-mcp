@@ -2,7 +2,7 @@
 
 > 🧠 **Give your AI agent long-term memory** — 30 MCP tools, zero API keys, works with Claude Code, Cursor, Gemini CLI, Windsurf, hermes-agent
 >
-> **v1.4.3** — [npm](https://npm.im/@zsc-glitch/knowledge-keeper-mcp) | [GitHub](https://github.com/zsc-glitch/knowledge-keeper-mcp) | [Quick Start](QUICKSTART.md) | [Landing Page](https://zsc-glitch.github.io/knowledge-keeper-mcp/) | [Blog](blog/how-i-built-ai-memory-mcp.md)
+> **v1.4.5** — [npm](https://npm.im/@zsc-glitch/knowledge-keeper-mcp) | [GitHub](https://github.com/zsc-glitch/knowledge-keeper-mcp) | [Quick Start](QUICKSTART.md) | [Landing Page](https://zsc-glitch.github.io/knowledge-keeper-mcp/) | [Blog](blog/how-i-built-ai-memory-mcp.md)
 
 ![Knowledge Keeper MCP](demo.svg)
 
@@ -209,6 +209,7 @@ node dist/index.js  # Start server
 
 | Version | Highlights |
 |---------|-----------|
+| **1.4.5** | serverInfo version fix |
 | **1.4.3** | MCP Registry support (mcpName), Dockerfile for Glama |
 | **1.4.0** | Hybrid search (RRF), BM25 R@5=95%, 30 tools |
 | **1.3.0** | Real version history (list/get/diff/rollback) |
