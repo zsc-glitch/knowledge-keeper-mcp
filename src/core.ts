@@ -494,7 +494,7 @@ export async function listTags(): Promise<Record<string, number>> {
   return tagsWithCount;
 }
 
-// 回顾知识点
+// 回顾知识点（使用内存索引，避免文件扫描）
 export async function reviewKnowledge(params: {
   period?: "today" | "week" | "month" | "all";
   type?: KnowledgeType;
@@ -518,35 +518,25 @@ export async function reviewKnowledge(params: {
       startDate = new Date(0);
   }
 
-  const types: KnowledgeType[] = params.type ? [params.type] : ["concept", "decision", "todo", "note", "project"];
-  const results: KnowledgePoint[] = [];
+  // Use in-memory index instead of file scanning (10-100x faster)
+  const index = await loadIndex(vaultDir);
+  let candidates = index.entries;
 
-  for (const type of types) {
-    const typeDir = path.join(vaultDir, getTypeDir(type));
-    try {
-      const files = await fs.readdir(typeDir);
-      for (const file of files) {
-        if (!file.endsWith(".md")) continue;
-
-        const filepath = path.join(typeDir, file);
-        const content = await fs.readFile(filepath, "utf-8");
-        const kp = parseMarkdown(content, filepath);
-
-        if (kp && new Date(kp.created) >= startDate) {
-          results.push(kp);
-        }
-      }
-    } catch {
-      continue;
-    }
+  // Filter by type
+  if (params.type) {
+    candidates = candidates.filter(kp => kp.type === params.type);
   }
 
-  results.sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
+  // Filter by date
+  candidates = candidates.filter(kp => new Date(kp.created) >= startDate);
+
+  // Sort by created time (most recent first)
+  candidates.sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
 
   const stats: Record<KnowledgeType, number> = { concept: 0, decision: 0, todo: 0, note: 0, project: 0 };
-  for (const kp of results) stats[kp.type]++;
+  for (const kp of candidates) stats[kp.type]++;
 
-  return { stats, recent: results.slice(0, 10) };
+  return { stats, recent: candidates.slice(0, 10) };
 }
 
 // 语义搜索
@@ -724,11 +714,12 @@ export async function addLink(
   const fromKP = await getKnowledge(from);
   if (fromKP && !fromKP.links.includes(to)) {
     fromKP.links.push(to);
-    await updateKnowledge(from, { content: fromKP.content });
-    // 重新写入 links 字段
+    // Write directly — avoid double write via updateKnowledge
     const filepath = await findKnowledgeFile(vaultDir, from);
     if (filepath) {
+      fromKP.updated = new Date().toISOString();
       await fs.writeFile(filepath, formatMarkdown(fromKP), "utf-8");
+      await updateIndex(vaultDir, fromKP, "update");
     }
   }
 }
