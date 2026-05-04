@@ -2,7 +2,7 @@
 
 > 🧠 **Give your AI agent long-term memory** — 32 MCP tools, zero API keys, works with Claude Code, Cursor, Gemini CLI, Windsurf, hermes-agent
 >
-> **v1.5.0** — [npm](https://npm.im/@zsc-glitch/knowledge-keeper-mcp) | [GitHub](https://github.com/zsc-glitch/knowledge-keeper-mcp) | [Quick Start](QUICKSTART.md) | [Landing Page](https://zsc-glitch.github.io/knowledge-keeper-mcp/) | [Blog](blog/how-i-built-ai-memory-mcp.md)
+> **v1.6.0** — [npm](https://npm.im/@zsc-glitch/knowledge-keeper-mcp) | [GitHub](https://github.com/zsc-glitch/knowledge-keeper-mcp) | [Quick Start](QUICKSTART.md) | [Landing Page](https://zsc-glitch.github.io/knowledge-keeper-mcp/) | [Blog](blog/how-i-built-ai-memory-mcp.md)
 
 ![Knowledge Keeper MCP](demo.svg)
 
@@ -10,13 +10,14 @@
 
 ## ✨ Features
 
-- ✅ **31 MCP Tools** — Complete knowledge management toolkit
+- ✅ **32 MCP Tools** — Complete knowledge management toolkit
 - ✅ **Hybrid Search** — BM25 (R@5=95%) + TF-IDF semantic + RRF fusion
 - ✅ **Knowledge Graph** — Entity detection, relationships, Mermaid visualization
 - ✅ **Analytics** — Overview, quality insights, timeline
 - ✅ **Version History** — Diff & rollback any change
 - ✅ **Obsidian Compatible** — Read/write with Obsidian vault
 - ✅ **Audit Trail** — SHA256 hash chain, integrity verification
+- ✅ **Duplicate Detection** — Find and merge similar knowledge points
 - ✅ **Spaced Repetition** — Never forget what you've learned
 - ✅ **Cloud Sync (Pro)** — End-to-end encrypted, multi-device
 - ✅ **Local-First** — All data on your machine, private by default
