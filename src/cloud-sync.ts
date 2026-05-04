@@ -13,7 +13,23 @@ import { readFile, writeFile, mkdir } from "fs/promises";
 import { existsSync } from "fs";
 import { join } from "path";
 import { createHash, createCipheriv, createDecipheriv, randomBytes } from "crypto";
-import { searchKnowledge, saveKnowledge, type KnowledgePoint } from "./core.js";
+import { saveKnowledge, type KnowledgePoint } from "./core.js";
+import * as os from "os";
+import * as fs from "fs/promises";
+import * as pathModule from "path";
+
+// Direct index reader — avoids searchKnowledge overhead for cloud sync
+async function loadAllEntries(): Promise<KnowledgePoint[]> {
+  const vaultDir = (process.env.KNOWLEDGE_KEEPER_DIR || "~/.knowledge-vault").replace("~", os.homedir());
+  const indexPath = pathModule.join(vaultDir, "index.json");
+  try {
+    const content = await fs.readFile(indexPath, "utf-8");
+    const parsed = JSON.parse(content);
+    return parsed.entries || [];
+  } catch {
+    return [];
+  }
+}
 
 // ============================================================
 // Types
@@ -205,7 +221,7 @@ async function detectLocalChanges(
   vaultPath: string,
   manifest: SyncManifest
 ): Promise<{ changed: KnowledgePoint[]; deleted: string[] }> {
-  const allKnowledge = await searchKnowledge({ query: "", limit: 10000 });
+  const allKnowledge = await loadAllEntries();
   const currentIds = new Set(allKnowledge.map((k) => k.id));
 
   // Find changed items
@@ -322,6 +338,9 @@ export async function pullChanges(config: SyncConfig): Promise<{
   let pulled = 0;
   let conflicts = 0;
 
+  // Load local knowledge once for the entire loop (avoid repeated file reads)
+  const localKnowledgeCache = await loadAllEntries();
+
   // Apply remote changes
   for (const item of remoteItems) {
     try {
@@ -329,8 +348,7 @@ export async function pullChanges(config: SyncConfig): Promise<{
       const entry: KnowledgePoint = JSON.parse(decrypted);
 
       const localRecord = manifest.items[item.id];
-      const localKnowledge = await searchKnowledge({ query: "", limit: 10000 });
-      const localEntry = localKnowledge.find((e) => e.id === item.id);
+      const localEntry = localKnowledgeCache.find((e) => e.id === item.id);
 
       if (localRecord && localEntry) {
         // Potential conflict - local has changes too
@@ -343,13 +361,12 @@ export async function pullChanges(config: SyncConfig): Promise<{
       }
 
       // Save the remote entry locally
-      const allKnowledge = await searchKnowledge({ query: "", limit: 10000 });
-      const existingIdx = allKnowledge.findIndex((e) => e.id === item.id);
+      const existingIdx = localKnowledgeCache.findIndex((e) => e.id === item.id);
 
       if (existingIdx >= 0) {
-        allKnowledge[existingIdx] = entry;
+        localKnowledgeCache[existingIdx] = entry;
       } else {
-        allKnowledge.push(entry);
+        localKnowledgeCache.push(entry);
       }
 
       // We would save here - simplified for now

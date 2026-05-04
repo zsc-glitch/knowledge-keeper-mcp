@@ -8,7 +8,22 @@
 import { z } from "zod";
 import * as fs from "fs/promises";
 import * as path from "path";
-import { saveKnowledge, searchKnowledge, listTags } from "../core.js";
+import { saveKnowledge, listTags } from "../core.js";
+import * as coreFs from "fs/promises";
+import * as os from "os";
+// Direct index reader — avoids searchKnowledge overhead for sync operations
+async function loadAllEntries() {
+    const vaultDir = (process.env.KNOWLEDGE_KEEPER_DIR || "~/.knowledge-vault").replace("~", os.homedir());
+    const indexPath = path.join(vaultDir, "index.json");
+    try {
+        const content = await coreFs.readFile(indexPath, "utf-8");
+        const parsed = JSON.parse(content);
+        return parsed.entries || [];
+    }
+    catch {
+        return [];
+    }
+}
 const SyncSchema = z.object({
     action: z.enum(["status", "pull", "push", "diff"]).default("status").describe("同步操作"),
     source: z.string().optional().describe("同步源路径（Obsidian vault路径）"),
@@ -79,7 +94,7 @@ export function registerSyncTool(server) {
  */
 async function getSyncStatus() {
     const tags = await listTags();
-    const allKP = await searchKnowledge({ query: "", limit: 100 });
+    const allKP = await loadAllEntries();
     let output = `📊 **同步状态**\n\n`;
     output += `本地知识点: ${allKP.length}\n`;
     output += `标签数量: ${Object.keys(tags).length}\n\n`;
@@ -163,7 +178,7 @@ async function pullFromSource(sourcePath) {
  * 推送到源
  */
 async function pushToSource(sourcePath) {
-    const allKP = await searchKnowledge({ query: "", limit: 100 });
+    const allKP = await loadAllEntries();
     let pushed = 0;
     let errors = 0;
     // 确保目录存在
@@ -208,7 +223,7 @@ async function pushToSource(sourcePath) {
  * 比较差异
  */
 async function compareDiff(sourcePath) {
-    const localKP = await searchKnowledge({ query: "", limit: 100 });
+    const localKP = await loadAllEntries();
     const localIds = new Set(localKP.map(kp => kp.id));
     // 源端知识点（简化检测）
     let sourceCount = 0;

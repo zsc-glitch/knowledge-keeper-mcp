@@ -10,7 +10,22 @@ import type { McpServer } from "@modelcontextprotocol/server";
 import { z } from "zod";
 import * as fs from "fs/promises";
 import * as path from "path";
-import { saveKnowledge, searchKnowledge, listTags } from "../core.js";
+import { saveKnowledge, listTags } from "../core.js";
+import * as coreFs from "fs/promises";
+import * as os from "os";
+
+// Direct index reader — avoids searchKnowledge overhead for sync operations
+async function loadAllEntries(): Promise<Array<{ id: string; type: string; title: string; content: string; tags: string[]; links: string[]; created: string; updated: string }>> {
+  const vaultDir = (process.env.KNOWLEDGE_KEEPER_DIR || "~/.knowledge-vault").replace("~", os.homedir());
+  const indexPath = path.join(vaultDir, "index.json");
+  try {
+    const content = await coreFs.readFile(indexPath, "utf-8");
+    const parsed = JSON.parse(content);
+    return parsed.entries || [];
+  } catch {
+    return [];
+  }
+}
 
 const SyncSchema = z.object({
   action: z.enum(["status", "pull", "push", "diff"]).default("status").describe("同步操作"),
@@ -92,7 +107,7 @@ export function registerSyncTool(server: McpServer): void {
  */
 async function getSyncStatus() {
   const tags = await listTags();
-  const allKP = await searchKnowledge({ query: "", limit: 100 });
+  const allKP = await loadAllEntries();
 
   let output = `📊 **同步状态**\n\n`;
   output += `本地知识点: ${allKP.length}\n`;
@@ -183,7 +198,7 @@ async function pullFromSource(sourcePath: string) {
  * 推送到源
  */
 async function pushToSource(sourcePath: string) {
-  const allKP = await searchKnowledge({ query: "", limit: 100 });
+  const allKP = await loadAllEntries();
   let pushed = 0;
   let errors = 0;
 
@@ -233,7 +248,7 @@ async function pushToSource(sourcePath: string) {
  * 比较差异
  */
 async function compareDiff(sourcePath: string) {
-  const localKP = await searchKnowledge({ query: "", limit: 100 });
+  const localKP = await loadAllEntries();
   const localIds = new Set(localKP.map(kp => kp.id));
 
   // 源端知识点（简化检测）

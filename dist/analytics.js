@@ -3,13 +3,28 @@
  * Insights, patterns, and statistics about your knowledge base
  * Free tier: basic stats | Pro tier: advanced analytics
  */
-import { searchKnowledge } from "./core.js";
+import * as fs from "fs/promises";
+import * as path from "path";
+import * as os from "os";
 import { listTags } from "./core.js";
+// Direct index reader — avoids searchKnowledge overhead for analytics
+async function loadAllEntries() {
+    const vaultDir = (process.env.KNOWLEDGE_KEEPER_DIR || "~/.knowledge-vault").replace("~", os.homedir());
+    const indexPath = path.join(vaultDir, "index.json");
+    try {
+        const content = await fs.readFile(indexPath, "utf-8");
+        const parsed = JSON.parse(content);
+        return parsed.entries || [];
+    }
+    catch {
+        return [];
+    }
+}
 // ============================================================
 // Analytics Functions
 // ============================================================
 export async function getAnalyticsOverview(vaultPath) {
-    const allKnowledge = await searchKnowledge({ query: "", limit: 10000 });
+    const allKnowledge = await loadAllEntries();
     const tags = await listTags();
     // Type breakdown
     const typesBreakdown = {};
@@ -56,7 +71,7 @@ export async function getAnalyticsOverview(vaultPath) {
     };
 }
 export async function getAnalyticsInsights(vaultPath) {
-    const allKnowledge = await searchKnowledge({ query: "", limit: 10000 });
+    const allKnowledge = await loadAllEntries();
     const now = new Date();
     const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000).toISOString();
     // Orphan items (no tags AND no links)
@@ -97,7 +112,7 @@ export async function getAnalyticsInsights(vaultPath) {
     };
 }
 export async function getAnalyticsTimeline(vaultPath) {
-    const allKnowledge = await searchKnowledge({ query: "", limit: 10000 });
+    const allKnowledge = await loadAllEntries();
     const daily = {};
     const weekly = {};
     const monthly = {};

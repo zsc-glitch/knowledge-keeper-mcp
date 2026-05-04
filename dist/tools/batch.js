@@ -7,7 +7,7 @@
  * - 添加标签
  */
 import { z } from "zod";
-import { deleteKnowledge, updateKnowledge, searchKnowledge } from "../core.js";
+import { deleteKnowledge, updateKnowledge, searchKnowledge, getKnowledge, saveKnowledge } from "../core.js";
 const BatchSchema = z.object({
     action: z.enum(["delete", "add_tags", "remove_tags", "update_type"]).describe("批量操作类型"),
     ids: z.array(z.string()).optional().describe("知识点ID列表"),
@@ -96,11 +96,48 @@ export function registerBatchTool(server) {
                     // 移除标签需要先获取知识点
                     for (const id of targetIds) {
                         try {
-                            // 获取当前标签并过滤
-                            const kp = await searchKnowledge({ query: id, limit: 1 });
-                            if (kp.length > 0) {
-                                const newTags = kp[0].tags.filter(t => !tags.includes(t));
+                            const kp = await getKnowledge(id);
+                            if (kp) {
+                                const newTags = kp.tags.filter(t => !tags.includes(t));
                                 await updateKnowledge(id, { tags: newTags });
+                                processed++;
+                            }
+                            else {
+                                failed++;
+                            }
+                        }
+                        catch {
+                            failed++;
+                        }
+                    }
+                    break;
+                case "update_type":
+                    if (!type) {
+                        return {
+                            content: [{
+                                    type: "text",
+                                    text: `❌ 请提供 type 参数`,
+                                }],
+                        };
+                    }
+                    // 修改类型需要重新保存知识点到新目录
+                    for (const id of targetIds) {
+                        try {
+                            const kp = await getKnowledge(id);
+                            if (kp && kp.type !== type) {
+                                // Update with new type - save new, delete old
+                                const newKp = await saveKnowledge({
+                                    type,
+                                    title: kp.title,
+                                    content: kp.content,
+                                    tags: kp.tags,
+                                    links: kp.links,
+                                });
+                                await deleteKnowledge(id);
+                                processed++;
+                            }
+                            else if (kp && kp.type === type) {
+                                // Already the target type, skip
                                 processed++;
                             }
                             else {

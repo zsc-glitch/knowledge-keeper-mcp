@@ -346,11 +346,33 @@ export async function getGraphStats(): Promise<{
     entityTypeCounts[e.type]++;
   }
 
+  // Calculate coverage: ratio of knowledge points that have at least one entity mention
+  let coverage = 0;
+  if (graph.entities.length > 0) {
+    const sourceIdSet = new Set<string>();
+    for (const e of graph.entities) {
+      for (const sid of e.sourceIds) {
+        sourceIdSet.add(sid);
+      }
+    }
+    // Also count knowledge points that are relation sources
+    for (const r of graph.relations) {
+      // If sourceId looks like a knowledge point ID (kp-*)
+      if (r.sourceId.startsWith("kp-")) {
+        sourceIdSet.add(r.sourceId);
+      }
+    }
+    // Coverage = entities with source / total entities (as a base ratio)
+    // A simpler metric: how many entities have at least one source
+    const entitiesWithSources = graph.entities.filter(e => e.sourceIds.length > 0).length;
+    coverage = graph.entities.length > 0 ? Math.round((entitiesWithSources / graph.entities.length) * 100) : 0;
+  }
+
   return {
     entityCount: graph.entities.length,
     relationCount: graph.relations.length,
     entityTypeCounts,
-    coverage: 0, // TODO: calculate based on knowledge points
+    coverage,
   };
 }
 

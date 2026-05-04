@@ -33,6 +33,8 @@ import { registerCloudSyncTools } from "./cloud-sync.js";
 import { registerAnalyticsTools } from "./analytics.js";
 // Hybrid Search
 import { registerHybridSearchTool } from "./hybrid-search.js";
+// Recent Knowledge
+import { registerRecentTool } from "./recent.js";
 
 export function registerTools(server: McpServer): void {
   registerSaveTool(server);
@@ -65,4 +67,6 @@ export function registerTools(server: McpServer): void {
   registerAnalyticsTools(server);
   // Hybrid Search
   registerHybridSearchTool(server);
+  // Recent Knowledge
+  registerRecentTool(server);
 }

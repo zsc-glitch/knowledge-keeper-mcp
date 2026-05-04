@@ -6,10 +6,17 @@
 import { McpServer, StdioServerTransport } from "@modelcontextprotocol/server";
 import { registerTools } from "./tools/index.js";
 import { registerResources } from "./resources/index.js";
+import { readFileSync } from "fs";
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
+// 自动读取 package.json 版本，避免手动维护
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const pkg = JSON.parse(readFileSync(join(__dirname, "../package.json"), "utf-8"));
 // MCP Server 配置
 const server = new McpServer({
     name: "knowledge-keeper",
-    version: "1.4.4",
+    version: pkg.version,
 });
 // 注册 Tools
 registerTools(server);

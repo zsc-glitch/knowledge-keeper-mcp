@@ -14,7 +14,22 @@ import {
   queryEntity,
   saveGraph,
 } from "../graph.js";
-import { searchKnowledge } from "../core.js";
+import * as fs from "fs/promises";
+import * as path from "path";
+import * as os from "os";
+
+// Direct index reader — avoids searchKnowledge overhead for graph building
+async function loadAllEntries(): Promise<Array<{ id: string; title: string; content: string }>> {
+  const vaultDir = (process.env.KNOWLEDGE_KEEPER_DIR || "~/.knowledge-vault").replace("~", os.homedir());
+  const indexPath = path.join(vaultDir, "index.json");
+  try {
+    const content = await fs.readFile(indexPath, "utf-8");
+    const parsed = JSON.parse(content);
+    return parsed.entries || [];
+  } catch {
+    return [];
+  }
+}
 
 export function registerGraphBuildTool(server: McpServer): void {
   server.registerTool(
@@ -45,11 +60,8 @@ export function registerGraphBuildTool(server: McpServer): void {
           };
         }
 
-        // 获取知识点
-        const knowledge = await searchKnowledge({
-          query: "",
-          limit: 1000,
-        });
+        // 获取知识点（直接读索引，避免搜索开销）
+        const knowledge = await loadAllEntries();
 
         const targetKnowledge = sourceIds
           ? knowledge.filter(kp => sourceIds.includes(kp.id))

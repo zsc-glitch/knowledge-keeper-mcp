@@ -4,9 +4,27 @@
  * Free tier: basic stats | Pro tier: advanced analytics
  */
 
-import { searchKnowledge, type KnowledgePoint } from "./core.js";
+import * as fs from "fs/promises";
+import * as path from "path";
+import * as os from "os";
 import { listTags } from "./core.js";
 import { loadGraph, type KnowledgeGraphIndex } from "./graph.js";
+
+// Direct index reader — avoids searchKnowledge overhead for analytics
+async function loadAllEntries(): Promise<KnowledgePoint[]> {
+  const vaultDir = (process.env.KNOWLEDGE_KEEPER_DIR || "~/.knowledge-vault").replace("~", os.homedir());
+  const indexPath = path.join(vaultDir, "index.json");
+  try {
+    const content = await fs.readFile(indexPath, "utf-8");
+    const parsed = JSON.parse(content);
+    return parsed.entries || [];
+  } catch {
+    return [];
+  }
+}
+
+// Re-export KnowledgePoint type from core for local use
+import type { KnowledgePoint } from "./core.js";
 
 // ============================================================
 // Types
@@ -48,7 +66,7 @@ export interface AnalyticsTimeline {
 // ============================================================
 
 export async function getAnalyticsOverview(vaultPath: string): Promise<AnalyticsOverview> {
-  const allKnowledge = await searchKnowledge({ query: "", limit: 10000 });
+  const allKnowledge = await loadAllEntries();
   const tags = await listTags();
 
   // Type breakdown
@@ -103,7 +121,7 @@ export async function getAnalyticsOverview(vaultPath: string): Promise<Analytics
 }
 
 export async function getAnalyticsInsights(vaultPath: string): Promise<AnalyticsInsights> {
-  const allKnowledge = await searchKnowledge({ query: "", limit: 10000 });
+  const allKnowledge = await loadAllEntries();
 
   const now = new Date();
   const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000).toISOString();
@@ -154,7 +172,7 @@ export async function getAnalyticsInsights(vaultPath: string): Promise<Analytics
 }
 
 export async function getAnalyticsTimeline(vaultPath: string): Promise<AnalyticsTimeline> {
-  const allKnowledge = await searchKnowledge({ query: "", limit: 10000 });
+  const allKnowledge = await loadAllEntries();
 
   const daily: Record<string, number> = {};
   const weekly: Record<string, number> = {};

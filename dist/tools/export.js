@@ -10,7 +10,24 @@ import { z } from "zod";
 import * as fs from "fs/promises";
 import * as path from "path";
 import * as os from "os";
-import { searchKnowledge, listTags } from "../core.js";
+import { listTags } from "../core.js";
+import * as coreFs from "fs/promises";
+function getVaultDir() {
+    const dir = process.env.KNOWLEDGE_KEEPER_DIR || "~/.knowledge-vault";
+    return dir.replace("~", os.homedir());
+}
+// Read index directly — avoids searchKnowledge overhead for bulk listing
+async function loadIndexEntries(vaultDir) {
+    const indexPath = path.join(vaultDir, "index.json");
+    try {
+        const content = await coreFs.readFile(indexPath, "utf-8");
+        const parsed = JSON.parse(content);
+        return parsed.entries || [];
+    }
+    catch {
+        return [];
+    }
+}
 const ExportSchema = z.object({
     format: z.enum(["json", "markdown", "csv"]).default("json").describe("导出格式"),
     type: z.enum(["concept", "decision", "todo", "note", "project"]).optional().describe("知识类型筛选"),
@@ -25,13 +42,20 @@ export function registerExportTool(server) {
     }, async (params) => {
         const { format, type, tags, limit } = params;
         try {
-            // 搜索知识点
-            const results = await searchKnowledge({
-                query: "",
-                type: type,
-                tags: tags,
-                limit: limit,
-            });
+            // Read index directly — much faster than searchKnowledge for bulk export
+            const vaultDir = getVaultDir();
+            let results = await loadIndexEntries(vaultDir);
+            // Filter by type
+            if (type) {
+                results = results.filter(kp => kp.type === type);
+            }
+            // Filter by tags
+            if (tags && tags.length > 0) {
+                results = results.filter(kp => tags.every(tag => kp.tags.some(t => t.toLowerCase().includes(tag.toLowerCase()))));
+            }
+            // Sort by updated time and apply limit
+            results.sort((a, b) => b.updated.localeCompare(a.updated));
+            results = results.slice(0, limit);
             if (results.length === 0) {
                 return {
                     content: [{
@@ -104,7 +128,7 @@ export function registerExportTool(server) {
 function formatAsJSON(results) {
     return JSON.stringify({
         exportedAt: new Date().toISOString(),
-        version: "0.9.0",
+        version: "1.4.7",
         count: results.length,
         knowledge: results,
     }, null, 2);

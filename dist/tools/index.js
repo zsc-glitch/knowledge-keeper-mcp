@@ -31,6 +31,8 @@ import { registerCloudSyncTools } from "./cloud-sync.js";
 import { registerAnalyticsTools } from "./analytics.js";
 // Hybrid Search
 import { registerHybridSearchTool } from "./hybrid-search.js";
+// Recent Knowledge
+import { registerRecentTool } from "./recent.js";
 export function registerTools(server) {
     registerSaveTool(server);
     registerSearchTool(server);
@@ -62,5 +64,7 @@ export function registerTools(server) {
     registerAnalyticsTools(server);
     // Hybrid Search
     registerHybridSearchTool(server);
+    // Recent Knowledge
+    registerRecentTool(server);
 }
 //# sourceMappingURL=index.js.map

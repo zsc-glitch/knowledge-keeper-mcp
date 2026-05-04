@@ -12,7 +12,40 @@ import { z } from "zod";
 import * as fs from "fs/promises";
 import * as path from "path";
 import * as os from "os";
-import { getKnowledge, searchKnowledge, listTags, type KnowledgeType } from "../core.js";
+import { getKnowledge, listTags, type KnowledgeType } from "../core.js";
+import * as coreFs from "fs/promises";
+
+// Minimal index type for direct reads
+interface IndexData {
+  entries: Array<{
+    id: string;
+    type: KnowledgeType;
+    title: string;
+    content: string;
+    tags: string[];
+    links: string[];
+    created: string;
+    updated: string;
+    source: string;
+  }>;
+}
+
+function getVaultDir(): string {
+  const dir = process.env.KNOWLEDGE_KEEPER_DIR || "~/.knowledge-vault";
+  return dir.replace("~", os.homedir());
+}
+
+// Read index directly — avoids searchKnowledge overhead for bulk listing
+async function loadIndexEntries(vaultDir: string): Promise<IndexData["entries"]> {
+  const indexPath = path.join(vaultDir, "index.json");
+  try {
+    const content = await coreFs.readFile(indexPath, "utf-8");
+    const parsed = JSON.parse(content);
+    return parsed.entries || [];
+  } catch {
+    return [];
+  }
+}
 
 const ExportSchema = z.object({
   format: z.enum(["json", "markdown", "csv"]).default("json").describe("导出格式"),
@@ -33,13 +66,27 @@ export function registerExportTool(server: McpServer): void {
       const { format, type, tags, limit } = params;
 
       try {
-        // 搜索知识点
-        const results = await searchKnowledge({
-          query: "",
-          type: type,
-          tags: tags,
-          limit: limit,
-        });
+        // Read index directly — much faster than searchKnowledge for bulk export
+        const vaultDir = getVaultDir();
+        let results = await loadIndexEntries(vaultDir);
+
+        // Filter by type
+        if (type) {
+          results = results.filter(kp => kp.type === type);
+        }
+
+        // Filter by tags
+        if (tags && tags.length > 0) {
+          results = results.filter(kp =>
+            tags.every(tag =>
+              kp.tags.some(t => t.toLowerCase().includes(tag.toLowerCase()))
+            )
+          );
+        }
+
+        // Sort by updated time and apply limit
+        results.sort((a, b) => b.updated.localeCompare(a.updated));
+        results = results.slice(0, limit);
 
         if (results.length === 0) {
           return {
@@ -121,10 +168,10 @@ export function registerExportTool(server: McpServer): void {
 /**
  * JSON 格式
  */
-function formatAsJSON(results: Array<{ id: string; title: string; content: string; type: KnowledgeType; tags: string[]; created: string; updated: string }>): string {
+function formatAsJSON(results: Array<{ id: string; title: string; content: string; type: KnowledgeType; tags: string[]; links?: string[]; created: string; updated: string }>): string {
   return JSON.stringify({
     exportedAt: new Date().toISOString(),
-    version: "0.9.0",
+    version: "1.4.7",
     count: results.length,
     knowledge: results,
   }, null, 2);
