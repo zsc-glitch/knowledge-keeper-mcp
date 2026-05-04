@@ -1,12 +1,12 @@
 {
   "name": "knowledge-keeper-mcp",
-  "version": "1.4.2",
-  "description": "AI Memory & Knowledge Management — 30 MCP tools, BM25 + hybrid search, knowledge graph, Obsidian compatible, zero API keys",
+  "version": "1.5.0",
+  "description": "AI Memory & Knowledge Management — 31 MCP tools, BM25 + hybrid search, knowledge graph, Obsidian compatible, zero API keys",
   "author": "小影 (zsc-glitch)",
   "repository": "https://github.com/zsc-glitch/knowledge-keeper-mcp",
   "homepage": "https://zsc-glitch.github.io/knowledge-keeper-mcp/",
   "license": "MIT",
-  "tags": ["mcp", "memory", "knowledge", "search", "obsidian", "bm25", "graph", "cloud-sync", "audit"],
+  "tags": ["mcp", "memory", "knowledge", "search", "obsidian", "bm25", "graph", "cloud-sync", "audit", "analytics"],
   "tools": [
     "knowledge_save",
     "knowledge_get", 
@@ -33,6 +33,7 @@
     "knowledge_merge",
     "knowledge_bm25_stats",
     "knowledge_audit",
+    "knowledge_recent",
     "knowledge_analytics_overview",
     "knowledge_analytics_insights",
     "knowledge_analytics_timeline",
@@ -48,13 +49,13 @@
     "openclaw": true
   },
   "install": {
-    "npm": "npm install @zsc-glitch/knowledge-keeper-mcp",
+    "npm": "npx @zsc-glitch/knowledge-keeper-mcp@1.5.0",
     "claude-code": "claude mcp add knowledge-keeper -- npx @zsc-glitch/knowledge-keeper-mcp",
     "cursor": "Add to MCP config: {\"mcpServers\":{\"knowledge-keeper\":{\"command\":\"npx\",\"args\":[\"@zsc-glitch/knowledge-keeper-mcp\"]}}}",
     "gemini-cli": "Add to MCP config: {\"mcpServers\":{\"knowledge-keeper\":{\"command\":\"npx\",\"args\":[\"@zsc-glitch/knowledge-keeper-mcp\"]}}}"
   },
   "features": [
-    "30 MCP tools for complete knowledge management",
+    "31 MCP tools for complete knowledge management",
     "Hybrid search: BM25 keyword + TF-IDF semantic + RRF fusion",
     "Knowledge graph with entity detection and Mermaid visualization",
     "Obsidian vault compatible (read/write)",
@@ -63,7 +64,8 @@
     "Version history with diff and rollback",
     "End-to-end encrypted cloud sync (Pro)",
     "Zero AI dependency — no API keys needed",
-    "Knowledge analytics: overview, insights, timeline"
+    "Knowledge analytics: overview, insights, timeline",
+    "v1.5.0: 2-5x faster analytics/export/sync via direct index reads"
   ],
   "benchmark": {
     "bm25_recall_at_5": "95%",
