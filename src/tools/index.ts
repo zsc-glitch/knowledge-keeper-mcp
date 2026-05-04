@@ -37,6 +37,8 @@ import { registerHybridSearchTool } from "./hybrid-search.js";
 import { registerRecentTool } from "./recent.js";
 // Duplicate Detection
 import { registerDuplicatesTool } from "./duplicates.js";
+// Knowledge Context
+import { registerContextTool } from "./context.js";
 
 export function registerTools(server: McpServer): void {
   registerSaveTool(server);
@@ -73,4 +75,6 @@ export function registerTools(server: McpServer): void {
   registerRecentTool(server);
   // Duplicate Detection
   registerDuplicatesTool(server);
+  // Knowledge Context
+  registerContextTool(server);
 }
