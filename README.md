@@ -2,7 +2,7 @@
 
 > 🧠 **Give your AI agent long-term memory** — 32 MCP tools, zero API keys, works with Claude Code, Cursor, Gemini CLI, Windsurf, hermes-agent
 >
-> **v1.6.0** — [npm](https://npm.im/@zsc-glitch/knowledge-keeper-mcp) | [GitHub](https://github.com/zsc-glitch/knowledge-keeper-mcp) | [Quick Start](QUICKSTART.md) | [Landing Page](https://zsc-glitch.github.io/knowledge-keeper-mcp/) | [Blog](blog/how-i-built-ai-memory-mcp.md)
+> **v1.7.0** — [npm](https://npm.im/@zsc-glitch/knowledge-keeper-mcp) | [GitHub](https://github.com/zsc-glitch/knowledge-keeper-mcp) | [Quick Start](QUICKSTART.md) | [Landing Page](https://zsc-glitch.github.io/knowledge-keeper-mcp/) | [Blog](blog/how-i-built-ai-memory-mcp.md)
 
 ![Knowledge Keeper MCP](demo.svg)
 
@@ -18,6 +18,7 @@
 - ✅ **Obsidian Compatible** — Read/write with Obsidian vault
 - ✅ **Audit Trail** — SHA256 hash chain, integrity verification
 - ✅ **Duplicate Detection** — Find and merge similar knowledge points
+- ✅ **Context Explorer** — One-call knowledge neighborhood (links + tags + similar)
 - ✅ **Spaced Repetition** — Never forget what you've learned
 - ✅ **Cloud Sync (Pro)** — End-to-end encrypted, multi-device
 - ✅ **Local-First** — All data on your machine, private by default
@@ -95,6 +96,7 @@ Add to your hermes MCP config.
 | `knowledge_hybrid_search` | RRF fusion (BM25 + semantic, R@5=97%+) |
 | `knowledge_recent` | Recently added/updated entries |
 | `knowledge_duplicates` | Detect similar/duplicate knowledge points |
+| `knowledge_context` | Knowledge neighborhood explorer (links, tags, similar titles) |
 
 ### Knowledge Graph
 | Tool | Description |
@@ -231,6 +233,8 @@ node dist/index.js  # Start server
 
 | Version | Highlights |
 |---------|-----------|
+| **1.7.0** | Knowledge context explorer (1-call neighborhood), 32 tools |
+| **1.6.0** | Duplicate detection + merge suggestions, 32 tools |
 | **1.5.0** | Performance: 2-5x faster analytics/export/sync, knowledge_recent, batch update_type |
 | **1.4.7** | knowledge_recent tool, 32 tools |
 | **1.4.5** | serverInfo version fix |
@@ -251,10 +255,6 @@ node dist/index.js  # Start server
 ## License
 
 MIT — Free for commercial use.
-
----
-
-Made with 🧠 by [小影](https://github.com/zsc-glitch)
 
 ---
 
