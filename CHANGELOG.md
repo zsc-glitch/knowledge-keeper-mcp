@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.7.0] - 2026-05-05
+
+### 🆕 Knowledge Context Tool
+- **knowledge_context** tool — Knowledge neighborhood explorer: given a knowledge point ID, automatically gathers full contextual neighborhood
+  - **3 depth levels**: quick (links only), standard (+ shared tags), deep (+ similar titles)
+  - Traverses direct links, reverse links, shared tags, and title similarity
+  - Score-sorted results with relation reasons and relevance percentages
+  - Configurable max results (3-30, default 10)
+  - Valuable for AI agents: single-call context building replaces serial `search → get → get-linked` queries
+- Total tools: 31 → **32**
+
+### Why knowledge_context?
+AI agents working with knowledge bases often need to understand the "neighborhood" around a concept. Previously this required:
+1. `knowledge_get(id)` → get the target
+2. `knowledge_get_linked(id)` → get linked items
+3. `knowledge_search(query)` → find related by topic
+4. Manual synthesis of results
+
+Now, `knowledge_context` does all of this in a single call with intelligent scoring and ranking.
+
 ## [1.6.0] - 2026-05-04
 
 ### 🆕 Duplicate Detection Tool
