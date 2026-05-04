@@ -7,7 +7,7 @@ import { bm25Search } from "../core.js";
 export function registerBM25SearchTool(server) {
     server.registerTool("knowledge_bm25_search", {
         title: "BM25 搜索",
-        description: "使用 BM25 算法进行关键词检索（对标 memory-lancedb-pro）",
+        description: "使用 BM25 算法进行关键词检索，精准匹配查询词",
         inputSchema: z.object({
             query: z.string().describe("搜索关键词"),
             topK: z.number().optional().describe("返回数量（默认10）"),
