@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.1] - 2026-05-04
+
+### 🔧 Refactor: Extract loadAllEntries to core.ts
+
+Consolidated 6 duplicate `loadAllEntries()` implementations into a single public export from `core.ts`. Also fixed one additional `searchKnowledge({ query: "" })` in `resources/index.ts` that was missed in v1.5.0.
+
+**Changed:**
+- `loadAllEntries()` is now a public export from `core.ts` (reuses `loadIndex` with its 5-second cache)
+- Removed duplicate implementations from: analytics, cloud-sync, resources, tools/export, tools/graph-build, tools/recent, tools/sync
+- Fixed `resources/index.ts` using `searchKnowledge({ query: "" })` for type listing (14th instance)
+- Net: -263 lines of duplicate code
+
 ## [1.5.0] - 2026-05-04
 
 ### 🚀 Performance Optimization — Eliminate searchKnowledge Empty Query Anti-Pattern
