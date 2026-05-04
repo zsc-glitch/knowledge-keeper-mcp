@@ -35,6 +35,8 @@ import { registerAnalyticsTools } from "./analytics.js";
 import { registerHybridSearchTool } from "./hybrid-search.js";
 // Recent Knowledge
 import { registerRecentTool } from "./recent.js";
+// Duplicate Detection
+import { registerDuplicatesTool } from "./duplicates.js";
 
 export function registerTools(server: McpServer): void {
   registerSaveTool(server);
@@ -69,4 +71,6 @@ export function registerTools(server: McpServer): void {
   registerHybridSearchTool(server);
   // Recent Knowledge
   registerRecentTool(server);
+  // Duplicate Detection
+  registerDuplicatesTool(server);
 }

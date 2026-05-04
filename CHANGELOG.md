@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.6.0] - 2026-05-04
+
+### 🆕 Duplicate Detection Tool
+- **knowledge_duplicates** tool — Detect duplicate or similar knowledge points with configurable similarity threshold
+  - Supports title-only, content-only, or both (weighted: title 60%, content 40%)
+  - Jaccard similarity on word sets
+  - Returns groups of similar items with merge suggestions
+  - Integrates with `knowledge_merge` for one-click deduplication
+- Total tools: 31 → **32**
+
+### Changed
+- Extracted `loadAllEntries()` to core.ts as public export (was 6 duplicate private implementations)
+- Removed 263 lines of duplicate code
+- Fixed unused `searchKnowledge` import in hybrid-search.ts
+
 ## [1.5.1] - 2026-05-04
 
 ### 🔧 Refactor: Extract loadAllEntries to core.ts

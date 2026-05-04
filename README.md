@@ -1,6 +1,6 @@
 # Knowledge Keeper MCP
 
-> 🧠 **Give your AI agent long-term memory** — 31 MCP tools, zero API keys, works with Claude Code, Cursor, Gemini CLI, Windsurf, hermes-agent
+> 🧠 **Give your AI agent long-term memory** — 32 MCP tools, zero API keys, works with Claude Code, Cursor, Gemini CLI, Windsurf, hermes-agent
 >
 > **v1.5.0** — [npm](https://npm.im/@zsc-glitch/knowledge-keeper-mcp) | [GitHub](https://github.com/zsc-glitch/knowledge-keeper-mcp) | [Quick Start](QUICKSTART.md) | [Landing Page](https://zsc-glitch.github.io/knowledge-keeper-mcp/) | [Blog](blog/how-i-built-ai-memory-mcp.md)
 
@@ -93,6 +93,7 @@ Add to your hermes MCP config.
 | `knowledge_bm25_search` | BM25 keyword search (R@5=95%) |
 | `knowledge_hybrid_search` | RRF fusion (BM25 + semantic, R@5=97%+) |
 | `knowledge_recent` | Recently added/updated entries |
+| `knowledge_duplicates` | Detect similar/duplicate knowledge points |
 
 ### Knowledge Graph
 | Tool | Description |
@@ -230,10 +231,10 @@ node dist/index.js  # Start server
 | Version | Highlights |
 |---------|-----------|
 | **1.5.0** | Performance: 2-5x faster analytics/export/sync, knowledge_recent, batch update_type |
-| **1.4.7** | knowledge_recent tool, 31 tools |
+| **1.4.7** | knowledge_recent tool, 32 tools |
 | **1.4.5** | serverInfo version fix |
 | **1.4.3** | MCP Registry support (mcpName), Dockerfile for Glama |
-| **1.4.0** | Hybrid search (RRF), BM25 R@5=95%, 31 tools |
+| **1.4.0** | Hybrid search (RRF), BM25 R@5=95%, 32 tools |
 | **1.3.0** | Real version history (list/get/diff/rollback) |
 | **1.2.0** | Knowledge analytics (overview/insights/timeline) |
 | **1.1.0** | Cloud sync (Pro), 26 tools |

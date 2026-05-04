@@ -33,6 +33,8 @@ import { registerAnalyticsTools } from "./analytics.js";
 import { registerHybridSearchTool } from "./hybrid-search.js";
 // Recent Knowledge
 import { registerRecentTool } from "./recent.js";
+// Duplicate Detection
+import { registerDuplicatesTool } from "./duplicates.js";
 export function registerTools(server) {
     registerSaveTool(server);
     registerSearchTool(server);
@@ -66,5 +68,7 @@ export function registerTools(server) {
     registerHybridSearchTool(server);
     // Recent Knowledge
     registerRecentTool(server);
+    // Duplicate Detection
+    registerDuplicatesTool(server);
 }
 //# sourceMappingURL=index.js.map
