@@ -2,7 +2,7 @@
 
 > 🧠 **Give your AI agent long-term memory** — 31 MCP tools, zero API keys, works with Claude Code, Cursor, Gemini CLI, Windsurf, hermes-agent
 >
-> **v1.4.7** — [npm](https://npm.im/@zsc-glitch/knowledge-keeper-mcp) | [GitHub](https://github.com/zsc-glitch/knowledge-keeper-mcp) | [Quick Start](QUICKSTART.md) | [Landing Page](https://zsc-glitch.github.io/knowledge-keeper-mcp/) | [Blog](blog/how-i-built-ai-memory-mcp.md)
+> **v1.5.0** — [npm](https://npm.im/@zsc-glitch/knowledge-keeper-mcp) | [GitHub](https://github.com/zsc-glitch/knowledge-keeper-mcp) | [Quick Start](QUICKSTART.md) | [Landing Page](https://zsc-glitch.github.io/knowledge-keeper-mcp/) | [Blog](blog/how-i-built-ai-memory-mcp.md)
 
 ![Knowledge Keeper MCP](demo.svg)
 
@@ -23,6 +23,7 @@
 - ✅ **Zero AI Dependency** — No API keys needed. No OpenAI. No embeddings API.
 - ✅ **MIT Licensed** — Free for commercial use
 - ✅ **70 Tests Passing** — Reliable and tested
+- ✅ **Optimized Performance** — Direct index reads for 2-5x faster analytics/export/sync
 
 ## Why Knowledge Keeper?
 
@@ -228,6 +229,8 @@ node dist/index.js  # Start server
 
 | Version | Highlights |
 |---------|-----------|
+| **1.5.0** | Performance: 2-5x faster analytics/export/sync, knowledge_recent, batch update_type |
+| **1.4.7** | knowledge_recent tool, 31 tools |
 | **1.4.5** | serverInfo version fix |
 | **1.4.3** | MCP Registry support (mcpName), Dockerfile for Glama |
 | **1.4.0** | Hybrid search (RRF), BM25 R@5=95%, 30 tools |
