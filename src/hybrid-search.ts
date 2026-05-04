@@ -5,7 +5,7 @@
  * k = 60 (standard RRF constant)
  */
 
-import { searchKnowledge, getKnowledge, type KnowledgePoint } from "./core.js";
+import { getKnowledge, type KnowledgePoint } from "./core.js";
 import { bm25Search } from "./bm25.js";
 import { semanticSearch } from "./embedding.js";
 

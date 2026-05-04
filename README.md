@@ -233,7 +233,7 @@ node dist/index.js  # Start server
 | **1.4.7** | knowledge_recent tool, 31 tools |
 | **1.4.5** | serverInfo version fix |
 | **1.4.3** | MCP Registry support (mcpName), Dockerfile for Glama |
-| **1.4.0** | Hybrid search (RRF), BM25 R@5=95%, 30 tools |
+| **1.4.0** | Hybrid search (RRF), BM25 R@5=95%, 31 tools |
 | **1.3.0** | Real version history (list/get/diff/rollback) |
 | **1.2.0** | Knowledge analytics (overview/insights/timeline) |
 | **1.1.0** | Cloud sync (Pro), 26 tools |

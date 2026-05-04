@@ -20,7 +20,7 @@ npx @zsc-glitch/knowledge-keeper-mcp
 claude mcp add knowledge-keeper -- npx @zsc-glitch/knowledge-keeper-mcp
 ```
 
-That's it. Restart Claude Code and you'll have 30 memory tools.
+That's it. Restart Claude Code and you'll have 31 memory tools.
 
 ## Cursor
 
