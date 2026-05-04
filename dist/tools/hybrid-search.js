@@ -7,7 +7,7 @@ import { hybridSearch } from "../hybrid-search.js";
 export function registerHybridSearchTool(server) {
     server.registerTool("knowledge_hybrid_search", {
         title: "混合搜索",
-        description: "混合 BM25 关键词搜索 + 语义搜索，使用 Reciprocal Rank Fusion (RRF) 融合排序。Benchmark: R@5 = 95%",
+        description: "混合 BM25 关键词 + 语义搜索，使用 RRF 融合排序（R@5=95%）",
         inputSchema: z.object({
             query: z.string().describe("搜索查询"),
             limit: z.number().default(10).describe("返回结果数量"),
