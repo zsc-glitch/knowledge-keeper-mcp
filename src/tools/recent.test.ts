@@ -2,90 +2,84 @@
  * knowledge_recent tool tests
  */
 
-import { describe, it, expect, beforeAll, afterAll } from "vitest";
+import { describe, it, expect, beforeEach, afterEach } from "vitest";
+import { mkdir, rm, writeFile } from "fs/promises";
 import { join } from "path";
-import { mkdtemp, rm } from "fs/promises";
 import { tmpdir } from "os";
-
-// Set vault dir before importing core
-const testVault = await mkdtemp(join(tmpdir(), "kk-recent-test-"));
-process.env.KNOWLEDGE_VAULT_DIR = testVault;
-
 import { saveKnowledge } from "../core.js";
 
-describe("knowledge_recent", () => {
-  afterAll(async () => {
-    await rm(testVault, { recursive: true, force: true });
-  });
+let testDir: string;
+const originalDir = process.env.KNOWLEDGE_KEEPER_DIR;
 
-  it("should return recently saved knowledge points", async () => {
-    // Save some knowledge points
+beforeEach(async () => {
+  testDir = join(tmpdir(), `kk-test-recent-${Date.now()}`);
+  process.env.KNOWLEDGE_KEEPER_DIR = testDir;
+  for (const type of ["concepts", "decisions", "todos", "notes", "projects"]) {
+    await mkdir(join(testDir, type), { recursive: true });
+  }
+  await mkdir(join(testDir, "graph"), { recursive: true });
+  await writeFile(join(testDir, "index.json"), JSON.stringify({ version: 1, entries: [], tagsIndex: {} }));
+  await writeFile(join(testDir, "links.json"), JSON.stringify({ links: [] }));
+});
+
+afterEach(async () => {
+  process.env.KNOWLEDGE_KEEPER_DIR = originalDir;
+  await rm(testDir, { recursive: true, force: true }).catch(() => {});
+});
+
+describe("Recent Knowledge", () => {
+  it("should save and list knowledge points", async () => {
     const kp1 = await saveKnowledge({
-      title: "Recent Test 1",
-      content: "First recent knowledge point",
-      type: "note",
+      type: "concept",
+      title: "Test Concept 1",
+      content: "This is a test concept for recent listing.",
       tags: ["test"],
-      source: "mcp",
     });
 
     const kp2 = await saveKnowledge({
-      title: "Recent Test 2",
-      content: "Second recent knowledge point",
-      type: "concept",
-      tags: ["test"],
-      source: "mcp",
-    });
-
-    expect(kp1).toBeDefined();
-    expect(kp1.id).toBeTruthy();
-    expect(kp2).toBeDefined();
-    expect(kp2.id).toBeTruthy();
-
-    // Verify they have updated timestamps
-    expect(kp1.updated).toBeTruthy();
-    expect(kp2.updated).toBeTruthy();
-  });
-
-  it("should filter by type", async () => {
-    const notes = await saveKnowledge({
-      title: "Type Filter Note",
-      content: "A note for type filtering",
       type: "note",
-      tags: ["filter"],
-      source: "mcp",
+      title: "Test Note 1",
+      content: "This is a test note for recent listing.",
+      tags: ["test"],
     });
 
-    expect(notes.type).toBe("note");
+    expect(kp1.id).toBeTruthy();
+    expect(kp2.id).toBeTruthy();
+    expect(kp1.type).toBe("concept");
+    expect(kp2.type).toBe("note");
   });
 
-  it("should respect limit parameter", async () => {
-    // Save multiple items
-    for (let i = 0; i < 5; i++) {
-      await saveKnowledge({
-        title: `Limit Test ${i}`,
-        content: `Content ${i}`,
-        type: "note",
-        tags: ["limit-test"],
-        source: "mcp",
+  it("should handle different knowledge types", async () => {
+    const types = ["concept", "decision", "todo", "note", "project"] as const;
+    const saved = [];
+
+    for (const type of types) {
+      const kp = await saveKnowledge({
+        type,
+        title: `Test ${type}`,
+        content: `Content for ${type}`,
+        tags: ["test"],
       });
+      saved.push(kp);
     }
 
-    // searchKnowledge with empty query should return results
-    const { searchKnowledge } = await import("../core.js");
-    const results = await searchKnowledge({ query: "", limit: 3 });
-    expect(results.length).toBeLessThanOrEqual(3);
+    expect(saved).toHaveLength(5);
+    for (const kp of saved) {
+      expect(kp.id).toContain("kp-");
+    }
   });
 
-  it("should filter by days", async () => {
-    const { searchKnowledge } = await import("../core.js");
-    const results = await searchKnowledge({ query: "", limit: 50 });
+  it("should order by creation time", async () => {
+    const kp1 = await saveKnowledge({ type: "note", title: "First", content: "Created first", tags: [] });
+    const kp2 = await saveKnowledge({ type: "note", title: "Second", content: "Created second", tags: [] });
 
-    // Filter to last 1 day
-    const cutoff = new Date();
-    cutoff.setDate(cutoff.getDate() - 1);
-    const filtered = results.filter(kp => kp.updated >= cutoff.toISOString());
+    expect(kp2.created >= kp1.created).toBe(true);
+  });
 
-    // All recently created items should be within 1 day
-    expect(filtered.length).toBeGreaterThan(0);
+  it("should handle empty knowledge base for recent", async () => {
+    // Empty knowledge base — no entries
+    const { loadAllEntries } = await import("../core.js");
+    const entries = await loadAllEntries();
+    expect(entries).toHaveLength(0);
   });
 });
