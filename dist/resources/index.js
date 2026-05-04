@@ -2,7 +2,7 @@
  * MCP Resources 注册
  * 提供知识点的只读访问
  */
-import { listTags, searchKnowledge } from "../core.js";
+import { listTags, loadAllEntries } from "../core.js";
 export function registerResources(server) {
     // 资源列表（静态）
     server.registerResource("knowledge-list", "knowledge:///list", {
@@ -75,11 +75,8 @@ export function registerResources(server) {
             description: `列出所有${typeNames[type]}`,
             mimeType: "application/json",
         }, async () => {
-            const results = await searchKnowledge({
-                query: "",
-                type,
-                limit: 100,
-            });
+            const allEntries = await loadAllEntries();
+            const results = allEntries.filter(kp => kp.type === type);
             return {
                 contents: [
                     {

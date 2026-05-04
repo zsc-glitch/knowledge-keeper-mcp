@@ -13,23 +13,7 @@ import { readFile, writeFile, mkdir } from "fs/promises";
 import { existsSync } from "fs";
 import { join } from "path";
 import { createHash, createCipheriv, createDecipheriv, randomBytes } from "crypto";
-import { saveKnowledge, type KnowledgePoint } from "./core.js";
-import * as os from "os";
-import * as fs from "fs/promises";
-import * as pathModule from "path";
-
-// Direct index reader — avoids searchKnowledge overhead for cloud sync
-async function loadAllEntries(): Promise<KnowledgePoint[]> {
-  const vaultDir = (process.env.KNOWLEDGE_KEEPER_DIR || "~/.knowledge-vault").replace("~", os.homedir());
-  const indexPath = pathModule.join(vaultDir, "index.json");
-  try {
-    const content = await fs.readFile(indexPath, "utf-8");
-    const parsed = JSON.parse(content);
-    return parsed.entries || [];
-  } catch {
-    return [];
-  }
-}
+import { saveKnowledge, loadAllEntries, type KnowledgePoint } from "./core.js";
 
 // ============================================================
 // Types

@@ -6,13 +6,7 @@
  * avoiding unnecessary query filtering for a simple date-based listing.
  */
 import { z } from "zod";
-import * as fs from "fs/promises";
-import * as path from "path";
-import * as os from "os";
-function getVaultDir() {
-    const dir = process.env.KNOWLEDGE_KEEPER_DIR || "~/.knowledge-vault";
-    return dir.replace("~", os.homedir());
-}
+import { loadAllEntries } from "../core.js";
 export function registerRecentTool(server) {
     server.registerTool("knowledge_recent", {
         title: "最近知识",
@@ -29,19 +23,8 @@ export function registerRecentTool(server) {
             const days = params.days;
             const sortBy = params.sort_by || "updated";
             // Read index directly — much faster than searchKnowledge for listing
-            const vaultDir = getVaultDir();
-            const indexPath = path.join(vaultDir, "index.json");
-            let entries;
-            try {
-                const content = await fs.readFile(indexPath, "utf-8");
-                const parsed = JSON.parse(content);
-                entries = parsed.entries || [];
-            }
-            catch {
-                entries = [];
-            }
+            let candidates = await loadAllEntries();
             // Filter by type
-            let candidates = entries;
             if (params.type) {
                 candidates = candidates.filter(kp => kp.type === params.type);
             }
@@ -68,7 +51,7 @@ export function registerRecentTool(server) {
                 return `${i + 1}. [${kp.type}] **${kp.title}** (${date} ${time})\n   ${kp.content.slice(0, 100)}${kp.content.length > 100 ? "..." : ""}`;
             })
                 .join("\n\n");
-            const total = entries.length;
+            const total = candidates.length;
             return {
                 content: [{
                         type: "text",

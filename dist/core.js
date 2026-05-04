@@ -214,6 +214,13 @@ async function loadIndex(vaultDir) {
         return { version: 1, entries: [], tagsIndex: {} };
     }
 }
+// 获取所有知识点（直接从索引读取，不走搜索流程）
+// 适用于 analytics/export/sync/recent 等需要"全部条目"的场景
+export async function loadAllEntries() {
+    const vaultDir = getVaultDir();
+    const index = await loadIndex(vaultDir);
+    return index.entries;
+}
 // 更新索引
 async function updateIndex(vaultDir, kp, mode = "add") {
     const index = await loadIndex(vaultDir);

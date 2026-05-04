@@ -12,40 +12,7 @@ import { z } from "zod";
 import * as fs from "fs/promises";
 import * as path from "path";
 import * as os from "os";
-import { getKnowledge, listTags, type KnowledgeType } from "../core.js";
-import * as coreFs from "fs/promises";
-
-// Minimal index type for direct reads
-interface IndexData {
-  entries: Array<{
-    id: string;
-    type: KnowledgeType;
-    title: string;
-    content: string;
-    tags: string[];
-    links: string[];
-    created: string;
-    updated: string;
-    source: string;
-  }>;
-}
-
-function getVaultDir(): string {
-  const dir = process.env.KNOWLEDGE_KEEPER_DIR || "~/.knowledge-vault";
-  return dir.replace("~", os.homedir());
-}
-
-// Read index directly — avoids searchKnowledge overhead for bulk listing
-async function loadIndexEntries(vaultDir: string): Promise<IndexData["entries"]> {
-  const indexPath = path.join(vaultDir, "index.json");
-  try {
-    const content = await coreFs.readFile(indexPath, "utf-8");
-    const parsed = JSON.parse(content);
-    return parsed.entries || [];
-  } catch {
-    return [];
-  }
-}
+import { getKnowledge, listTags, loadAllEntries, type KnowledgeType } from "../core.js";
 
 const ExportSchema = z.object({
   format: z.enum(["json", "markdown", "csv"]).default("json").describe("导出格式"),
@@ -67,8 +34,7 @@ export function registerExportTool(server: McpServer): void {
 
       try {
         // Read index directly — much faster than searchKnowledge for bulk export
-        const vaultDir = getVaultDir();
-        let results = await loadIndexEntries(vaultDir);
+        let results = await loadAllEntries();
 
         // Filter by type
         if (type) {

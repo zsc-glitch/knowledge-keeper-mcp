@@ -10,24 +10,7 @@ import { z } from "zod";
 import * as fs from "fs/promises";
 import * as path from "path";
 import * as os from "os";
-import { listTags } from "../core.js";
-import * as coreFs from "fs/promises";
-function getVaultDir() {
-    const dir = process.env.KNOWLEDGE_KEEPER_DIR || "~/.knowledge-vault";
-    return dir.replace("~", os.homedir());
-}
-// Read index directly — avoids searchKnowledge overhead for bulk listing
-async function loadIndexEntries(vaultDir) {
-    const indexPath = path.join(vaultDir, "index.json");
-    try {
-        const content = await coreFs.readFile(indexPath, "utf-8");
-        const parsed = JSON.parse(content);
-        return parsed.entries || [];
-    }
-    catch {
-        return [];
-    }
-}
+import { listTags, loadAllEntries } from "../core.js";
 const ExportSchema = z.object({
     format: z.enum(["json", "markdown", "csv"]).default("json").describe("导出格式"),
     type: z.enum(["concept", "decision", "todo", "note", "project"]).optional().describe("知识类型筛选"),
@@ -43,8 +26,7 @@ export function registerExportTool(server) {
         const { format, type, tags, limit } = params;
         try {
             // Read index directly — much faster than searchKnowledge for bulk export
-            const vaultDir = getVaultDir();
-            let results = await loadIndexEntries(vaultDir);
+            let results = await loadAllEntries();
             // Filter by type
             if (type) {
                 results = results.filter(kp => kp.type === type);

@@ -4,7 +4,7 @@
  */
 
 import type { McpServer } from "@modelcontextprotocol/server";
-import { getKnowledge, listTags, searchKnowledge } from "../core.js";
+import { getKnowledge, listTags, loadAllEntries } from "../core.js";
 
 export function registerResources(server: McpServer): void {
   // 资源列表（静态）
@@ -105,11 +105,8 @@ export function registerResources(server: McpServer): void {
         mimeType: "application/json",
       },
       async () => {
-        const results = await searchKnowledge({
-          query: "",
-          type,
-          limit: 100,
-        });
+        const allEntries = await loadAllEntries();
+        const results = allEntries.filter(kp => kp.type === type);
 
         return {
           contents: [

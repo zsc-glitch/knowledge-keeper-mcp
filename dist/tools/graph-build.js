@@ -4,22 +4,7 @@
  */
 import { z } from "zod";
 import { detectEntities, addEntity, addRelation, getGraphStats, loadGraph, queryEntity, saveGraph, } from "../graph.js";
-import * as fs from "fs/promises";
-import * as path from "path";
-import * as os from "os";
-// Direct index reader — avoids searchKnowledge overhead for graph building
-async function loadAllEntries() {
-    const vaultDir = (process.env.KNOWLEDGE_KEEPER_DIR || "~/.knowledge-vault").replace("~", os.homedir());
-    const indexPath = path.join(vaultDir, "index.json");
-    try {
-        const content = await fs.readFile(indexPath, "utf-8");
-        const parsed = JSON.parse(content);
-        return parsed.entries || [];
-    }
-    catch {
-        return [];
-    }
-}
+import { loadAllEntries } from "../core.js";
 export function registerGraphBuildTool(server) {
     server.registerTool("knowledge_graph_build", {
         title: "构建知识图谱",

@@ -23,6 +23,7 @@ export declare class KnowledgeError extends Error {
 }
 export declare function getVaultDir(): string;
 export declare function generateId(type: KnowledgeType): string;
+export declare function loadAllEntries(): Promise<KnowledgePoint[]>;
 export declare function saveKnowledge(params: {
     type: KnowledgeType;
     title: string;

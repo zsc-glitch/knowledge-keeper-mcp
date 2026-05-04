@@ -8,22 +8,7 @@
 import { z } from "zod";
 import * as fs from "fs/promises";
 import * as path from "path";
-import { saveKnowledge, listTags } from "../core.js";
-import * as coreFs from "fs/promises";
-import * as os from "os";
-// Direct index reader — avoids searchKnowledge overhead for sync operations
-async function loadAllEntries() {
-    const vaultDir = (process.env.KNOWLEDGE_KEEPER_DIR || "~/.knowledge-vault").replace("~", os.homedir());
-    const indexPath = path.join(vaultDir, "index.json");
-    try {
-        const content = await coreFs.readFile(indexPath, "utf-8");
-        const parsed = JSON.parse(content);
-        return parsed.entries || [];
-    }
-    catch {
-        return [];
-    }
-}
+import { saveKnowledge, listTags, loadAllEntries } from "../core.js";
 const SyncSchema = z.object({
     action: z.enum(["status", "pull", "push", "diff"]).default("status").describe("同步操作"),
     source: z.string().optional().describe("同步源路径（Obsidian vault路径）"),

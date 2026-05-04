@@ -14,22 +14,7 @@ import {
   queryEntity,
   saveGraph,
 } from "../graph.js";
-import * as fs from "fs/promises";
-import * as path from "path";
-import * as os from "os";
-
-// Direct index reader — avoids searchKnowledge overhead for graph building
-async function loadAllEntries(): Promise<Array<{ id: string; title: string; content: string }>> {
-  const vaultDir = (process.env.KNOWLEDGE_KEEPER_DIR || "~/.knowledge-vault").replace("~", os.homedir());
-  const indexPath = path.join(vaultDir, "index.json");
-  try {
-    const content = await fs.readFile(indexPath, "utf-8");
-    const parsed = JSON.parse(content);
-    return parsed.entries || [];
-  } catch {
-    return [];
-  }
-}
+import { loadAllEntries } from "../core.js";
 
 export function registerGraphBuildTool(server: McpServer): void {
   server.registerTool(

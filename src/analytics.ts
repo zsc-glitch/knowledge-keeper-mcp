@@ -7,24 +7,8 @@
 import * as fs from "fs/promises";
 import * as path from "path";
 import * as os from "os";
-import { listTags } from "./core.js";
+import { listTags, loadAllEntries } from "./core.js";
 import { loadGraph, type KnowledgeGraphIndex } from "./graph.js";
-
-// Direct index reader — avoids searchKnowledge overhead for analytics
-async function loadAllEntries(): Promise<KnowledgePoint[]> {
-  const vaultDir = (process.env.KNOWLEDGE_KEEPER_DIR || "~/.knowledge-vault").replace("~", os.homedir());
-  const indexPath = path.join(vaultDir, "index.json");
-  try {
-    const content = await fs.readFile(indexPath, "utf-8");
-    const parsed = JSON.parse(content);
-    return parsed.entries || [];
-  } catch {
-    return [];
-  }
-}
-
-// Re-export KnowledgePoint type from core for local use
-import type { KnowledgePoint } from "./core.js";
 
 // ============================================================
 // Types

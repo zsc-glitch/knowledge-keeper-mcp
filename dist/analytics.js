@@ -3,23 +3,7 @@
  * Insights, patterns, and statistics about your knowledge base
  * Free tier: basic stats | Pro tier: advanced analytics
  */
-import * as fs from "fs/promises";
-import * as path from "path";
-import * as os from "os";
-import { listTags } from "./core.js";
-// Direct index reader — avoids searchKnowledge overhead for analytics
-async function loadAllEntries() {
-    const vaultDir = (process.env.KNOWLEDGE_KEEPER_DIR || "~/.knowledge-vault").replace("~", os.homedir());
-    const indexPath = path.join(vaultDir, "index.json");
-    try {
-        const content = await fs.readFile(indexPath, "utf-8");
-        const parsed = JSON.parse(content);
-        return parsed.entries || [];
-    }
-    catch {
-        return [];
-    }
-}
+import { listTags, loadAllEntries } from "./core.js";
 // ============================================================
 // Analytics Functions
 // ============================================================
