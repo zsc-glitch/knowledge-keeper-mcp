@@ -20,7 +20,7 @@ npx @zsc-glitch/knowledge-keeper-mcp
 claude mcp add knowledge-keeper -- npx @zsc-glitch/knowledge-keeper-mcp
 ```
 
-That's it. Restart Claude Code and you'll have 31 memory tools.
+That's it. Restart Claude Code and you'll have 32 memory tools.
 
 ## Cursor
 
@@ -117,6 +117,9 @@ Once connected, try these conversations in your AI assistant:
 
 # Review what you've learned
 "Show me knowledge items that are due for review"
+
+# Explore context around a topic
+"Show me everything related to the database decision"
 ```
 
 ## Environment Variables
@@ -144,12 +147,12 @@ All knowledge is stored as **Markdown files** in your vault directory:
 
 Each file is a standard Markdown file with YAML frontmatter — you can open the entire vault in **Obsidian** for browsing and editing.
 
-## 30 MCP Tools
+## 32 MCP Tools
 
 ### Core (Free)
 | Tool | What it does |
 |------|-------------|
-| `knowledge_save` | Save a knowledge item |
+| `knowledge_save` | Save a knowledge item (auto-detects similar titles) |
 | `knowledge_get` | Get item by ID |
 | `knowledge_update` | Update an item |
 | `knowledge_delete` | Delete an item |
@@ -157,9 +160,12 @@ Each file is a standard Markdown file with YAML frontmatter — you can open the
 | `knowledge_semantic_search` | TF-IDF semantic search |
 | `knowledge_bm25_search` | BM25 keyword search |
 | `knowledge_hybrid_search` | RRF fusion (BM25 + semantic) |
+| `knowledge_recent` | Recently added/updated items |
+| `knowledge_duplicates` | Detect similar/duplicate items |
+| `knowledge_context` | Knowledge neighborhood explorer |
 | `knowledge_bm25_stats` | BM25 index statistics |
 | `knowledge_tags` | List/manage tags |
-| `knowledge_versions` | Version history |
+| `knowledge_versions` | Version history (diff & rollback) |
 | `knowledge_review` | Spaced repetition review |
 | `knowledge_link` | Link two items |
 | `knowledge_unlink` | Remove a link |
@@ -173,6 +179,7 @@ Each file is a standard Markdown file with YAML frontmatter — you can open the
 | `knowledge_batch` | Batch operations |
 | `knowledge_sync` | Local vault sync |
 | `knowledge_merge` | Merge two vaults |
+| `knowledge_audit` | SHA256 integrity check |
 
 ### Analytics (Free)
 | Tool | What it does |
