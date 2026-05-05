@@ -126,6 +126,10 @@ class TFIDFEmbedding implements EmbeddingModel {
 
 // ==================== 向量存储 ====================
 
+// Index cache for performance (avoids repeated file reads)
+const vectorCache = new Map<string, { index: VectorIndex; mtime: number }>();
+const VECTOR_CACHE_TTL = 5000; // 5 seconds
+
 function getVectorIndexPath(): string {
   const dir = process.env.KNOWLEDGE_KEEPER_DIR || "~/.knowledge-vault";
   return path.join(dir.replace("~", os.homedir()), "vectors.json");
@@ -133,15 +137,31 @@ function getVectorIndexPath(): string {
 
 async function loadVectorIndex(): Promise<VectorIndex> {
   const indexPath = getVectorIndexPath();
+
+  // Check cache
+  try {
+    const stat = await fs.stat(indexPath);
+    const cached = vectorCache.get(indexPath);
+    if (cached && Date.now() - cached.mtime < VECTOR_CACHE_TTL) {
+      return cached.index;
+    }
+  } catch {
+    // File doesn't exist yet
+  }
+
   try {
     const content = await fs.readFile(indexPath, "utf-8");
     const parsed = JSON.parse(content);
-    return {
+    const index: VectorIndex = {
       version: parsed.version || 1,
       entries: parsed.entries || [],
       model: parsed.model || "tfidf-simple",
       dimension: parsed.dimension || 128,
     };
+
+    // Update cache
+    vectorCache.set(indexPath, { index, mtime: Date.now() });
+    return index;
   } catch {
     return {
       version: 1,
@@ -160,6 +180,9 @@ async function saveVectorIndex(index: VectorIndex): Promise<void> {
   const tmpPath = indexPath + ".tmp";
   await fs.writeFile(tmpPath, JSON.stringify(index, null, 2), "utf-8");
   await fs.rename(tmpPath, indexPath);
+
+  // Invalidate cache after write
+  vectorCache.delete(indexPath);
 }
 
 // ==================== 相似度计算 ====================
