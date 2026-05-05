@@ -138,3 +138,81 @@ AI: Let me check the version history...
 + Added: "Streaming replication for read replicas"  
 ~ Modified: Content expanded from 1 line to 3 paragraphs
 ```
+
+## Knowledge Context (v1.7.0)
+
+```
+You: What's the context around the "Database choice" decision?
+
+AI: Let me explore the knowledge neighborhood...
+→ knowledge_context(id="decision_abc123", depth="standard")
+
+📌 Database choice for user service (decision)
+   ID: decision_abc123
+   Tags: database, postgresql, architecture
+   Created: 2026-04-15
+
+---
+
+📎 Related Knowledge (5 items):
+
+1. [decision] Use PgBouncer for pooling
+   Reason: Direct link | Relevance: 100%
+   
+2. [concept] ACID Transactions
+   Reason: Shared tags: database | Relevance: 73%
+   
+3. [note] MongoDB vs PostgreSQL benchmarks
+   Reason: Reverse link | Relevance: 90%
+   
+4. [todo] Set up read replicas
+   Reason: Shared tags: postgresql, database | Relevance: 65%
+   
+5. [concept] API rate limiting strategy
+   Reason: Shared tags: architecture | Relevance: 58%
+
+📊 Direct links: 1 | Reverse links: 1 | Shared tags: 3
+```
+
+### Quick vs Standard vs Deep
+
+```
+# Quick — just links (fastest)
+→ knowledge_context(id="decision_abc123", depth="quick")
+# Returns: only directly linked and reverse-linked items
+
+# Standard — links + shared tags (recommended)
+→ knowledge_context(id="decision_abc123", depth="standard")
+# Returns: links + items sharing any tags
+
+# Deep — links + tags + similar titles (thorough)
+→ knowledge_context(id="decision_abc123", depth="deep")
+# Returns: all of the above + items with similar titles (Jaccard ≥ 40%)
+```
+
+## Duplicate Detection (v1.6.0)
+
+```
+You: Do I have any duplicate knowledge?
+
+AI: Let me scan for similar entries...
+→ knowledge_duplicates(threshold=0.7, scope="both")
+
+🔍 Duplicate Detection (threshold: 0.7, scope: both)
+
+Found 2 groups of similar items:
+
+1. 🔗 Similarity 0.85 (2 items)
+   - [concept] React Server Components (2026-04-10)
+   - [concept] React Server Components (2026-04-15)
+   💡 Keep "React Server Components" (newer), merge the other
+
+2. 🔗 Similarity 0.72 (2 items)
+   - [note] API caching strategy (2026-04-12)
+   - [note] Caching approach for APIs (2026-04-18)
+   💡 Keep "API caching strategy" (more tags), merge the other
+
+→ knowledge_merge(source_id="note_old", target_id="note_new")
+
+✅ Merged: 1 duplicate removed, tags and links preserved
+```
