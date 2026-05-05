@@ -16,11 +16,18 @@ import {
 describe("generateId", () => {
   it("should generate unique IDs for each type", () => {
     const types: KnowledgeType[] = ["concept", "decision", "todo", "note", "project"];
+    const prefixMap: Record<KnowledgeType, string> = {
+      concept: "kp-cp",
+      decision: "kp-dc",
+      todo: "kp-td",
+      note: "kp-nt",
+      project: "kp-pj",
+    };
     const ids = new Set<string>();
 
     types.forEach((type) => {
       const id = generateId(type);
-      expect(id).toMatch(new RegExp(`^kp-..-${type.charAt(0)}-`));
+      expect(id).toMatch(new RegExp(`^${prefixMap[type]}-`));
       ids.add(id);
     });
 
