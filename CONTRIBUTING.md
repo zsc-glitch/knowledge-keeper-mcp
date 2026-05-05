@@ -36,11 +36,57 @@ src/
 1. Create `src/tools/your-tool.ts`
 2. Register your tool with `server.registerTool()`
 3. Import and call `registerYourTool(server)` in `src/tools/index.ts`
-4. Add a test in `src/your-tool.test.js`
-5. Update README tool list
-6. Run `npm run build && npm test`
+4. Add a test in `src/tools/your-tool.test.ts` (use vitest)
+5. Update README, QUICKSTART, and mcp.json tool lists
+6. Update `package.json` description (tool count)
+7. Run `npm run build && npm test`
 
-## Tool Registration Pattern
+## Adding a New Tool (Example: knowledge_context)
+
+Here's a real example — `knowledge_context` was added in v1.7.0:
+
+1. **Created** `src/tools/context.ts` with the tool registration pattern above
+2. **Imported** in `src/tools/index.ts`:
+   ```typescript
+   import { registerContextTool } from "./context.js";
+   // ...
+   registerContextTool(server);
+   ```
+3. **Added test** `src/tools/context.test.ts`:
+   ```typescript
+   import { describe, it, expect, beforeEach, afterEach } from "vitest";
+   // Test the core logic, not MCP server registration
+   ```
+4. **Updated docs**: README, QUICKSTART, mcp.json, agentskills.json, EXAMPLES.md
+5. **Version bump**: Updated package.json version and description
+
+## Test Pattern
+
+Use **vitest** for all tests:
+
+```typescript
+import { describe, it, expect, beforeEach, afterEach } from "vitest";
+
+describe("my feature", () => {
+  beforeEach(async () => {
+    // Set up test vault
+    process.env.KNOWLEDGE_KEEPER_DIR = "/tmp/test-vault";
+  });
+
+  afterEach(async () => {
+    // Clean up
+    delete process.env.KNOWLEDGE_KEEPER_DIR;
+  });
+
+  it("should work", async () => {
+    // Test core logic from ../core.js
+    const result = await someFunction();
+    expect(result).toBeDefined();
+  });
+});
+```
+
+**Note**: Use `vitest`, NOT `node:test`. Old `node:test` test files have been removed.
 
 ```typescript
 import type { McpServer } from "@modelcontextprotocol/server";
