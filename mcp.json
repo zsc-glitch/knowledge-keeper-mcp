@@ -2,8 +2,8 @@
   "$schema": "https://cdn.jsdelivr.net/npm/@modelcontextprotocol/manifest@latest/schema.json",
   "name": "knowledge-keeper",
   "displayName": "Knowledge Keeper MCP",
-  "description": "AI Memory & Knowledge Management — 30 MCP tools, BM25 + hybrid search, knowledge graph, Obsidian compatible, zero API keys",
-  "version": "1.4.3",
+  "description": "AI Memory & Knowledge Management — 32 MCP tools, BM25 + hybrid search, knowledge graph, context explorer, Obsidian compatible, zero API keys",
+  "version": "1.7.1",
   "author": {
     "name": "小影",
     "url": "https://github.com/zsc-glitch"
@@ -19,7 +19,7 @@
   "tools": [
     {
       "name": "knowledge_save",
-      "description": "Save a knowledge entry"
+      "description": "Save a knowledge entry (auto-detects similar titles)"
     },
     {
       "name": "knowledge_get",
@@ -48,6 +48,18 @@
     {
       "name": "knowledge_hybrid_search",
       "description": "RRF fusion of BM25 + semantic (R@5=97%+)"
+    },
+    {
+      "name": "knowledge_recent",
+      "description": "Recently added/updated entries"
+    },
+    {
+      "name": "knowledge_duplicates",
+      "description": "Detect similar/duplicate knowledge points"
+    },
+    {
+      "name": "knowledge_context",
+      "description": "Knowledge neighborhood explorer (links, tags, similar titles)"
     },
     {
       "name": "knowledge_tags",
@@ -146,5 +158,5 @@
     "hermes-agent": true,
     "openclaw": true
   },
-  "tags": ["memory", "knowledge", "search", "obsidian", "bm25", "graph", "cloud-sync", "audit", "analytics"]
+  "tags": ["memory", "knowledge", "search", "obsidian", "bm25", "graph", "cloud-sync", "audit", "analytics", "context", "duplicates"]
 }
