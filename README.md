@@ -1,6 +1,6 @@
 # Knowledge Keeper MCP
 
-> 🧠 **Give your AI agent long-term memory** — 32 MCP tools, zero API keys, works with Claude Code, Cursor, Gemini CLI, Windsurf, hermes-agent
+> 🧠 **Give your AI agent long-term memory** — 32 MCP tools, zero API keys, zero infrastructure, works with Claude Code, Cursor, Gemini CLI, Windsurf, hermes-agent
 >
 > **v1.7.1** — [npm](https://npm.im/@zsc-glitch/knowledge-keeper-mcp) | [GitHub](https://github.com/zsc-glitch/knowledge-keeper-mcp) | [Quick Start](QUICKSTART.md) | [Landing Page](https://zsc-glitch.github.io/knowledge-keeper-mcp/) | [Blog](blog/how-i-built-ai-memory-mcp.md)
 
