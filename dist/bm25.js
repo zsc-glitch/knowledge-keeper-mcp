@@ -8,6 +8,9 @@ import * as os from "os";
 // BM25 参数
 const K1 = 1.5; // 词频饱和参数
 const B = 0.75; // 文档长度归一化参数
+// Index cache for performance (avoids repeated file reads)
+const bm25Cache = new Map();
+const BM25_CACHE_TTL = 5000; // 5 seconds
 // 索引文件路径
 function getBM25IndexPath() {
     const dir = process.env.KNOWLEDGE_KEEPER_DIR || "~/.knowledge-vault";
@@ -33,23 +36,36 @@ function tokenize(text) {
 // 加载索引
 async function loadBM25Index() {
     const indexPath = getBM25IndexPath();
+    // Check cache
+    try {
+        const cached = bm25Cache.get(indexPath);
+        if (cached && Date.now() - cached.mtime < BM25_CACHE_TTL) {
+            return cached.index;
+        }
+    }
+    catch { }
     try {
         const content = await fs.readFile(indexPath, "utf-8");
         const parsed = JSON.parse(content);
-        return {
+        const index = {
             documents: new Map(Object.entries(parsed.documents || {})),
             docCount: parsed.docCount || 0,
             avgDocLength: parsed.avgDocLength || 100,
+            totalDocLength: parsed.totalDocLength || 0,
             termFreq: new Map(Object.entries(parsed.termFreq || {})),
             termDocFreq: new Map(Object.entries(parsed.termDocFreq || {}).map(([term, docs]) => [term, new Map(Object.entries(docs))])),
             lastUpdate: parsed.lastUpdate || 0,
         };
+        // Update cache
+        bm25Cache.set(indexPath, { index, mtime: Date.now() });
+        return index;
     }
     catch {
         return {
             documents: new Map(),
             docCount: 0,
             avgDocLength: 100,
+            totalDocLength: 0,
             termFreq: new Map(),
             termDocFreq: new Map(),
             lastUpdate: 0,
@@ -65,6 +81,7 @@ async function saveBM25Index(index) {
         documents: Object.fromEntries(index.documents),
         docCount: index.docCount,
         avgDocLength: index.avgDocLength,
+        totalDocLength: index.totalDocLength,
         termFreq: Object.fromEntries(index.termFreq),
         termDocFreq: Object.fromEntries(Array.from(index.termDocFreq.entries()).map(([term, docs]) => [term, Object.fromEntries(docs)])),
         lastUpdate: index.lastUpdate,
@@ -72,6 +89,8 @@ async function saveBM25Index(index) {
     const tmpPath = indexPath + ".tmp";
     await fs.writeFile(tmpPath, JSON.stringify(serialized), "utf-8");
     await fs.rename(tmpPath, indexPath);
+    // Invalidate cache after write
+    bm25Cache.delete(indexPath);
 }
 // 添加文档到索引
 async function addToBM25Index(id, text) {
@@ -104,10 +123,9 @@ async function addToBM25Index(id, text) {
     // 添加新文档
     index.documents.set(id, doc);
     index.docCount++;
-    // 更新统计
-    const totalLength = Array.from(index.documents.values())
-        .reduce((sum, d) => sum + d.length, 0);
-    index.avgDocLength = totalLength / index.docCount;
+    // 更新统计 (O(1) instead of O(n))
+    index.totalDocLength += doc.length;
+    index.avgDocLength = index.totalDocLength / index.docCount;
     // 更新词频
     const termCounts = new Map();
     for (const token of tokens) {
@@ -147,11 +165,10 @@ async function removeFromBM25Index(id) {
     }
     index.documents.delete(id);
     index.docCount--;
-    // 更新平均长度
+    // 更新平均长度 (O(1) instead of O(n))
+    index.totalDocLength -= doc.length;
     if (index.docCount > 0) {
-        const totalLength = Array.from(index.documents.values())
-            .reduce((sum, d) => sum + d.length, 0);
-        index.avgDocLength = totalLength / index.docCount;
+        index.avgDocLength = index.totalDocLength / index.docCount;
     }
     index.lastUpdate = Date.now();
     await saveBM25Index(index);
