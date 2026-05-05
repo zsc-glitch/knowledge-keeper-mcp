@@ -156,11 +156,25 @@ function computeSimilarity(a: KnowledgePoint, b: KnowledgePoint, scope: "title" 
 }
 
 /**
- * Jaccard similarity on word sets
+ * Jaccard similarity on word sets (with Chinese character support)
  */
+function tokenize(text: string): Set<string> {
+  const tokens = new Set<string>();
+  for (const w of text.toLowerCase().split(/\s+/).filter(w => w.length > 1)) {
+    tokens.add(w);
+  }
+  const chinese = text.match(/[\u4e00-\u9fff]+/g) || [];
+  for (const segment of chinese) {
+    for (const char of segment) {
+      tokens.add(char);
+    }
+  }
+  return tokens;
+}
+
 function jaccardSimilarity(a: string, b: string): number {
-  const wordsA = new Set(a.toLowerCase().split(/\s+/).filter(w => w.length > 1));
-  const wordsB = new Set(b.toLowerCase().split(/\s+/).filter(w => w.length > 1));
+  const wordsA = tokenize(a);
+  const wordsB = tokenize(b);
 
   if (wordsA.size === 0 && wordsB.size === 0) return 1;
   if (wordsA.size === 0 || wordsB.size === 0) return 0;
