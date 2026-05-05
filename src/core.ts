@@ -810,3 +810,24 @@ export async function removeLink(
 
   return removed;
 }
+
+/**
+ * Tokenize text for similarity comparison (Chinese + English support)
+ * English: split on whitespace, filter words > 1 char
+ * Chinese: individual characters
+ */
+export function tokenizeForSimilarity(text: string, minWordLength: number = 2): Set<string> {
+  const tokens = new Set<string>();
+  // English words
+  for (const w of text.toLowerCase().split(/\s+/).filter(w => w.length > minWordLength)) {
+    tokens.add(w);
+  }
+  // Chinese characters (individual)
+  const chinese = text.match(/[\u4e00-\u9fff]+/g) || [];
+  for (const segment of chinese) {
+    for (const char of segment) {
+      tokens.add(char);
+    }
+  }
+  return tokens;
+}
