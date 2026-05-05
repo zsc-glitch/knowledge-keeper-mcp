@@ -5,7 +5,7 @@
 
 import type { McpServer } from "@modelcontextprotocol/server";
 import { z } from "zod";
-import { loadAllEntries, type KnowledgePoint } from "../core.js";
+import { loadAllEntries, tokenizeForSimilarity, type KnowledgePoint } from "../core.js";
 
 export function registerDuplicatesTool(server: McpServer): void {
   server.registerTool(
@@ -156,25 +156,11 @@ function computeSimilarity(a: KnowledgePoint, b: KnowledgePoint, scope: "title" 
 }
 
 /**
- * Jaccard similarity on word sets (with Chinese character support)
+ * Jaccard similarity using shared tokenizeForSimilarity (Chinese + English)
  */
-function tokenize(text: string): Set<string> {
-  const tokens = new Set<string>();
-  for (const w of text.toLowerCase().split(/\s+/).filter(w => w.length > 1)) {
-    tokens.add(w);
-  }
-  const chinese = text.match(/[\u4e00-\u9fff]+/g) || [];
-  for (const segment of chinese) {
-    for (const char of segment) {
-      tokens.add(char);
-    }
-  }
-  return tokens;
-}
-
 function jaccardSimilarity(a: string, b: string): number {
-  const wordsA = tokenize(a);
-  const wordsB = tokenize(b);
+  const wordsA = tokenizeForSimilarity(a, 1);
+  const wordsB = tokenizeForSimilarity(b, 1);
 
   if (wordsA.size === 0 && wordsB.size === 0) return 1;
   if (wordsA.size === 0 || wordsB.size === 0) return 0;
