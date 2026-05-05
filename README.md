@@ -2,7 +2,9 @@
 
 > 🧠 **Give your AI agent long-term memory** — 32 MCP tools, zero API keys, works with Claude Code, Cursor, Gemini CLI, Windsurf, hermes-agent
 >
-> **v1.7.0** — [npm](https://npm.im/@zsc-glitch/knowledge-keeper-mcp) | [GitHub](https://github.com/zsc-glitch/knowledge-keeper-mcp) | [Quick Start](QUICKSTART.md) | [Landing Page](https://zsc-glitch.github.io/knowledge-keeper-mcp/) | [Blog](blog/how-i-built-ai-memory-mcp.md)
+> **v1.7.1** — [npm](https://npm.im/@zsc-glitch/knowledge-keeper-mcp) | [GitHub](https://github.com/zsc-glitch/knowledge-keeper-mcp) | [Quick Start](QUICKSTART.md) | [Landing Page](https://zsc-glitch.github.io/knowledge-keeper-mcp/) | [Blog](blog/how-i-built-ai-memory-mcp.md)
+
+[![npm version](https://img.shields.io/npm/v/@zsc-glitch/knowledge-keeper-mcp?color=blue)](https://npm.im/@zsc-glitch/knowledge-keeper-mcp) [![npm downloads](https://img.shields.io/npm/dw/@zsc-glitch/knowledge-keeper-mcp?color=green)](https://npm.im/@zsc-glitch/knowledge-keeper-mcp) [![MIT License](https://img.shields.io/badge/license-MIT-blue)](LICENSE) [![SafeSkill 86/100](https://img.shields.io/badge/security-86%2F100-brightgreen)](https://safeskill.dev/scan/zsc-glitch-knowledge-keeper-mcp) [![CI](https://img.shields.io/github/actions/workflow/status/zsc-glitch/knowledge-keeper-mcp/ci.yml?branch=main)](https://github.com/zsc-glitch/knowledge-keeper-mcp/actions)
 
 ![Knowledge Keeper MCP](demo.svg)
 
