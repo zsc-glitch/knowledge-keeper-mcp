@@ -5,7 +5,7 @@
  * k = 60 (standard RRF constant)
  */
 
-import { getKnowledge, type KnowledgePoint } from "./core.js";
+import { getKnowledge, loadAllEntries, type KnowledgePoint } from "./core.js";
 import { bm25Search } from "./bm25.js";
 import { semanticSearch } from "./embedding.js";
 
@@ -54,15 +54,18 @@ export async function hybridSearch(params: {
     }
   }
 
-  // Sort by score descending, then fetch full items
+  // Sort by score descending
   const sorted = [...scores.values()]
     .sort((a, b) => b.score - a.score)
     .slice(0, limit);
 
-  // Fetch full knowledge points
+  // Batch fetch: load all entries once instead of O(n) individual reads
+  const allEntries = await loadAllEntries();
+  const entryMap = new Map(allEntries.map(kp => [kp.id, kp]));
+
   const results: Array<KnowledgePoint & { score: number }> = [];
   for (const item of sorted) {
-    const kp = await getKnowledge(item.id);
+    const kp = entryMap.get(item.id);
     if (kp) {
       results.push({ ...kp, score: item.score });
     }
