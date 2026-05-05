@@ -6,7 +6,7 @@
 
 import type { McpServer } from "@modelcontextprotocol/server";
 import { z } from "zod";
-import { getKnowledge, loadAllEntries, type KnowledgePoint } from "../core.js";
+import { getKnowledge, loadAllEntries, tokenizeForSimilarity, type KnowledgePoint } from "../core.js";
 
 export function registerContextTool(server: McpServer): void {
   server.registerTool(
@@ -80,24 +80,10 @@ export function registerContextTool(server: McpServer): void {
 
         // 5. Similar titles (deep only)
         if (depth === "deep") {
-          // Tokenize with Chinese support (same as save.ts)
-          const tokenize = (text: string): Set<string> => {
-            const tokens = new Set<string>();
-            for (const w of text.toLowerCase().split(/\s+/).filter(w => w.length > 2)) {
-              tokens.add(w);
-            }
-            const chinese = text.match(/[\u4e00-\u9fff]+/g) || [];
-            for (const segment of chinese) {
-              for (const char of segment) {
-                tokens.add(char);
-              }
-            }
-            return tokens;
-          };
-          const targetWords = tokenize(target.title);
+          const targetWords = tokenizeForSimilarity(target.title);
           for (const entry of allEntries) {
             if (seen.has(entry.id)) continue;
-            const entryWords = tokenize(entry.title);
+            const entryWords = tokenizeForSimilarity(entry.title);
             let intersection = 0;
             for (const w of targetWords) { if (entryWords.has(w)) intersection++; }
             const union = targetWords.size + entryWords.size - intersection;
