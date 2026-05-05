@@ -4,7 +4,7 @@
 
 import type { McpServer } from "@modelcontextprotocol/server";
 import { z } from "zod";
-import { saveKnowledge, loadAllEntries, type KnowledgeType } from "../core.js";
+import { saveKnowledge, loadAllEntries, tokenizeForSimilarity, type KnowledgeType } from "../core.js";
 
 export function registerSaveTool(server: McpServer): void {
   server.registerTool(
@@ -32,27 +32,11 @@ export function registerSaveTool(server: McpServer): void {
         let duplicateWarning = "";
         try {
           const allEntries = await loadAllEntries();
-          // Tokenize: split on whitespace + split Chinese characters individually
-          const tokenize = (text: string): Set<string> => {
-            const tokens = new Set<string>();
-            // English words (length > 2)
-            for (const w of text.toLowerCase().split(/\s+/).filter(w => w.length > 2)) {
-              tokens.add(w);
-            }
-            // Chinese characters (individual)
-            const chinese = text.match(/[\u4e00-\u9fff]+/g) || [];
-            for (const segment of chinese) {
-              for (const char of segment) {
-                tokens.add(char);
-              }
-            }
-            return tokens;
-          };
-          const titleWords = tokenize(params.title);
+          const titleWords = tokenizeForSimilarity(params.title);
           const similar = allEntries
             .filter(e => e.id !== kp.id)
             .map(e => {
-              const eWords = tokenize(e.title);
+              const eWords = tokenizeForSimilarity(e.title);
               let intersection = 0;
               for (const w of titleWords) { if (eWords.has(w)) intersection++; }
               const union = titleWords.size + eWords.size - intersection;
