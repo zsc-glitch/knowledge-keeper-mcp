@@ -77,6 +77,10 @@ async function ensureGraphDir(): Promise<void> {
   }
 }
 
+// Graph index cache (5s TTL, same as embedding + BM25)
+const graphCache = new Map<string, { graph: KnowledgeGraphIndex; mtime: number }>();
+const GRAPH_CACHE_TTL = 5000;
+
 // ==================== Entity Detection (Phase 1 - Simplified) ====================
 
 const ENTITY_PATTERNS: Record<EntityType, RegExp[]> = {
@@ -157,9 +161,18 @@ export function generateRelationId(): string {
 
 export async function loadGraph(): Promise<KnowledgeGraphIndex> {
   const graphPath = path.join(getGraphDir(), "index.json");
+
+  // Check cache
+  const cached = graphCache.get(graphPath);
+  if (cached && Date.now() - cached.mtime < GRAPH_CACHE_TTL) {
+    return cached.graph;
+  }
+
   try {
     const content = await fs.readFile(graphPath, "utf-8");
-    return JSON.parse(content);
+    const graph: KnowledgeGraphIndex = JSON.parse(content);
+    graphCache.set(graphPath, { graph, mtime: Date.now() });
+    return graph;
   } catch {
     return {
       entities: [],
@@ -179,6 +192,9 @@ export async function saveGraph(graph: KnowledgeGraphIndex): Promise<void> {
   const tmpPath = `${graphPath}.tmp`;
   await fs.writeFile(tmpPath, JSON.stringify(graph, null, 2));
   await fs.rename(tmpPath, graphPath);
+
+  // Invalidate cache after write
+  graphCache.delete(graphPath);
 }
 
 export async function addEntity(
